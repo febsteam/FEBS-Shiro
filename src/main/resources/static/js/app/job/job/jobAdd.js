@@ -31,7 +31,7 @@ $(function() {
     });
 
     $("#job-add .btn-close").click(function() {
-        $("#dept-add-modal-title").html('新增任务');
+        $("#job-add-modal-title").html('新增任务');
         closeModal();
     });
 

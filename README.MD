@@ -127,6 +127,9 @@ GitHub 地址： https://github.com/wuyouzhuguli/FEBS
 
 本软件使用 [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) 协议，请严格遵照协议内容。
 
+## 常见问题
+[https://mrbird.cc/基于Spring Boot和Shiro的后台管理系统FEBS.html#常见问题](https://mrbird.cc/%E5%9F%BA%E4%BA%8ESpring-Boot%E5%92%8CShiro%E7%9A%84%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9FFEBS.html)
+
 ## 反馈交流
 
 ![http://olwqftdzl.bkt.clouddn.com/18-3-23/40328650.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-23/40328650.jpg)

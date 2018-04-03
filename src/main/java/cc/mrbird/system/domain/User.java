@@ -11,7 +11,7 @@ import javax.persistence.Transient;
 
 import cc.mrbird.common.annotation.ExportConfig;
 
-@Table(name = "T_USER")
+@Table(name = "t_user")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -4852732617765810959L;

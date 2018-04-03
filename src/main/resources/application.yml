@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8080
   tomcat:
     uri-encoding: utf-8
     
@@ -9,9 +9,9 @@ spring:
       # 数据库访问配置, 使用druid数据源 
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.mysql.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8
+      url: jdbc:mysql://127.0.0.1:3306/mrbird?useUnicode=true&characterEncoding=utf8
       username: root
-      password: 123456   
+      password: 13579
       # 连接池配置
       initial-size: 5
       min-idle: 5

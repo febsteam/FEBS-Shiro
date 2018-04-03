@@ -171,19 +171,18 @@ CREATE TABLE QRTZ_LOCKS
     PRIMARY KEY (SCHED_NAME,LOCK_NAME)
 );
 
-
-commit;
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
 -- Table structure for t_dept
 -- ----------------------------
 DROP TABLE IF EXISTS `t_dept`;
 CREATE TABLE `t_dept` (
-  `DEPT_ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `PARENT_ID` bigint(20) NOT NULL,
-  `DEPT_NAME` varchar(100) NOT NULL,
-  `ORDER_NUM` bigint(20) DEFAULT NULL,
-  `CREATE_TIME` datetime DEFAULT NULL,
+  `DEPT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门ID',
+  `PARENT_ID` bigint(20) NOT NULL COMMENT '上级部门ID',
+  `DEPT_NAME` varchar(100) NOT NULL COMMENT '部门名称',
+  `ORDER_NUM` bigint(20) DEFAULT NULL COMMENT '排序',
+  `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`DEPT_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
@@ -202,11 +201,11 @@ INSERT INTO `t_dept` VALUES ('6', '0', '测试部', null, '2018-01-04 15:42:38')
 -- ----------------------------
 DROP TABLE IF EXISTS `t_dict`;
 CREATE TABLE `t_dict` (
-  `DICT_ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `KEYY` bigint(20) NOT NULL,
-  `VALUEE` varchar(100) NOT NULL,
-  `FIELD_NAME` varchar(100) NOT NULL,
-  `TABLE_NAME` varchar(100) NOT NULL,
+  `DICT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典ID',
+  `KEYY` bigint(20) NOT NULL COMMENT '键',
+  `VALUEE` varchar(100) NOT NULL COMMENT '值',
+  `FIELD_NAME` varchar(100) NOT NULL COMMENT '字段名称',
+  `TABLE_NAME` varchar(100) NOT NULL COMMENT '表名',
   PRIMARY KEY (`DICT_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
@@ -239,7 +238,7 @@ CREATE TABLE `t_job` (
   `REMARK` varchar(200) DEFAULT NULL COMMENT '备注',
   `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`JOB_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_job
@@ -264,12 +263,11 @@ CREATE TABLE `t_job_log` (
   `TIMES` decimal(11,0) DEFAULT NULL COMMENT '耗时(单位：毫秒)',
   `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`LOG_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2466 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2476 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_job_log
 -- ----------------------------
-INSERT INTO `t_job_log` VALUES ('2447', '3', 'testTask', 'test', 'hello world', '0', null, '1', '2018-03-20 15:31:49');
 INSERT INTO `t_job_log` VALUES ('2448', '3', 'testTask', 'test', 'hello world', '0', null, '0', '2018-03-20 15:31:50');
 INSERT INTO `t_job_log` VALUES ('2449', '3', 'testTask', 'test', 'hello world', '0', null, '1', '2018-03-20 15:31:51');
 INSERT INTO `t_job_log` VALUES ('2450', '3', 'testTask', 'test', 'hello world', '0', null, '2', '2018-03-20 15:31:52');
@@ -288,50 +286,80 @@ INSERT INTO `t_job_log` VALUES ('2462', '3', 'testTask', 'test', 'hello world', 
 INSERT INTO `t_job_log` VALUES ('2463', '3', 'testTask', 'test', 'hello world', '0', null, '1', '2018-03-20 15:32:05');
 INSERT INTO `t_job_log` VALUES ('2464', '3', 'testTask', 'test', 'hello world', '0', null, '1', '2018-03-20 15:32:06');
 INSERT INTO `t_job_log` VALUES ('2465', '11', 'testTask', 'test2', null, '1', 'java.lang.NoSuchMethodException: cc.mrbird.job.task.TestTask.test2()', '0', '2018-03-20 15:32:26');
+INSERT INTO `t_job_log` VALUES ('2466', '2', 'testTask', 'test1', null, '0', null, '1', '2018-04-02 15:26:40');
+INSERT INTO `t_job_log` VALUES ('2467', '2', 'testTask', 'test1', null, '0', null, '1', '2018-04-02 15:26:50');
+INSERT INTO `t_job_log` VALUES ('2468', '2', 'testTask', 'test1', null, '0', null, '1', '2018-04-02 15:27:20');
+INSERT INTO `t_job_log` VALUES ('2469', '2', 'testTask', 'test1', null, '0', null, '3', '2018-04-02 17:29:20');
+INSERT INTO `t_job_log` VALUES ('2470', '2', 'testTask', 'test1', null, '0', null, '1', '2018-04-02 17:29:30');
+INSERT INTO `t_job_log` VALUES ('2471', '2', 'testTask', 'test1', null, '0', null, '1', '2018-04-02 17:29:40');
+INSERT INTO `t_job_log` VALUES ('2472', '2', 'testTask', 'test1', null, '0', null, '14', '2018-04-02 17:29:50');
+INSERT INTO `t_job_log` VALUES ('2473', '2', 'testTask', 'test1', null, '0', null, '1', '2018-04-02 17:30:00');
+INSERT INTO `t_job_log` VALUES ('2474', '2', 'testTask', 'test1', null, '0', null, '0', '2018-04-02 17:30:10');
+INSERT INTO `t_job_log` VALUES ('2475', '2', 'testTask', 'test1', null, '0', null, '1', '2018-04-02 17:30:20');
 
 -- ----------------------------
 -- Table structure for t_log
 -- ----------------------------
 DROP TABLE IF EXISTS `t_log`;
 CREATE TABLE `t_log` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `USERNAME` varchar(50) DEFAULT NULL,
-  `OPERATION` text,
-  `TIME` decimal(11,0) DEFAULT NULL,
-  `METHOD` text,
-  `PARAMS` text,
-  `IP` varchar(64) DEFAULT NULL,
-  `CREATE_TIME` datetime DEFAULT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '日志ID',
+  `USERNAME` varchar(50) DEFAULT NULL COMMENT '操作用户',
+  `OPERATION` text COMMENT '操作内容',
+  `TIME` decimal(11,0) DEFAULT NULL COMMENT '耗时',
+  `METHOD` text COMMENT '操作方法',
+  `PARAMS` text COMMENT '方法参数',
+  `IP` varchar(64) DEFAULT NULL COMMENT '操作者IP',
+  `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `location` varchar(50) DEFAULT NULL COMMENT '操作地点',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=841 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=860 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_log
 -- ----------------------------
-INSERT INTO `t_log` VALUES ('730', 'MrBird', '恢复任务', '55', 'cc.mrbird.job.controller.JobController.resumeJob()', 'jobIds: 3', '127.0.0.1', '2018-03-19 10:07:32');
-INSERT INTO `t_log` VALUES ('731', 'MrBird', '执行任务', '40', 'cc.mrbird.job.controller.JobController.runJob()', 'jobIds: 3', '127.0.0.1', '2018-03-19 10:07:36');
-INSERT INTO `t_log` VALUES ('733', 'MrBird', '暂停任务', '10', 'cc.mrbird.job.controller.JobController.pauseJob()', 'jobIds: 3', '127.0.0.1', '2018-03-19 10:07:53');
-INSERT INTO `t_log` VALUES ('734', 'MrBird', '恢复任务', '17', 'cc.mrbird.job.controller.JobController.resumeJob()', 'jobIds: 1', '127.0.0.1', '2018-03-19 10:08:02');
-INSERT INTO `t_log` VALUES ('735', 'MrBird', '执行任务', '13', 'cc.mrbird.job.controller.JobController.runJob()', 'jobIds: 1', '127.0.0.1', '2018-03-19 10:08:05');
-INSERT INTO `t_log` VALUES ('737', 'MrBird', '暂停任务', '11', 'cc.mrbird.job.controller.JobController.pauseJob()', 'jobIds: 1', '127.0.0.1', '2018-03-19 10:08:27');
-INSERT INTO `t_log` VALUES ('738', 'MrBird', '执行任务', '14', 'cc.mrbird.job.controller.JobController.runJob()', 'jobIds: 11', '127.0.0.1', '2018-03-19 10:08:34');
-INSERT INTO `t_log` VALUES ('840', 'MrBird', '删除用户', '255', 'cc.mrbird.system.controller.UserController.deleteUsers()', 'ids: 165,166', '127.0.0.1', '2018-03-20 18:34:26');
+INSERT INTO `t_log` VALUES ('730', 'MrBird', '恢复任务', '55', 'cc.mrbird.job.controller.JobController.resumeJob()', 'jobIds: 3', '127.0.0.1', '2018-03-19 10:07:32', null);
+INSERT INTO `t_log` VALUES ('731', 'MrBird', '执行任务', '40', 'cc.mrbird.job.controller.JobController.runJob()', 'jobIds: 3', '127.0.0.1', '2018-03-19 10:07:36', null);
+INSERT INTO `t_log` VALUES ('733', 'MrBird', '暂停任务', '10', 'cc.mrbird.job.controller.JobController.pauseJob()', 'jobIds: 3', '127.0.0.1', '2018-03-19 10:07:53', null);
+INSERT INTO `t_log` VALUES ('734', 'MrBird', '恢复任务', '17', 'cc.mrbird.job.controller.JobController.resumeJob()', 'jobIds: 1', '127.0.0.1', '2018-03-19 10:08:02', null);
+INSERT INTO `t_log` VALUES ('735', 'MrBird', '执行任务', '13', 'cc.mrbird.job.controller.JobController.runJob()', 'jobIds: 1', '127.0.0.1', '2018-03-19 10:08:05', null);
+INSERT INTO `t_log` VALUES ('737', 'MrBird', '暂停任务', '11', 'cc.mrbird.job.controller.JobController.pauseJob()', 'jobIds: 1', '127.0.0.1', '2018-03-19 10:08:27', null);
+INSERT INTO `t_log` VALUES ('738', 'MrBird', '执行任务', '14', 'cc.mrbird.job.controller.JobController.runJob()', 'jobIds: 11', '127.0.0.1', '2018-03-19 10:08:34', null);
+INSERT INTO `t_log` VALUES ('840', 'MrBird', '删除用户', '255', 'cc.mrbird.system.controller.UserController.deleteUsers()', 'ids: 165,166', '127.0.0.1', '2018-03-20 18:34:26', null);
+INSERT INTO `t_log` VALUES ('841', 'MrBird', '修改用户', '348', 'cc.mrbird.system.controller.UserController.updateUser()', 'user: cc.mrbird.system.domain.User@5adf3b3b  roles: [Ljava.lang.Long;@75a9cd18', '127.0.0.1', '2018-03-21 09:05:12', null);
+INSERT INTO `t_log` VALUES ('842', 'MrBird', '删除调度日志', '79', 'cc.mrbird.job.controller.JobLogController.deleteJobLog()', 'ids: 2447', '127.0.0.1', '2018-03-22 18:52:10', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('843', 'MrBird', '修改用户', '18805', 'cc.mrbird.system.controller.UserController.updateUser()', 'user: cc.mrbird.system.domain.User@1a6c90df  rolesSelect: [Ljava.lang.Long;@4d9b2e06', '127.0.0.1', '2018-03-27 09:20:05', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('844', 'MrBird', '修改用户', '5222', 'cc.mrbird.system.controller.UserController.updateUser()', 'user: cc.mrbird.system.domain.User@655c7201  rolesSelect: [Ljava.lang.Long;@1840d3a4', '127.0.0.1', '2018-03-27 09:20:23', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('845', 'MrBird', '修改用户', '6989', 'cc.mrbird.system.controller.UserController.updateUser()', 'user: cc.mrbird.system.domain.User@3691c744  rolesSelect: [Ljava.lang.Long;@1cb15d59', '127.0.0.1', '2018-03-27 09:21:09', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('846', 'MrBird', '新增任务', '361', 'cc.mrbird.job.controller.JobController.addJob()', 'job: cc.mrbird.job.domain.Job@41ea2910', '127.0.0.1', '2018-03-27 15:24:30', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('847', 'MrBird', '修改任务', '429', 'cc.mrbird.job.controller.JobController.updateJob()', 'job: cc.mrbird.job.domain.Job@7cb0d614', '127.0.0.1', '2018-03-27 15:25:31', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('848', 'MrBird', '修改任务', '273', 'cc.mrbird.job.controller.JobController.updateJob()', 'job: cc.mrbird.job.domain.Job@4937e65d', '127.0.0.1', '2018-03-27 17:43:09', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('849', 'MrBird', '修改任务', '712', 'cc.mrbird.job.controller.JobController.updateJob()', 'job: cc.mrbird.job.domain.Job@aa7781d', '127.0.0.1', '2018-03-27 17:43:31', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('850', 'MrBird', '新增任务', '294', 'cc.mrbird.job.controller.JobController.addJob()', 'job: cc.mrbird.job.domain.Job@5543ec34', '127.0.0.1', '2018-03-28 14:36:44', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('851', 'MrBird', '修改任务', '353', 'cc.mrbird.job.controller.JobController.updateJob()', 'job: cc.mrbird.job.domain.Job@3fccec56', '127.0.0.1', '2018-03-28 14:37:06', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('852', 'MrBird', '修改任务', '262', 'cc.mrbird.job.controller.JobController.updateJob()', 'job: cc.mrbird.job.domain.Job@2ed43da1', '127.0.0.1', '2018-03-28 14:41:50', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('853', 'MrBird', '删除任务', '589', 'cc.mrbird.job.controller.JobController.deleteJob()', 'ids: 18,19', '127.0.0.1', '2018-03-29 10:26:30', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('854', 'MrBird', '新增任务', '548', 'cc.mrbird.job.controller.JobController.addJob()', 'job: cc.mrbird.job.domain.Job@b404b16', '127.0.0.1', '2018-03-29 10:27:11', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('855', 'MrBird', '修改任务', '442', 'cc.mrbird.job.controller.JobController.updateJob()', 'job: cc.mrbird.job.domain.Job@49f25426', '127.0.0.1', '2018-03-29 10:29:18', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('856', 'MrBird', '删除任务', '520', 'cc.mrbird.job.controller.JobController.deleteJob()', 'ids: 20', '127.0.0.1', '2018-03-29 10:41:20', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('857', 'MrBird', '修改用户', '449', 'cc.mrbird.system.controller.UserController.updateUser()', 'user: cc.mrbird.system.domain.User@68355f70  rolesSelect: [Ljava.lang.Long;@80ce783', '127.0.0.1', '2018-03-29 16:18:26', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('858', 'MrBird', '修改用户', '686', 'cc.mrbird.system.controller.UserController.updateUser()', 'user: cc.mrbird.system.domain.User@784012be  rolesSelect: [Ljava.lang.Long;@368eb59f', '127.0.0.1', '2018-03-29 16:18:37', 'XX内网IP');
+INSERT INTO `t_log` VALUES ('859', 'MrBird', '删除用户', '200', 'cc.mrbird.system.controller.UserController.deleteUsers()', 'ids: 41,68,92,125,161,162', '127.0.0.1', '2018-04-02 17:29:50', 'XX内网IP');
 
 -- ----------------------------
 -- Table structure for t_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `t_menu`;
 CREATE TABLE `t_menu` (
-  `MENU_ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `PARENT_ID` bigint(20) NOT NULL,
-  `MENU_NAME` varchar(50) NOT NULL,
-  `URL` varchar(100) DEFAULT NULL,
-  `PERMS` text,
-  `ICON` varchar(50) DEFAULT NULL,
-  `TYPE` char(2) NOT NULL,
-  `ORDER_NUM` bigint(20) DEFAULT NULL,
-  `CREATE_TIME` datetime NOT NULL,
-  `MODIFY_TIME` datetime DEFAULT NULL,
+  `MENU_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '菜单/按钮ID',
+  `PARENT_ID` bigint(20) NOT NULL COMMENT '上级菜单ID',
+  `MENU_NAME` varchar(50) NOT NULL COMMENT '菜单/按钮名称',
+  `URL` varchar(100) DEFAULT NULL COMMENT '菜单URL',
+  `PERMS` text COMMENT '权限标识',
+  `ICON` varchar(50) DEFAULT NULL COMMENT '图标',
+  `TYPE` char(2) NOT NULL COMMENT '类型 0菜单 1按钮',
+  `ORDER_NUM` bigint(20) DEFAULT NULL COMMENT '排序',
+  `CREATE_TIME` datetime NOT NULL COMMENT '创建时间',
+  `MODIFY_TIME` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`MENU_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8;
 
@@ -390,11 +418,11 @@ INSERT INTO `t_menu` VALUES ('110', '109', '删除日志', null, 'jobLog:delete'
 -- ----------------------------
 DROP TABLE IF EXISTS `t_role`;
 CREATE TABLE `t_role` (
-  `ROLE_ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `ROLE_NAME` varchar(100) NOT NULL,
-  `REMARK` varchar(100) DEFAULT NULL,
-  `CREATE_TIME` datetime NOT NULL,
-  `MODIFY_TIME` datetime DEFAULT NULL,
+  `ROLE_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `ROLE_NAME` varchar(100) NOT NULL COMMENT '角色名称',
+  `REMARK` varchar(100) DEFAULT NULL COMMENT '角色描述',
+  `CREATE_TIME` datetime NOT NULL COMMENT '创建时间',
+  `MODIFY_TIME` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`ROLE_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8;
 
@@ -416,8 +444,8 @@ INSERT INTO `t_role` VALUES ('65', '文章审核', '文章类', '2018-02-27 08:4
 -- ----------------------------
 DROP TABLE IF EXISTS `t_role_menu`;
 CREATE TABLE `t_role_menu` (
-  `ROLE_ID` bigint(20) NOT NULL,
-  `MENU_ID` bigint(20) NOT NULL
+  `ROLE_ID` bigint(20) NOT NULL COMMENT '角色ID',
+  `MENU_ID` bigint(20) NOT NULL COMMENT '菜单/按钮ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -528,48 +556,42 @@ INSERT INTO `t_role_menu` VALUES ('64', '58');
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
-  `USER_ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `USERNAME` varchar(50) NOT NULL,
-  `PASSWORD` varchar(128) NOT NULL,
-  `DEPT_ID` bigint(20) DEFAULT NULL,
-  `EMAIL` varchar(128) DEFAULT NULL,
-  `MOBILE` varchar(20) DEFAULT NULL,
-  `STATUS` char(1) NOT NULL,
-  `CRATE_TIME` datetime NOT NULL,
-  `MODIFY_TIME` datetime DEFAULT NULL,
-  `LAST_LOGIN_TIME` datetime DEFAULT NULL,
-  `SSEX` char(1) DEFAULT NULL,
-  `THEME` varchar(10) DEFAULT NULL,
-  `AVATAR` varchar(100) DEFAULT NULL,
-  `DESCRIPTION` varchar(100) DEFAULT NULL,
+  `USER_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `USERNAME` varchar(50) NOT NULL COMMENT '用户名',
+  `PASSWORD` varchar(128) NOT NULL COMMENT '密码',
+  `DEPT_ID` bigint(20) DEFAULT NULL COMMENT '部门ID',
+  `EMAIL` varchar(128) DEFAULT NULL COMMENT '邮箱',
+  `MOBILE` varchar(20) DEFAULT NULL COMMENT '联系电话',
+  `STATUS` char(1) NOT NULL COMMENT '状态 0锁定 1有效',
+  `CRATE_TIME` datetime NOT NULL COMMENT '创建时间',
+  `MODIFY_TIME` datetime DEFAULT NULL COMMENT '修改时间',
+  `LAST_LOGIN_TIME` datetime DEFAULT NULL COMMENT '最近访问时间',
+  `SSEX` char(1) DEFAULT NULL COMMENT '性别 0男 1女',
+  `THEME` varchar(10) DEFAULT NULL COMMENT '主题',
+  `AVATAR` varchar(100) DEFAULT NULL COMMENT '头像',
+  `DESCRIPTION` varchar(100) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`USER_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=167 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('4', 'MrBird', '42ee25d1e43e9f57119a00d0a39e5250', '2', '852252812@qq.com', '17720888889', '1', '2017-12-27 15:47:19', '2018-03-01 16:07:39', '2018-03-20 18:25:02', '0', 'green', 'default.jpg', '我就是我 颜色不一样的烟火...');
-INSERT INTO `t_user` VALUES ('6', 'tester', '243e29429b340192700677d48c09d992', '6', 'tester@qq.com', '13888888888', '1', '2017-12-27 17:35:14', '2018-03-01 16:52:30', '2018-01-23 09:17:27', '1', 'teal', 'default.jpg', null);
-INSERT INTO `t_user` VALUES ('23', 'scott', 'ac3af72d9f95161a502fd326865c2f15', '6', 'scott@qq.com', '15134627380', '1', '2017-12-29 16:16:39', '2018-03-01 16:11:33', '2018-03-20 17:59:04', '0', 'blue-grey', 'default.jpg', '我是scott，嗯嗯');
+INSERT INTO `t_user` VALUES ('4', 'MrBird', '42ee25d1e43e9f57119a00d0a39e5250', '5', 'mrbird@hotmail.com', '13455533222', '1', '2017-12-27 15:47:19', '2018-03-21 09:05:12', '2018-04-02 17:29:32', '0', 'green', 'default.jpg', '我是作者。');
+INSERT INTO `t_user` VALUES ('6', 'tester', '243e29429b340192700677d48c09d992', '6', 'tester@qq.com', '13888888888', '1', '2017-12-27 17:35:14', '2018-03-27 09:21:08', '2018-01-23 09:17:27', '1', 'teal', 'default.jpg', null);
+INSERT INTO `t_user` VALUES ('23', 'scott', 'ac3af72d9f95161a502fd326865c2f15', '6', 'scott@qq.com', '15134627380', '1', '2017-12-29 16:16:39', '2018-03-29 16:18:36', '2018-03-20 17:59:04', '0', 'blue-grey', 'default.jpg', '我是scott，嗯嗯');
 INSERT INTO `t_user` VALUES ('24', 'smith', '228208eafc74e48c44619cc543fc0efe', '3', 'smith@qq.com', '13364754932', '1', '2017-12-29 16:21:31', '2018-02-27 08:48:16', '2018-02-27 08:48:27', '1', 'teal', 'default.jpg', null);
 INSERT INTO `t_user` VALUES ('25', 'allen', '83baac97928a113986054efacaeec1d2', '3', 'allen@qq.com', '13427374857', '0', '2017-12-29 16:21:54', '2018-01-17 11:28:16', null, '1', 'indigo', 'default.jpg', null);
 INSERT INTO `t_user` VALUES ('26', 'martin', 'b26c9edca9a61016bca1f6fb042e679e', '4', 'martin@qq.com', '15562736678', '1', '2017-12-29 16:22:24', '2018-01-25 09:23:15', '2018-01-25 17:24:50', '1', 'teal', 'default.jpg', null);
 INSERT INTO `t_user` VALUES ('27', 'ford', '0448f0dcfd856b0e831842072b532141', '6', 'ford@qq.com', '15599998373', '0', '2017-12-29 16:22:52', '2018-03-13 11:19:56', '2018-03-08 16:31:59', '0', 'cyan', 'default.jpg', null);
-INSERT INTO `t_user` VALUES ('41', 'hippo', 'ed08932437f80522619de4b7f87fcdda', '4', 'hq@qq.com', '18067887364', '1', '2017-12-29 19:53:03', '2018-02-06 11:33:22', '2018-02-06 11:37:14', '1', 'teal', 'default.jpg', null);
-INSERT INTO `t_user` VALUES ('68', 'kangkang', '9983fe3651aaef335ec77159712009af', '2', 'kangkang@hotmail.com', '18874783892', '1', '2018-01-03 17:23:24', '2018-01-17 11:27:39', null, '0', 'green', 'default.jpg', null);
 INSERT INTO `t_user` VALUES ('91', '系统监控员', '7c28d1cd33414ac15832f7be92668b7a', '6', 'xtjk@qq.com', '18088736652', '1', '2018-01-09 15:52:56', null, '2018-01-09 15:53:12', '0', 'cyan', 'default.jpg', null);
-INSERT INTO `t_user` VALUES ('92', 'userLook', '815bffb1baa36e14e8b0b5887a853291', '3', 'userlook@163.com', '13455998888', '1', '2018-01-09 15:56:58', '2018-03-20 15:23:58', '2018-03-20 15:24:08', '1', 'indigo', 'default.jpg', null);
-INSERT INTO `t_user` VALUES ('125', '卑微的浮萍', 'c1cc7ea10ee9b41fd33f129394480612', '6', 'BWDFP@163.com', '17728872787', '0', '2018-01-17 15:05:15', '2018-01-19 09:20:35', '2018-01-17 15:05:27', '2', 'green', 'default.jpg', null);
-INSERT INTO `t_user` VALUES ('161', 'hero', '1ab36105101bab2e665eeeb954ee4aa2', '4', 'hero@qq.com', '13477589012', '0', '2018-02-05 14:54:25', '2018-02-27 14:57:20', null, '0', 'green', 'default.jpg', null);
-INSERT INTO `t_user` VALUES ('162', 'beibei', 'b5ce06e87e255d097fb6956f7fb0d8b3', '5', 'beibei@qq.com', '13488873263', '1', '2018-02-24 17:34:14', '2018-03-01 16:11:43', '2018-03-14 11:41:39', '2', 'green', '17e420c250804efe904a09a33796d5a10.jpg', '我是贝贝。');
 
 -- ----------------------------
 -- Table structure for t_user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user_role`;
 CREATE TABLE `t_user_role` (
-  `USER_ID` bigint(20) NOT NULL,
-  `ROLE_ID` bigint(20) NOT NULL
+  `USER_ID` bigint(20) NOT NULL COMMENT '用户ID',
+  `ROLE_ID` bigint(20) NOT NULL COMMENT '角色ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -577,22 +599,21 @@ CREATE TABLE `t_user_role` (
 -- ----------------------------
 INSERT INTO `t_user_role` VALUES ('27', '3');
 INSERT INTO `t_user_role` VALUES ('24', '65');
-INSERT INTO `t_user_role` VALUES ('161', '64');
-INSERT INTO `t_user_role` VALUES ('4', '1');
-INSERT INTO `t_user_role` VALUES ('23', '3');
-INSERT INTO `t_user_role` VALUES ('23', '24');
-INSERT INTO `t_user_role` VALUES ('23', '25');
-INSERT INTO `t_user_role` VALUES ('162', '1');
-INSERT INTO `t_user_role` VALUES ('162', '3');
 INSERT INTO `t_user_role` VALUES ('26', '3');
 INSERT INTO `t_user_role` VALUES ('26', '23');
 INSERT INTO `t_user_role` VALUES ('26', '24');
-INSERT INTO `t_user_role` VALUES ('68', '1');
 INSERT INTO `t_user_role` VALUES ('25', '3');
-INSERT INTO `t_user_role` VALUES ('125', '3');
 INSERT INTO `t_user_role` VALUES ('91', '24');
-INSERT INTO `t_user_role` VALUES ('41', '1');
+INSERT INTO `t_user_role` VALUES ('4', '1');
+INSERT INTO `t_user_role` VALUES ('6', '1');
 INSERT INTO `t_user_role` VALUES ('6', '2');
-INSERT INTO `t_user_role` VALUES ('92', '25');
+INSERT INTO `t_user_role` VALUES ('6', '3');
+INSERT INTO `t_user_role` VALUES ('6', '25');
+INSERT INTO `t_user_role` VALUES ('6', '63');
+INSERT INTO `t_user_role` VALUES ('23', '2');
+INSERT INTO `t_user_role` VALUES ('23', '3');
+INSERT INTO `t_user_role` VALUES ('23', '23');
+INSERT INTO `t_user_role` VALUES ('23', '24');
+INSERT INTO `t_user_role` VALUES ('23', '25');
 
-ALTER TABLE t_log ADD location VARCHAR (50);
+commit;

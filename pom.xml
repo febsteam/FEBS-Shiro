@@ -36,7 +36,7 @@
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-tomcat</artifactId>
-		    <scope>provided</scope>
+		    <scope>compile</scope>
 		</dependency>
 		
 		<dependency>
@@ -122,6 +122,13 @@
 			<classifier>jdk15</classifier> 
 		</dependency>  
 		
+		<!-- xss过滤 -->
+		<dependency>
+		    <groupId>org.jsoup</groupId>
+		    <artifactId>jsoup</artifactId>
+		    <version>1.9.2</version>
+		</dependency>
+
         <!-- poi -->
      	<dependency>
 			<groupId>org.apache.poi</groupId>

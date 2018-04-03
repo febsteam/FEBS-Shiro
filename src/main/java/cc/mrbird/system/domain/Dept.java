@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import cc.mrbird.common.annotation.ExportConfig;
 
-@Table(name = "T_DEPT")
+@Table(name = "t_dept")
 public class Dept implements Serializable {
 
 	private static final long serialVersionUID = -7790334862410409053L;

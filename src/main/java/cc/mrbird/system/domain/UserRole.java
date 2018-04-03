@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Table;
 
-@Table(name = "T_USER_ROLE")
+@Table(name = "t_user_role")
 public class UserRole implements Serializable{
 	
 	private static final long serialVersionUID = -3166012934498268403L;
