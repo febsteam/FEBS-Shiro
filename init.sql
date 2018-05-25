@@ -361,19 +361,19 @@ CREATE TABLE `t_menu` (
   `CREATE_TIME` datetime NOT NULL COMMENT '创建时间',
   `MODIFY_TIME` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`MENU_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_menu
 -- ----------------------------
 INSERT INTO `t_menu` VALUES ('1', '0', '系统管理', null, null, 'zmdi zmdi-settings', '0', '1', '2017-12-27 16:39:07', null);
 INSERT INTO `t_menu` VALUES ('2', '0', '系统监控', null, null, 'zmdi zmdi-shield-security', '0', '2', '2017-12-27 16:45:51', '2018-01-17 17:08:28');
-INSERT INTO `t_menu` VALUES ('3', '1', '用户管理', 'user', '', '', '0', '1', '2017-12-27 16:47:13', '2018-03-20 17:45:38');
-INSERT INTO `t_menu` VALUES ('4', '1', '角色管理', 'role', null, null, '0', '2', '2017-12-27 16:48:09', null);
-INSERT INTO `t_menu` VALUES ('5', '1', '菜单管理', 'menu', null, null, '0', '3', '2017-12-27 16:48:57', null);
-INSERT INTO `t_menu` VALUES ('6', '1', '部门管理', 'dept', null, null, '0', '4', '2017-12-27 16:57:33', null);
-INSERT INTO `t_menu` VALUES ('8', '2', '在线用户', 'session', null, null, '0', '1', '2017-12-27 16:59:33', null);
-INSERT INTO `t_menu` VALUES ('10', '2', '系统日志', 'log', null, null, '0', '3', '2017-12-27 17:00:50', null);
+INSERT INTO `t_menu` VALUES ('3', '1', '用户管理', 'user', 'user:list', '', '0', '1', '2017-12-27 16:47:13', '2018-04-25 09:00:01');
+INSERT INTO `t_menu` VALUES ('4', '1', '角色管理', 'role', 'role:list', '', '0', '2', '2017-12-27 16:48:09', '2018-04-25 09:01:12');
+INSERT INTO `t_menu` VALUES ('5', '1', '菜单管理', 'menu', 'menu:list', '', '0', '3', '2017-12-27 16:48:57', '2018-04-25 09:01:30');
+INSERT INTO `t_menu` VALUES ('6', '1', '部门管理', 'dept', 'dept:list', '', '0', '4', '2017-12-27 16:57:33', '2018-04-25 09:01:40');
+INSERT INTO `t_menu` VALUES ('8', '2', '在线用户', 'session', 'session:list', '', '0', '1', '2017-12-27 16:59:33', '2018-04-25 09:02:04');
+INSERT INTO `t_menu` VALUES ('10', '2', '系统日志', 'log', 'log:list', '', '0', '3', '2017-12-27 17:00:50', '2018-04-25 09:02:18');
 INSERT INTO `t_menu` VALUES ('11', '3', '新增用户', null, 'user:add', null, '1', null, '2017-12-27 17:02:58', null);
 INSERT INTO `t_menu` VALUES ('12', '3', '修改用户', null, 'user:update', null, '1', null, '2017-12-27 17:04:07', null);
 INSERT INTO `t_menu` VALUES ('13', '3', '删除用户', null, 'user:delete', null, '1', null, '2017-12-27 17:04:58', null);
@@ -389,28 +389,28 @@ INSERT INTO `t_menu` VALUES ('22', '6', '删除部门', null, 'dept:delete', nul
 INSERT INTO `t_menu` VALUES ('23', '8', '踢出用户', null, 'user:kickout', null, '1', null, '2017-12-27 17:11:13', null);
 INSERT INTO `t_menu` VALUES ('24', '10', '删除日志', null, 'log:delete', null, '1', null, '2017-12-27 17:11:45', null);
 INSERT INTO `t_menu` VALUES ('58', '0', '网络资源', null, null, 'zmdi zmdi-globe-alt', '0', null, '2018-01-12 15:28:48', '2018-01-22 19:49:26');
-INSERT INTO `t_menu` VALUES ('59', '58', '天气查询', 'weather', null, null, '0', null, '2018-01-12 15:40:02', null);
-INSERT INTO `t_menu` VALUES ('61', '58', '每日一文', 'article', null, null, '0', null, '2018-01-15 17:17:14', null);
-INSERT INTO `t_menu` VALUES ('64', '1', '字典管理', 'dict', null, null, '0', null, '2018-01-18 10:38:25', '2018-01-18 18:59:33');
+INSERT INTO `t_menu` VALUES ('59', '58', '天气查询', 'weather', 'weather:list', '', '0', null, '2018-01-12 15:40:02', '2018-04-25 09:02:57');
+INSERT INTO `t_menu` VALUES ('61', '58', '每日一文', 'article', 'article:list', '', '0', null, '2018-01-15 17:17:14', '2018-04-25 09:03:08');
+INSERT INTO `t_menu` VALUES ('64', '1', '字典管理', 'dict', 'dict:list', '', '0', null, '2018-01-18 10:38:25', '2018-04-25 09:01:50');
 INSERT INTO `t_menu` VALUES ('65', '64', '新增字典', null, 'dict:add', null, '1', null, '2018-01-18 19:10:08', null);
 INSERT INTO `t_menu` VALUES ('66', '64', '修改字典', null, 'dict:update', null, '1', null, '2018-01-18 19:10:27', null);
 INSERT INTO `t_menu` VALUES ('67', '64', '删除字典', null, 'dict:delete', null, '1', null, '2018-01-18 19:10:47', null);
 INSERT INTO `t_menu` VALUES ('81', '58', '影视资讯', null, null, null, '0', null, '2018-01-22 14:12:59', null);
-INSERT INTO `t_menu` VALUES ('82', '81', '正在热映', 'movie/hot', null, null, '0', null, '2018-01-22 14:13:47', null);
-INSERT INTO `t_menu` VALUES ('83', '81', '即将上映', 'movie/coming', null, null, '0', null, '2018-01-22 14:14:36', null);
+INSERT INTO `t_menu` VALUES ('82', '81', '正在热映', 'movie/hot', 'movie:hot', '', '0', null, '2018-01-22 14:13:47', '2018-04-25 09:03:48');
+INSERT INTO `t_menu` VALUES ('83', '81', '即将上映', 'movie/coming', 'movie:coming', '', '0', null, '2018-01-22 14:14:36', '2018-04-25 09:04:05');
 INSERT INTO `t_menu` VALUES ('86', '58', 'One 一个', null, null, null, '0', null, '2018-01-26 09:42:41', '2018-01-26 09:43:46');
-INSERT INTO `t_menu` VALUES ('87', '86', '绘画', 'one/painting', null, null, '0', null, '2018-01-26 09:47:14', '2018-01-26 09:48:28');
-INSERT INTO `t_menu` VALUES ('88', '86', '语文', 'one/yuwen', null, null, '0', null, '2018-01-26 09:47:40', '2018-01-26 09:48:15');
-INSERT INTO `t_menu` VALUES ('89', '86', '散文', 'one/essay', null, null, '0', null, '2018-01-26 09:48:05', null);
+INSERT INTO `t_menu` VALUES ('87', '86', '绘画', 'one/painting', 'one:painting', '', '0', null, '2018-01-26 09:47:14', '2018-04-25 09:04:17');
+INSERT INTO `t_menu` VALUES ('88', '86', '语文', 'one/yuwen', 'one:yuwen', '', '0', null, '2018-01-26 09:47:40', '2018-04-25 09:04:30');
+INSERT INTO `t_menu` VALUES ('89', '86', '散文', 'one/essay', 'one:essay', '', '0', null, '2018-01-26 09:48:05', '2018-04-25 09:04:42');
 INSERT INTO `t_menu` VALUES ('101', '0', '任务调度', null, null, 'zmdi zmdi-alarm', '0', null, '2018-02-24 15:52:57', null);
-INSERT INTO `t_menu` VALUES ('102', '101', '定时任务', 'job', null, null, '0', null, '2018-02-24 15:53:53', null);
+INSERT INTO `t_menu` VALUES ('102', '101', '定时任务', 'job', 'job:list', '', '0', null, '2018-02-24 15:53:53', '2018-04-25 09:05:12');
 INSERT INTO `t_menu` VALUES ('103', '102', '新增任务', null, 'job:add', null, '1', null, '2018-02-24 15:55:10', null);
 INSERT INTO `t_menu` VALUES ('104', '102', '修改任务', null, 'job:update', null, '1', null, '2018-02-24 15:55:53', null);
 INSERT INTO `t_menu` VALUES ('105', '102', '删除任务', null, 'job:delete', null, '1', null, '2018-02-24 15:56:18', null);
 INSERT INTO `t_menu` VALUES ('106', '102', '暂停任务', null, 'job:pause', null, '1', null, '2018-02-24 15:57:08', null);
 INSERT INTO `t_menu` VALUES ('107', '102', '恢复任务', null, 'job:resume', null, '1', null, '2018-02-24 15:58:21', null);
 INSERT INTO `t_menu` VALUES ('108', '102', '立即执行任务', null, 'job:run', null, '1', null, '2018-02-24 15:59:45', null);
-INSERT INTO `t_menu` VALUES ('109', '101', '调度日志', 'jobLog', null, null, '0', null, '2018-02-24 16:00:45', null);
+INSERT INTO `t_menu` VALUES ('109', '101', '调度日志', 'jobLog', 'jobLog:list', '', '0', null, '2018-02-24 16:00:45', '2018-04-25 09:05:25');
 INSERT INTO `t_menu` VALUES ('110', '109', '删除日志', null, 'jobLog:delete', null, '1', null, '2018-02-24 16:01:21', null);
 
 -- ----------------------------

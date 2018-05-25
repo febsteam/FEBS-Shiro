@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cc.mrbird.common.annotation.Log;
 import cc.mrbird.common.controller.BaseController;
 import cc.mrbird.common.domain.ResponseBo;
 import cc.mrbird.common.util.MD5Utils;
@@ -93,6 +94,7 @@ public class LoginController extends BaseController {
 		return "403";
 	}
 
+	@Log("访问系统")
 	@RequestMapping("/index")
 	public String index(Model model) {
 		User user = super.getCurrentUser();

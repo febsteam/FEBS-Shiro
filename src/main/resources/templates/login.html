@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="edge" />
     <title>FEBS权限管理系统</title>
     <link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.ico}" />
     <link rel="stylesheet" th:href="@{css/login.css}" type="text/css">
@@ -15,7 +16,9 @@
     <script th:src="@{js/bootstrap-notify/bootstrap-notify.min.js}"></script>
     <script th:src="@{js/common.js}"></script>
 </head>
+<style>
 
+</style>
 <body>
     <!-- Form-->
     <div class="form">
@@ -43,7 +46,7 @@
                         <input type="checkbox" name="rememberme" />&nbsp;&nbsp;记住我</p>
                 </div>
                 <div class="form-group">
-                    <button onclick="login()">登录</button>
+                    <button onclick="login()" id="loginButton">登录</button>
                 </div>
             </div>
         </div>
@@ -70,6 +73,7 @@
             </div>
         </div>
     </div>
+    <div data-th-include="common/footer"></div>
 </body>
 <script th:inline="javascript">
 	var ctx = [[@{/}]];

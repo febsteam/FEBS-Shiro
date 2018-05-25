@@ -45,12 +45,17 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
 
 	@Override
 	public List<Role> findAllRole(Role role) {
-		Example example = new Example(Role.class);
-		if (StringUtils.isNotBlank(role.getRoleName())) {
-			example.createCriteria().andCondition("role_name=", role.getRoleName());
+		try {
+			Example example = new Example(Role.class);
+			if (StringUtils.isNotBlank(role.getRoleName())) {
+				example.createCriteria().andCondition("role_name=", role.getRoleName());
+			}
+			example.setOrderByClause("create_time");
+			return this.selectByExample(example);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Role>();
 		}
-		example.setOrderByClause("create_time");
-		return this.selectByExample(example);
 	}
 
 	@Override

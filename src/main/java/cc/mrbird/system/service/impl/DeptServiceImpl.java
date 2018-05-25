@@ -43,12 +43,18 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
 
 	@Override
 	public List<Dept> findAllDepts(Dept dept) {
-		Example example = new Example(Dept.class);
-		if (StringUtils.isNotBlank(dept.getDeptName())) {
-			example.createCriteria().andCondition("dept_name=", dept.getDeptName());
+		try {
+			Example example = new Example(Dept.class);
+			if (StringUtils.isNotBlank(dept.getDeptName())) {
+				example.createCriteria().andCondition("dept_name=", dept.getDeptName());
+			}
+			example.setOrderByClause("dept_id");
+			return this.deptMapper.selectByExample(example);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Dept>();
 		}
-		example.setOrderByClause("dept_id");
-		return this.deptMapper.selectByExample(example);
+
 	}
 
 	@Override

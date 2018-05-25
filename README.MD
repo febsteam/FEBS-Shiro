@@ -50,7 +50,7 @@
  
 - 基础框架：Bootstrap
 
-- JavaScirpy框架：jQuery
+- JavaScript框架：jQuery
 
 - 消息组件：Bootstrap notify
 
@@ -68,6 +68,8 @@
 
 - 图表插件：Highcharts
 
+- 时间插件：daterangepicker
+
 ### 开发环境
 
 - 语言：Java
@@ -82,38 +84,31 @@
 
 ## 系统预览
 
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/43426927.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/43426927.jpg)
+![f47c1606680527619bc462afea4d068f.png](screenshots/64420208.jpg)
 
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/3641662.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/3641662.jpg)
+![e3d9fc443686ec84003496d742c783ad.png](screenshots/57316459.jpg)
 
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/53322271.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/53322271.jpg)
+![2911d8fa7bbe2b6674854a5c7f59de7a.png](screenshots/50183418.jpg)
 
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/80868506.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/80868506.jpg)
+![48a18207aa79b0e75cfd7258d61dab1e.png](screenshots/31072514.jpg)
 
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/79241247.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/79241247.jpg)
+![155af0ed234a7fe040666b1b7818d42e.png](screenshots/38600911.jpg)
 
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/13230837.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/13230837.jpg)
+![57a6c25f7b616fcf4e452da673154960.png](screenshots/5832650.jpg)
 
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/32969330.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/32969330.jpg)
-
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/57423024.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/57423024.jpg)
+![d4973ba38ff475543eab95839b5314dc.png](screenshots/99045302.jpg)
 
 ## 主题预览
 
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/61386664.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/61386664.jpg)
+![2bbae66a0cc36ea96ca1ffe66951921d.png](screenshots/81830531.jpg)
 
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/76345927.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/76345927.jpg)
+![a9f57431583b8ed9a5d18b7cf37bd053.png](screenshots/86512301.jpg)
 
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/9663092.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/9663092.jpg)
+![d8cb6313fd2ee8eb793d443b83a78ce4.png](screenshots/6580523.jpg)
 
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/82140332.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/82140332.jpg)
+![2bd554ce2511cd1e7e3e7b3b56216ed6.png](screenshots/21305793.jpg)
 
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/78642808.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/78642808.jpg)
-
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/28545070.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/28545070.jpg)
-
-![http://olwqftdzl.bkt.clouddn.com/18-3-22/91801977.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-22/91801977.jpg)
-
+![5e6d35e4390cf7f0752d7864ad701e2b.png](screenshots/22217970.jpg)
 
 ## 部署方式
 
@@ -128,8 +123,12 @@ GitHub 地址： https://github.com/wuyouzhuguli/FEBS
 本软件使用 [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) 协议，请严格遵照协议内容。
 
 ## 常见问题
-[https://mrbird.cc/基于Spring Boot和Shiro的后台管理系统FEBS.html#常见问题](https://mrbird.cc/%E5%9F%BA%E4%BA%8ESpring-Boot%E5%92%8CShiro%E7%9A%84%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9FFEBS.html)
+[https://mrbird.cc/基于Spring Boot和Shiro的后台管理系统FEBS.html#常见问题](https://mrbird.cc/Spring-Boot%20Shiro%20FEBS.html)
 
 ## 反馈交流
+
+对于想通过此项目来学习Spring Boot及Shiro的同学可以结合个人Spring Boot系列教程一起学习，效果更佳[https://github.com/wuyouzhuguli/Spring-Boot-Demos](https://github.com/wuyouzhuguli/Spring-Boot-Demos)。
+
+此外，也欢迎加入Q群一起探讨交流。
 
 ![http://olwqftdzl.bkt.clouddn.com/18-3-23/40328650.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-23/40328650.jpg)

@@ -1,5 +1,6 @@
 package cc.mrbird.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,16 +21,26 @@ public class LogServiceImpl extends BaseService<SysLog> implements LogService {
 
 	@Override
 	public List<SysLog> findAllLogs(SysLog log) {
-		Example example = new Example(SysLog.class);
-		Criteria criteria = example.createCriteria();
-		if (StringUtils.isNotBlank(log.getUsername())) {
-			criteria.andCondition("username=", log.getUsername().toLowerCase());
+		try {
+			Example example = new Example(SysLog.class);
+			Criteria criteria = example.createCriteria();
+			if (StringUtils.isNotBlank(log.getUsername())) {
+				criteria.andCondition("username=", log.getUsername().toLowerCase());
+			}
+			if (StringUtils.isNotBlank(log.getOperation())) {
+				criteria.andCondition("operation like", "%" + log.getOperation() + "%");
+			}
+			if (StringUtils.isNotBlank(log.getTimeField())) {
+				String[] timeArr = log.getTimeField().split("~");
+				criteria.andCondition("date_format(CREATE_TIME,'%Y-%m-%d') >=", timeArr[0]);
+				criteria.andCondition("date_format(CREATE_TIME,'%Y-%m-%d') <=", timeArr[1]);
+			}
+			example.setOrderByClause("create_time");
+			return this.selectByExample(example);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<SysLog>();
 		}
-		if (StringUtils.isNotBlank(log.getOperation())) {
-			criteria.andCondition("operation like", "%" + log.getOperation() + "%");
-		}
-		example.setOrderByClause("create_time");
-		return this.selectByExample(example);
 	}
 
 	@Override

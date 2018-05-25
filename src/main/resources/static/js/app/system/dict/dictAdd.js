@@ -15,7 +15,7 @@ $(function() {
                         closeModal();
                         refresh();
                         $MB.n_success(r.msg);
-                    } else $MB.n_danger(r.msg, '.modal');
+                    } else $MB.n_danger(r.msg);
                 });
             }
             if (name == "update") {
@@ -24,14 +24,13 @@ $(function() {
                         closeModal();
                         refresh();
                         $MB.n_success(r.msg);
-                    } else $MB.n_danger(r.msg, '.modal');
+                    } else $MB.n_danger(r.msg);
                 });
             }
         }
     });
 
     $("#dict-add .btn-close").click(function() {
-        $("#dept-add-modal-title").html('新增字典');
         closeModal();
     });
 
@@ -41,6 +40,7 @@ function closeModal() {
 	$("#dict-add-button").attr("name", "save");
     $MB.closeAndRestModal("dict-add");
     validator.resetForm();
+    $("#dict-add-modal-title").html('新增字典');
 }
 
 function validateRule() {

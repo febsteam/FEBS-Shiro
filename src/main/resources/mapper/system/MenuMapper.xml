@@ -23,7 +23,7 @@
         left join t_user u on(u.user_id = ur.user_id)
         left join t_role_menu rm on(rm.role_id = r.role_id) 
         left join t_menu m on(m.menu_id = rm.menu_id ) 
-        where m.type = 1 and u.username = #{userName}
+        where u.username = #{userName} and m.perms is not null and m.perms &lt;&gt; ''
   </select>
   
   <select id="findUserMenus" resultMap="menu">
@@ -33,7 +33,7 @@
 		left join t_role r on(rm.role_id = r.role_id)
         left join t_user_role ur on(ur.role_id = r.role_id)
         left join t_user u on (u.user_id = ur.user_id)
-        where u.username = #{mrbird}) order by m.create_time
+        where u.username = #{userName}) order by m.create_time
   </select>
   
    <update id="changeToTop" parameterType="java.util.List">

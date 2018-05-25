@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cc.mrbird.common.annotation.Log;
 import cc.mrbird.common.domain.ResponseBo;
 import cc.mrbird.system.domain.UserOnline;
 import cc.mrbird.system.service.SessionService;
@@ -21,7 +22,9 @@ public class SessionController {
 	@Autowired
 	SessionService sessionService;
 	
+	@Log("获取在线用户信息")
 	@RequestMapping("session")
+	@RequiresPermissions("session:list")
 	public String online() {
 		return "system/monitor/online";
 	}

@@ -1,5 +1,6 @@
 package cc.mrbird.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,22 +26,27 @@ public class DictServiceImpl extends BaseService<Dict> implements DictService {
 
 	@Override
 	public List<Dict> findAllDicts(Dict dict) {
-		Example example = new Example(Dict.class);
-		Criteria criteria = example.createCriteria();
-		if (StringUtils.isNotBlank(dict.getKeyy())) {
-			criteria.andCondition("keyy=", Long.valueOf(dict.getKeyy()));
+		try {
+			Example example = new Example(Dict.class);
+			Criteria criteria = example.createCriteria();
+			if (StringUtils.isNotBlank(dict.getKeyy())) {
+				criteria.andCondition("keyy=", Long.valueOf(dict.getKeyy()));
+			}
+			if (StringUtils.isNotBlank(dict.getValuee())) {
+				criteria.andCondition("valuee=", dict.getValuee());
+			}
+			if (StringUtils.isNotBlank(dict.getTableName())) {
+				criteria.andCondition("table_name=", dict.getTableName());
+			}
+			if (StringUtils.isNotBlank(dict.getFieldName())) {
+				criteria.andCondition("field_name=", dict.getFieldName());
+			}
+			example.setOrderByClause("dict_id");
+			return this.selectByExample(example);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Dict>();
 		}
-		if (StringUtils.isNotBlank(dict.getValuee())) {
-			criteria.andCondition("valuee=", dict.getValuee());
-		}
-		if (StringUtils.isNotBlank(dict.getTableName())) {
-			criteria.andCondition("table_name=", dict.getTableName());
-		}
-		if (StringUtils.isNotBlank(dict.getFieldName())) {
-			criteria.andCondition("field_name=", dict.getFieldName());
-		}
-		example.setOrderByClause("dict_id");
-		return this.selectByExample(example);
 	}
 
 	@Override

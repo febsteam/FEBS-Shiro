@@ -30,6 +30,7 @@ public class UserController extends BaseController {
 	private UserService userService;
 
 	@RequestMapping("user")
+	@RequiresPermissions("user:list")
 	public String index(Model model) {
 		User user = super.getCurrentUser();
 		model.addAttribute("user", user);
@@ -60,6 +61,7 @@ public class UserController extends BaseController {
 		}
 	}
 
+	@Log("获取用户信息")
 	@RequestMapping("user/list")
 	@ResponseBody
 	public Map<String, Object> userList(QueryRequest request, User user) {

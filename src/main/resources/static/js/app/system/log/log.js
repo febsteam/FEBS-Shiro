@@ -6,6 +6,7 @@ $(function() {
             return {
                 pageSize: params.limit,
                 pageNum: params.offset / params.limit + 1,
+                timeField: $(".log-table-form").find("input[name='timeField']").val().trim(),
                 username: $(".log-table-form").find("input[name='username']").val().trim(),
                 operation: $(".log-table-form").find("input[name='operation']").val().trim(),
             };
@@ -41,6 +42,7 @@ $(function() {
         ]
     }
     $MB.initTable('logTable', settings);
+    $MB.calenders('input[name="timeField"]',true,false);
 });
 
 function search() {

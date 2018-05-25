@@ -30,13 +30,13 @@ function updateUser() {
             $form.find("input[name='roles']").val($form.find("select[name='rolesSelect']").val());
             var $status = $form.find("input[name='status']");
             if (user.status == '1') {
-                $status.attr("checked", true);
+                $status.prop("checked", true);
                 $status.parent().next().html('可用');
             } else {
-                $status.attr("checked", false);
+                $status.prop("checked", false);
                 $status.parent().next().html('禁用');
             }
-            $("input:radio[value='" + user.ssex + "']").attr("checked", true);
+            $("input:radio[value='" + user.ssex + "']").prop("checked", true);
             $('#deptTree').jstree().open_all();
             $('#deptTree').jstree('select_node', user.deptId, true);
             $("#user-add-button").attr("name", "update");

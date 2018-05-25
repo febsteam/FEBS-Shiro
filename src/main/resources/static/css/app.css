@@ -2904,7 +2904,7 @@ tbody.collapse.show {
   position: absolute;
   top: 100%;
   left: 0;
-  z-index: 1000;
+  z-index: 9;
   display: none;
   float: left;
   min-width: 10rem;
@@ -9056,7 +9056,7 @@ select::-ms-expand {
 }
 
 .input-group-addon {
-  padding: 0 1rem !important;
+  padding: 0 0 0 1rem !important;
 }
 .input-group-addon + .form-group .form-control {
   padding-right: 1rem;
@@ -10123,7 +10123,7 @@ textarea {
   position: fixed;
   width: 100%;
   height: 52px;
-  /*box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);*/
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   color: #FFFFFF;
   padding: 0 2rem;
   z-index: 10;

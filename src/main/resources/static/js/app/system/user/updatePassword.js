@@ -13,7 +13,7 @@ $(function() {
                     validateUpdatePassword.resetForm();
                     $MB.closeAndRestModal("update-password");
                     $MB.n_success(r.msg);
-                } else $MB.n_danger(r.msg, '.modal');
+                } else $MB.n_danger(r.msg);
             });
         }
     });
@@ -37,7 +37,7 @@ function validateUpdatePasswordRule() {
                     dataType: "json",
                     data: {
                         password: function() {
-                            return $("input[name='oldPassword']").val();
+                            return $("input[name='oldPassword']").val().trim();
                         }
                     }
                 }

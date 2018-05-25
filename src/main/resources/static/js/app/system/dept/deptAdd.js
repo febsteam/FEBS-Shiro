@@ -17,7 +17,7 @@ $(function() {
                         closeModal();
                         refresh();
                         $MB.n_success(r.msg);
-                    } else $MB.n_danger(r.msg, '.modal');
+                    } else $MB.n_danger(r.msg);
                 });
             }
             if (name == "update") {
@@ -26,14 +26,13 @@ $(function() {
                         closeModal();
                         refresh();
                         $MB.n_success(r.msg);
-                    } else $MB.n_danger(r.msg, '.modal');
+                    } else $MB.n_danger(r.msg);
                 });
             }
         }
     });
 
     $("#dept-add .btn-close").click(function() {
-        $("#dept-add-modal-title").html('新增部门');
         closeModal();
     });
 
@@ -44,6 +43,7 @@ function closeModal() {
     $MB.closeAndRestModal("dept-add");
     validator.resetForm();
     $MB.refreshJsTree("deptTree", createDeptTree());
+    $("#dept-add-modal-title").html('新增部门');
 }
 
 function validateRule() {
@@ -60,10 +60,10 @@ function validateRule() {
                     dataType: "json",
                     data: {
                         deptName: function() {
-                            return $("input[name='deptName']").val();
+                            return $("input[name='deptName']").val().trim();
                         },
                         oldDeptName: function() {
-                            return $("input[name='oldDeptName']").val();
+                            return $("input[name='oldDeptName']").val().trim();
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package cc.mrbird.job.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -56,19 +57,24 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
 
 	@Override
 	public List<Job> findAllJobs(Job job) {
-		Example example = new Example(Job.class);
-		Criteria criteria = example.createCriteria();
-		if (StringUtils.isNotBlank(job.getBeanName())) {
-			criteria.andCondition("bean_name=", job.getBeanName());
+		try {
+			Example example = new Example(Job.class);
+			Criteria criteria = example.createCriteria();
+			if (StringUtils.isNotBlank(job.getBeanName())) {
+				criteria.andCondition("bean_name=", job.getBeanName());
+			}
+			if (StringUtils.isNotBlank(job.getMethodName())) {
+				criteria.andCondition("method_name=", job.getMethodName());
+			}
+			if (StringUtils.isNotBlank(job.getStatus())) {
+				criteria.andCondition("status=", Long.valueOf(job.getStatus()));
+			}
+			example.setOrderByClause("job_id");
+			return this.selectByExample(example);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return new ArrayList<Job>();
 		}
-		if (StringUtils.isNotBlank(job.getMethodName())) {
-			criteria.andCondition("method_name=", job.getMethodName());
-		}
-		if (StringUtils.isNotBlank(job.getStatus())) {
-			criteria.andCondition("status=", Long.valueOf(job.getStatus()));
-		}
-		example.setOrderByClause("job_id");
-		return this.selectByExample(example);
 	}
 
 	@Override

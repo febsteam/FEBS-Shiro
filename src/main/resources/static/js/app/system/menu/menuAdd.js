@@ -7,7 +7,6 @@ var $icon = $menuAddForm.find("input[name='icon']");
 var $icon_drop = $menuAddForm.find("div.icon-drop");
 
 $(function() {
-    $perms.parents(".row").hide();
     $icon_drop.hide();
     validateRule();
     createMenuTree();
@@ -18,12 +17,10 @@ $(function() {
             $menuName.parent().prev().text("菜单名称：");
             $url.val("").parents(".row").show();
             $icon.val("").parents(".row").show();
-            $perms.parents(".row").hide();
         } else {
             $menuName.parent().prev().text("按钮名称：");
             $url.parents(".row").hide();
             $icon.parents(".row").hide();
-            $perms.val("").parents(".row").show();
         }
     });
 
@@ -55,7 +52,7 @@ $(function() {
                         refresh();
                         closeModal();
                         $MB.n_success(r.msg);
-                    } else $MB.n_danger(r.msg, '.modal');
+                    } else $MB.n_danger(r.msg);
                 });
             }
             if (name == "update") {
@@ -64,14 +61,13 @@ $(function() {
                         refresh();
                         closeModal();
                         $MB.n_success(r.msg);
-                    } else $MB.n_danger(r.msg, '.modal');
+                    } else $MB.n_danger(r.msg);
                 });
             }
         }
     });
 
     $("#menu-add .btn-close").click(function() {
-        $("#menu-add-modal-title").html('新增菜单/按钮');
         $("input:radio[value='0']").trigger("click");
         closeModal();
     });
@@ -82,11 +78,11 @@ function closeModal() {
 	$menuName.parent().prev().text("菜单名称：");
     $url.val("").parents(".row").show();
     $icon.val("").parents(".row").show();
-    $perms.parents(".row").hide();
 	$("#menu-add-button").attr("name", "save");
     $MB.closeAndRestModal("menu-add");
     validator.resetForm();
     $MB.refreshJsTree("menuTree", createMenuTree());
+    $("#menu-add-modal-title").html('新增菜单/按钮');
 }
 
 function validateRule() {

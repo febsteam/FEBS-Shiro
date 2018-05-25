@@ -3,7 +3,7 @@
 <configuration  scan="true" scanPeriod="60 seconds" debug="false">
     <contextName>log</contextName>
     <property name="log.path" value="log" />
-    <property name="log.name" value="mrbird" />
+    <property name="log.name" value="febs" />
     <!--输出到控制台-->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

@@ -17,7 +17,7 @@
 	                        closeModal();
 	                        $MB.n_success(r.msg);
 	                        $MB.refreshTable("roleTable");
-	                    } else $MB.n_danger(r.msg, '.modal');
+	                    } else $MB.n_danger(r.msg);
 	                });
 	            }
 	            if (name == "update") {
@@ -26,14 +26,13 @@
 	                        closeModal();
 	                        $MB.n_success(r.msg);
 	                        $MB.refreshTable("roleTable");
-	                    } else $MB.n_danger(r.msg, '.modal');
+	                    } else $MB.n_danger(r.msg);
 	                });
 	            }
 	        }
 	    });
 
 	    $("#role-add .btn-close").click(function() {
-	        $("#role-add-modal-title").html('新增角色');
 	        closeModal();
 	    });
 
@@ -44,6 +43,7 @@
 	    validator.resetForm();
 	    $MB.resetJsTree("menuTree");
 	    $MB.closeAndRestModal("role-add");
+	    $("#role-add-modal-title").html('新增角色');
 	}
 
 	function validateRule() {
@@ -60,10 +60,10 @@
 	                    dataType: "json",
 	                    data: {
 	                        roleName: function() {
-	                            return $("input[name='roleName']").val();
+	                            return $("input[name='roleName']").val().trim();
 	                        },
 	                        oldRoleName: function() {
-	                            return $("input[name='oldRoleName']").val();
+	                            return $("input[name='oldRoleName']").val().trim();
 	                        }
 	                    }
 	                }

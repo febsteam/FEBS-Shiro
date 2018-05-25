@@ -7,8 +7,9 @@
 	        $(".page-loader").fadeOut()
 	    }, 500)
 	}), $(document).ready(function() {
-	    // 设置主题色
+		 // 设置主题色
 	    var theme_color = $MB.getThemeColor(theme);
+	    var opacity_color = $MB.getThemeRGBA(theme,0.1);
 	    var $head = $("head");
 	    $("body").attr("data-ma-theme", theme);
 	    $(".bg-" + theme).addClass("active").siblings().removeClass("active");
@@ -19,7 +20,9 @@
 	        .append("<style>.navigation__active > a:hover{color: " + theme_color + " !important;}</style>")
 	        .append("<style>.navigation__active{color: " + theme_color + ";}</style>")
 	        .append("<style>.fixed-table-pagination .pagination li.active a{ background:" + theme_color + ";border: 1px solid " + theme_color + "}</style>")
-	        .append("<style>.form-group__bar:before, .form-group__bar:after {background-color: " + theme_color + "}</style>");
+	        .append("<style>.form-group__bar:before, .form-group__bar:after {background-color: " + theme_color + "}</style>")
+	        .append("<style>.daterangepicker td.active, .daterangepicker td.active:hover,.end-date {background-color: "+ theme_color +" !important}</style>")
+	        .append("<style>.daterangepicker td.in-range {background-color:"+opacity_color+"}</style>");
 	}), $(document).ready(function() {
 	    function a(a) {
 	        a.requestFullscreen ? a.requestFullscreen() : a.mozRequestFullScreen ? a.mozRequestFullScreen() : a.webkitRequestFullscreen ? a.webkitRequestFullscreen() : a.msRequestFullscreen && a.msRequestFullscreen()

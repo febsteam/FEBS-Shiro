@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import cc.mrbird.common.annotation.ExportConfig;
 
@@ -51,6 +52,10 @@ public class SysLog implements Serializable {
 	@Column(name = "LOCATION")
 	@ExportConfig(value = "地点")
 	private String location;
+	
+	// 用于搜索条件中的时间字段
+	@Transient
+	private String timeField;
 
 	/**
 	 * @return ID
@@ -171,5 +176,14 @@ public class SysLog implements Serializable {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+
+	public String getTimeField() {
+		return timeField;
+	}
+
+	public void setTimeField(String timeField) {
+		this.timeField = timeField;
+	}
+	
 
 }

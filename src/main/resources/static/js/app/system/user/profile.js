@@ -23,7 +23,7 @@ $(function() {
                     $MB.n_success(r.msg);
                     refreshUserProfile();
                     $(".user__img").attr("src", ctx + target_src);
-                } else $MB.n_danger(r.msg, '.modal');
+                } else $MB.n_danger(r.msg);
             });
         });
     });
@@ -43,7 +43,7 @@ $(function() {
                     $("#update-profile .btn-close").trigger("click");
                     $MB.n_success(r.msg);
                     refreshUserProfile();
-                } else $MB.n_danger(r.msg, '.modal');
+                } else $MB.n_danger(r.msg);
             });
         }
     });

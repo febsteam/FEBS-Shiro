@@ -7,7 +7,7 @@ function initTreeTable() {
         id: 'menuId',
         code: 'menuId',
         url: ctx + 'menu/list',
-        expandAll: false,
+        expandAll: true,
         expandColumn: "2",
         ajaxParams: {
             menuName: $(".menu-table-form").find("input[name='menuName']").val().trim(),

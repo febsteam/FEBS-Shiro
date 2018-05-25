@@ -8,7 +8,7 @@
 	<version>1.0-snapshot</version>
 	<packaging>war</packaging>
 
-	<name>mrbird</name>
+	<name>febs</name>
 	<description>Authority Management System</description>
 
 	<parent>
@@ -113,7 +113,7 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.31</version>
         </dependency>
-        
+		
 		<!-- xss过滤 -->
 		<dependency>
 		    <groupId>org.jsoup</groupId>

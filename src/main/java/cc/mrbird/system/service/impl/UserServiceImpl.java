@@ -48,7 +48,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	}
 
 	public List<User> findUserWithDept(User user) {
-		return this.userMapper.findUserWithDept(user);
+		try {
+			return this.userMapper.findUserWithDept(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<User>();
+		}
 	}
 
 	@Override

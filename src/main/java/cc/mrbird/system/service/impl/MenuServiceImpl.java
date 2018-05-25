@@ -43,16 +43,21 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
 
 	@Override
 	public List<Menu> findAllMenus(Menu menu) {
-		Example example = new Example(Menu.class);
-		Criteria criteria = example.createCriteria();
-		if (StringUtils.isNotBlank(menu.getMenuName())) {
-			criteria.andCondition("menu_name=", menu.getMenuName());
+		try {
+			Example example = new Example(Menu.class);
+			Criteria criteria = example.createCriteria();
+			if (StringUtils.isNotBlank(menu.getMenuName())) {
+				criteria.andCondition("menu_name=", menu.getMenuName());
+			}
+			if (StringUtils.isNotBlank(menu.getType())) {
+				criteria.andCondition("type=", Long.valueOf(menu.getType()));
+			}
+			example.setOrderByClause("menu_id");
+			return this.selectByExample(example);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return new ArrayList<Menu>();
 		}
-		if (StringUtils.isNotBlank(menu.getType())) {
-			criteria.andCondition("type=", Long.valueOf(menu.getType()));
-		}
-		example.setOrderByClause("menu_id");
-		return this.selectByExample(example);
 	}
 
 	@Override
@@ -87,7 +92,7 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
 		Tree<Menu> t = TreeUtils.build(trees);
 		return t;
 	}
-	
+
 	@Override
 	public Tree<Menu> getUserMenu(String userName) {
 		List<Tree<Menu>> trees = new ArrayList<Tree<Menu>>();
