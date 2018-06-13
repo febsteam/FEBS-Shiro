@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     $('input').iCheck({
         checkboxClass: 'icheckbox_minimal-green',
@@ -6,10 +6,12 @@ $(document).ready(function() {
         increaseArea: '20%'
     });
 
-    var panelOne = $('.form-panel.two').height();
-        panelTwo = $('.form-panel.two')[0].scrollHeight;
+    var $formPanelTwo = $('.form-panel.two');
 
-   $('.form-panel.two').not('.form-panel.two.active').on('click', function(e) {
+    var panelOne = $formPanelTwo.height();
+    var panelTwo = $formPanelTwo[0].scrollHeight;
+
+    $formPanelTwo.not('.form-panel.two.active').on('click', function (e) {
         e.preventDefault();
 
         $('.form-toggle').addClass('visible');
@@ -20,7 +22,7 @@ $(document).ready(function() {
         }, 200);
     });
 
-    $('.form-toggle').on('click', function(e) {
+    $('.form-toggle').on('click', function (e) {
         e.preventDefault();
         $(this).removeClass('visible');
         $('.form-panel.one').removeClass('hidden');
@@ -38,25 +40,25 @@ function reloadCode() {
 }
 
 function login() {
-	var $loginButton = $("#loginButton");
+    var $loginButton = $("#loginButton");
     var username = $(".one input[name='username']").val().trim();
     var password = $(".one input[name='password']").val().trim();
     var code = $(".one input[name='code']").val().trim();
     var rememberMe = $(".one input[name='rememberme']").is(':checked');
-    if (username == "") {
+    if (username === "") {
         $MB.n_warning("请输入用户名！");
         return;
     }
-    if (password == "") {
+    if (password === "") {
         $MB.n_warning("请输入密码！");
         return;
     }
-    if (code == "") {
+    if (code === "") {
         $MB.n_warning("请输入验证码！");
         return;
     }
     $loginButton.html("").append("<div class='login-loder'><div class='line-scale'><div></div><div></div><div></div><div></div><div></div></div></div>");
-    
+
     $.ajax({
         type: "post",
         url: ctx + "login",
@@ -67,11 +69,11 @@ function login() {
             "rememberMe": rememberMe
         },
         dataType: "json",
-        success: function(r) {
-            if (r.code == 0) {
+        success: function (r) {
+            if (r.code === 0) {
                 location.href = ctx + 'index';
             } else {
-        		if (r.msg == '验证码错误！') reloadCode();
+                if (r.msg === '验证码错误！') reloadCode();
                 $MB.n_warning(r.msg);
                 $loginButton.html("登录");
             }
@@ -83,7 +85,7 @@ function regist() {
     var username = $(".two input[name='username']").val().trim();
     var password = $(".two input[name='password']").val().trim();
     var cpassword = $(".two input[name='cpassword']").val().trim();
-    if (username == "") {
+    if (username === "") {
         $MB.n_warning("用户名不能为空！");
         return;
     } else if (username.length > 10) {
@@ -93,15 +95,15 @@ function regist() {
         $MB.n_warning("用户名长度不能少于3个字符！");
         return;
     }
-    if (password == "") {
+    if (password === "") {
         $MB.n_warning("密码不能为空！");
         return;
     }
-    if (cpassword == "") {
+    if (cpassword === "") {
         $MB.n_warning("请再次输入密码！");
         return;
     }
-    if (cpassword != password) {
+    if (cpassword !== password) {
         $MB.n_warning("两次密码输入不一致！");
         return;
     }
@@ -113,8 +115,8 @@ function regist() {
             "password": password,
         },
         dataType: "json",
-        success: function(r) {
-            if (r.code == 0) {
+        success: function (r) {
+            if (r.code === 0) {
                 $MB.n_success("注册成功，请登录");
                 $(".two input[name='username']").val("");
                 $(".two input[name='password']").val("");
@@ -127,11 +129,11 @@ function regist() {
     });
 }
 
-document.onkeyup = function(e) {
+document.onkeyup = function (e) {
     if (window.event)
         e = window.event;
     var code = e.charCode || e.keyCode;
-    if (code == 13) {
+    if (code === 13) {
         login();
     }
-}
+};

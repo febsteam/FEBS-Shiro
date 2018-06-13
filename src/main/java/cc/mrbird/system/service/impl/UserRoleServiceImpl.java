@@ -16,14 +16,14 @@ import cc.mrbird.system.service.UserRoleService;
 public class UserRoleServiceImpl extends BaseService<UserRole> implements UserRoleService {
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void deleteUserRolesByRoleId(String roleIds) {
 		List<String> list = Arrays.asList(roleIds.split(","));
 		this.batchDelete(list, "roleId", UserRole.class);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void deleteUserRolesByUserId(String userIds) {
 		List<String> list = Arrays.asList(userIds.split(","));
 		this.batchDelete(list, "userId", UserRole.class);

@@ -19,16 +19,16 @@ function search() {
     var areaId = $('#areaId').text();
     if (areaId.length) {
         $.post(ctx + "weather/query", { "areaId": areaId }, function(r) {
-            if (r.code == 0) {
+            if (r.code === 0) {
                 var data = JSON.parse(r.msg);
                 if (data.code == 200) {
                     var countyName = data.value[0].city;
                     var weathers = data.value[0].weathers;
-                    var day_c = new Array();
-                    var night_c = new Array();
-                    var dateArr = new Array();
+                    var day_c = [];
+                    var night_c = [];
+                    var dateArr = [];
                     for (var i = 0; i < weathers.length; i++) {
-                        if (i == weathers.length - 1) {
+                        if (i === weathers.length - 1) {
                             day_c.unshift(parseFloat(weathers[i].temp_day_c));
                             night_c.unshift(parseFloat(weathers[i].temp_night_c));
                             dateArr.unshift(weathers[i].date.split("-")[1] + "-" + weathers[i].date.split("-")[2]);
@@ -40,10 +40,10 @@ function search() {
                     }
                     var weather3HoursDetailsInfos = data.value[0].weatherDetailsInfo.weather3HoursDetailsInfos;
                     var publishTime = data.value[0].weatherDetailsInfo.publishTime;
-                    var timeArr = new Array();
-                    var hours_c = new Array();
+                    var timeArr = [];
+                    var hours_c = [];
                     for (var i = 0; i < weather3HoursDetailsInfos.length; i++) {
-                        var time = weather3HoursDetailsInfos[i].endTime.split(" ")[1].split(":")
+                        var time = weather3HoursDetailsInfos[i].endTime.split(" ")[1].split(":");
                         hours_c.push(parseFloat(weather3HoursDetailsInfos[i].highestTemperature));
                         timeArr.push(time[0] + ":" + time[1]);
                     }
@@ -145,11 +145,11 @@ function search() {
                         '<div class="card-block">' +
                         '<ul class="icon-list">' +
                         '<li>天气：' + realtime.weather + '</li>' +
-                        '<li>风向：' + realtime.wD + '</li>' +
-                        '<li>风力大小：' + realtime.wS + '</li>' +
+                        '<li>风向：' + realtime.wd + '</li>' +
+                        '<li>风力大小：' + realtime.ws + '</li>' +
                         '<li>温度：' + realtime.temp + '℃</li>' +
                         '<li>体感温度：' + realtime.sendibleTemp + '℃</li>' +
-                        '<li>空气湿度百分比：' + realtime.sD + '%</li>' +
+                        '<li>空气湿度百分比：' + realtime.sd + '%</li>' +
                         '<li>更新时间：' + realtime.time + '</li>' +
                         '</ul>' +
                         '</div>';

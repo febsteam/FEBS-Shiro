@@ -54,7 +54,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
 			return this.selectByExample(example);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ArrayList<Role>();
+			return new ArrayList<>();
 		}
 	}
 
@@ -62,7 +62,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
 	public Role findByName(String roleName) {
 		Example example = new Example(Role.class);
 		example.createCriteria().andCondition("lower(role_name)=", roleName.toLowerCase());
-		List<Role> list = this.roleMapper.selectByExample(example);
+		List<Role> list = this.selectByExample(example);
 		if (list.size() == 0) {
 			return null;
 		} else {
@@ -71,11 +71,15 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void addRole(Role role, Long[] menuIds) {
 		role.setRoleId(this.getSequence(Role.SEQ));
 		role.setCreateTime(new Date());
 		this.save(role);
+		setRoleMenus(role, menuIds);
+	}
+
+	private void setRoleMenus(Role role, Long[] menuIds) {
 		for (Long menuId : menuIds) {
 			RoleMenu rm = new RoleMenu();
 			rm.setMenuId(menuId);
@@ -85,7 +89,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void deleteRoles(String roleIds) {
 		List<String> list = Arrays.asList(roleIds.split(","));
 		this.batchDelete(list, "roleId", Role.class);
@@ -98,7 +102,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
 	@Override
 	public RoleWithMenu findRoleWithMenus(Long roleId) {
 		List<RoleWithMenu> list = this.roleMapper.findById(roleId);
-		List<Long> menuList = new ArrayList<Long>();
+		List<Long> menuList = new ArrayList<>();
 		for (RoleWithMenu rwm : list) {
 			menuList.add(rwm.getMenuId());
 		}
@@ -111,19 +115,14 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void updateRole(Role role, Long[] menuIds) {
 		role.setModifyTime(new Date());
-		this.roleMapper.updateByPrimaryKeySelective(role);
+		this.updateNotNull(role);
 		Example example = new Example(RoleMenu.class);
 		example.createCriteria().andCondition("role_id=", role.getRoleId());
 		this.roleMenuMapper.deleteByExample(example);
-		for (Long menuId : menuIds) {
-			RoleMenu rm = new RoleMenu();
-			rm.setMenuId(menuId);
-			rm.setRoleId(role.getRoleId());
-			this.roleMenuMapper.insert(rm);
-		}
+		setRoleMenus(role, menuIds);
 	}
 
 }

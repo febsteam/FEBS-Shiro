@@ -13,9 +13,9 @@ import cc.mrbird.common.util.JsoupUtil;
  */
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
-	HttpServletRequest orgRequest = null;
+	private HttpServletRequest orgRequest;
 
-	private boolean isIncludeRichText = false;
+	private boolean isIncludeRichText;
 
 	public XssHttpServletRequestWrapper(HttpServletRequest request, boolean isIncludeRichText) {
 		super(request);
@@ -70,7 +70,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	/**
 	 * 获取原始的request
 	 */
-	public HttpServletRequest getOrgRequest() {
+	private HttpServletRequest getOrgRequest() {
 		return orgRequest;
 	}
 

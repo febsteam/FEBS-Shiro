@@ -39,12 +39,12 @@ public class LogServiceImpl extends BaseService<SysLog> implements LogService {
 			return this.selectByExample(example);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ArrayList<SysLog>();
+			return new ArrayList<>();
 		}
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void deleteLogs(String logIds) {
 		List<String> list = Arrays.asList(logIds.split(","));
 		this.batchDelete(list, "id", SysLog.class);

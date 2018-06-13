@@ -131,9 +131,7 @@ public class MenuController extends BaseController {
 			return true;
 		}
 		Menu result = this.menuService.findByNameAndType(menuName, type);
-		if (result != null)
-			return false;
-		return true;
+		return result == null;
 	}
 
 	@Log("新增菜单/按钮")
@@ -141,7 +139,7 @@ public class MenuController extends BaseController {
 	@RequestMapping("menu/add")
 	@ResponseBody
 	public ResponseBo addMenu(Menu menu) {
-		String name = "";
+		String name;
 		if (Menu.TYPE_MENU.equals(menu.getType()))
 			name = "菜单";
 		else
@@ -174,7 +172,7 @@ public class MenuController extends BaseController {
 	@RequestMapping("menu/update")
 	@ResponseBody
 	public ResponseBo updateMenu(Menu menu) {
-		String name = "";
+		String name;
 		if (Menu.TYPE_MENU.equals(menu.getType()))
 			name = "菜单";
 		else

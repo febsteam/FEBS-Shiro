@@ -10,8 +10,8 @@ function updateJob() {
         return;
     }
     var jobId = selected[0].jobId;
-    $.post(ctx + "job/getJob", { "jobId": jobId }, function(r) {
-        if (r.code == 0) {
+    $.post(ctx + "job/getJob", {"jobId": jobId}, function (r) {
+        if (r.code === 0) {
             var $form = $('#job-add');
             $form.modal();
             var job = r.msg;

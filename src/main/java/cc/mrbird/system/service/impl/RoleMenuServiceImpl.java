@@ -16,14 +16,14 @@ import cc.mrbird.system.service.RoleMenuServie;
 public class RoleMenuServiceImpl extends BaseService<RoleMenu> implements RoleMenuServie {
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void deleteRoleMenusByRoleId(String roleIds) {
 		List<String> list = Arrays.asList(roleIds.split(","));
 		this.batchDelete(list, "roleId", RoleMenu.class);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void deleteRoleMenusByMenuId(String menuIds) {
 		List<String> list = Arrays.asList(menuIds.split(","));
 		this.batchDelete(list, "menuId", RoleMenu.class);

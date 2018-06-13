@@ -95,9 +95,7 @@ public class DeptController {
 			return true;
 		}
 		Dept result = this.deptService.findByName(deptName);
-		if (result != null)
-			return false;
-		return true;
+		return result == null;
 	}
 
 	@Log("新增部门 ")

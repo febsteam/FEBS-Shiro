@@ -28,7 +28,7 @@ public class ScheduleJob extends QuartzJobBean {
 	private ExecutorService service = Executors.newSingleThreadExecutor();
 
 	@Override
-	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+	protected void executeInternal(JobExecutionContext context) {
 		Job scheduleJob = (Job) context.getMergedJobDataMap().get(Job.JOB_PARAM_KEY);
 
 		// 获取spring bean

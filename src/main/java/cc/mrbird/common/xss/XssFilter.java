@@ -1,24 +1,18 @@
 package cc.mrbird.common.xss;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Xss攻击拦截器
@@ -33,7 +27,7 @@ public class XssFilter implements Filter {
 	public List<String> excludes = new ArrayList<String>();
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
+	public void init(FilterConfig filterConfig) {
 		logger.info("------------ xss filter init ------------");
 		String isIncludeRichText = filterConfig.getInitParameter("isIncludeRichText");
 		if (StringUtils.isNotBlank(isIncludeRichText)) {
@@ -42,9 +36,7 @@ public class XssFilter implements Filter {
 		String temp = filterConfig.getInitParameter("excludes");
 		if (temp != null) {
 			String[] url = temp.split(",");
-			for (int i = 0; url != null && i < url.length; i++) {
-				excludes.add(url[i]);
-			}
+			excludes.addAll(Arrays.asList(url));
 		}
 	}
 
@@ -52,8 +44,7 @@ public class XssFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse resp = (HttpServletResponse) response;
-		if (handleExcludeURL(req, resp)) {
+		if (handleExcludeURL(req)) {
 			chain.doFilter(request, response);
 			return;
 		}
@@ -67,7 +58,7 @@ public class XssFilter implements Filter {
 
 	}
 
-	private boolean handleExcludeURL(HttpServletRequest request, HttpServletResponse response) {
+	private boolean handleExcludeURL(HttpServletRequest request) {
 		if (excludes == null || excludes.isEmpty()) {
 			return false;
 		}

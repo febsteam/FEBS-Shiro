@@ -1,17 +1,5 @@
 package cc.mrbird.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import cc.mrbird.common.service.impl.BaseService;
 import cc.mrbird.common.util.MD5Utils;
 import cc.mrbird.system.dao.UserMapper;
@@ -21,7 +9,18 @@ import cc.mrbird.system.domain.UserRole;
 import cc.mrbird.system.domain.UserWithRole;
 import cc.mrbird.system.service.UserRoleService;
 import cc.mrbird.system.service.UserService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 @Service("userService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
@@ -48,6 +47,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		}
 	}
 
+	@Override
 	public List<User> findUserWithDept(User user) {
 		try {
 			if(StringUtils.isNotBlank(user.getUsername())){
@@ -56,12 +56,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 			return this.userMapper.findUserWithDept(user);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ArrayList<User>();
+			return new ArrayList<>();
 		}
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void registUser(User user) {
 		user.setUserId(this.getSequence(User.SEQ));
 		user.setCrateTime(new Date());
@@ -72,12 +72,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		this.save(user);
 		UserRole ur = new UserRole();
 		ur.setUserId(user.getUserId());
-		ur.setRoleId(3l);
+		ur.setRoleId(3L);
 		this.userRoleMapper.insert(ur);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void updateTheme(String theme, String userName) {
 		Example example = new Example(User.class);
 		example.createCriteria().andCondition("username=", userName);
@@ -87,7 +87,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void addUser(User user, Long[] roles) {
 		user.setUserId(this.getSequence(User.SEQ));
 		user.setCrateTime(new Date());
@@ -95,6 +95,10 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		user.setAvatar(User.DEFAULT_AVATAR);
 		user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
 		this.save(user);
+		setUserRoles(user, roles);
+	}
+
+	private void setUserRoles(User user, Long[] roles) {
 		for (Long roleId : roles) {
 			UserRole ur = new UserRole();
 			ur.setUserId(user.getUserId());
@@ -104,7 +108,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void updateUser(User user, Long[] roles) {
 		user.setPassword(null);
 		user.setUsername(null);
@@ -113,16 +117,11 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		Example example = new Example(UserRole.class);
 		example.createCriteria().andCondition("user_id=", user.getUserId());
 		this.userRoleMapper.deleteByExample(example);
-		for (Long roleId : roles) {
-			UserRole ur = new UserRole();
-			ur.setUserId(user.getUserId());
-			ur.setRoleId(roleId);
-			this.userRoleMapper.insert(ur);
-		}
+		setUserRoles(user, roles);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void deleteUsers(String userIds) {
 		List<String> list = Arrays.asList(userIds.split(","));
 		this.batchDelete(list, "userId", User.class);
@@ -131,7 +130,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void updateLoginTime(String userName) {
 		Example example = new Example(User.class);
 		example.createCriteria().andCondition("lower(username)=", userName.toLowerCase());
@@ -141,7 +140,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void updatePassword(String password) {
 		User user = (User) SecurityUtils.getSubject().getPrincipal();
 		Example example = new Example(User.class);
@@ -154,7 +153,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@Override
 	public UserWithRole findById(Long userId) {
 		List<UserWithRole> list = this.userMapper.findUserWithRole(userId);
-		List<Long> roleList = new ArrayList<Long>();
+		List<Long> roleList = new ArrayList<>();
 		for (UserWithRole uwr : list) {
 			roleList.add(uwr.getRoleId());
 		}
@@ -172,12 +171,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void updateUserProfile(User user) {
 		user.setUsername(null);
 		user.setPassword(null);
 		if (user.getDeptId() == null)
-			user.setDeptId(0l);
+			user.setDeptId(0L);
 		this.updateNotNull(user);
 	}
 

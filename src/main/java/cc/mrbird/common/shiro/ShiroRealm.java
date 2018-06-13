@@ -42,14 +42,14 @@ public class ShiroRealm extends AuthorizingRealm {
 		SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
 
 		List<Role> roleList = this.roleService.findUserRole(userName);
-		Set<String> roleSet = new HashSet<String>();
+		Set<String> roleSet = new HashSet<>();
 		for (Role r : roleList) {
 			roleSet.add(r.getRoleName());
 		}
 		simpleAuthorizationInfo.setRoles(roleSet);
 
 		List<Menu> permissionList = this.menuService.findUserPermissions(userName);
-		Set<String> permissionSet = new HashSet<String>();
+		Set<String> permissionSet = new HashSet<>();
 		for (Menu m : permissionList) {
 			permissionSet.add(m.getPerms());
 		}
@@ -73,8 +73,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		if ("0".equals(user.getStatus())) {
 			throw new LockedAccountException("账号已被锁定,请联系管理员！");
 		}
-		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
-		return info;
+		return new SimpleAuthenticationInfo(user, password, getName());
 	}
 
 }

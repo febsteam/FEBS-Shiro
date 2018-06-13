@@ -49,7 +49,7 @@ public class SessionServiceImpl implements SessionService {
 			userOnline.setStartTimestamp(session.getStartTimestamp());
 			userOnline.setLastAccessTime(session.getLastAccessTime());
 			Long timeout = session.getTimeout();
-			if (timeout == 0l) {
+			if (timeout == 0L) {
 				userOnline.setStatus("0");
 			} else {
 				userOnline.setStatus("1");

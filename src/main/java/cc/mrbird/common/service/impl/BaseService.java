@@ -40,19 +40,19 @@ public abstract class BaseService<T> implements IService<T> {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public int save(T entity) {
 		return mapper.insert(entity);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public int delete(Object key) {
 		return mapper.deleteByPrimaryKey(key);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public int batchDelete(List<String> list, String property, Class<T> clazz) {
 		Example example = new Example(clazz);
 		example.createCriteria().andIn(property, list);
@@ -60,13 +60,13 @@ public abstract class BaseService<T> implements IService<T> {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public int updateAll(T entity) {
 		return mapper.updateByPrimaryKey(entity);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public int updateNotNull(T entity) {
 		return mapper.updateByPrimaryKeySelective(entity);
 	}

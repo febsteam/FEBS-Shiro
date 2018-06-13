@@ -24,8 +24,8 @@ public class ArticleController {
 	@RequestMapping("article/query")
 	@ResponseBody
 	public ResponseBo queryArticle(String date) {
-		String param = "";
-		String data = "";
+		String param;
+		String data;
 		try {
 			if (StringUtils.isNotBlank(date)) {
 				param = "dev=1&date=" + date;

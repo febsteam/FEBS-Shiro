@@ -1,19 +1,20 @@
-$(function() {
+$(function () {
+    var $jobLogTableForm = $(".jobLog-table-form");
     var settings = {
         url: ctx + "jobLog/list",
         pageSize: 10,
-        queryParams: function(params) {
+        queryParams: function (params) {
             return {
                 pageSize: params.limit,
                 pageNum: params.offset / params.limit + 1,
-                beanName: $(".jobLog-table-form").find("input[name='beanName']").val().trim(),
-                methodName: $(".jobLog-table-form").find("input[name='methodName']").val().trim(),
-                status: $(".jobLog-table-form").find("select[name='status']").val()
+                beanName: $jobLogTableForm.find("input[name='beanName']").val().trim(),
+                methodName: $jobLogTableForm.find("input[name='methodName']").val().trim(),
+                status: $jobLogTableForm.find("select[name='status']").val()
             };
         },
         columns: [{
-                checkbox: true
-            },
+            checkbox: true
+        },
             {
                 field: 'jobId',
                 title: '任务ID'
@@ -29,9 +30,9 @@ $(function() {
             }, {
                 field: 'status',
                 title: '状态',
-                formatter: function(value, row, index) {
-                    if (value == '1') return '<span class="badge badge-danger">失败</span>';
-                    if (value == '0') return '<span class="badge badge-success">成功</span>';
+                formatter: function (value, row, index) {
+                    if (value === '1') return '<span class="badge badge-danger">失败</span>';
+                    if (value === '0') return '<span class="badge badge-success">成功</span>';
                 }
             }, {
                 field: 'error',
@@ -44,7 +45,8 @@ $(function() {
                 title: '创建时间'
             }
         ]
-    }
+    };
+
     $MB.initTable('jobLogTable', settings);
 });
 
@@ -67,15 +69,15 @@ function deleteJobLog() {
     var ids = "";
     for (var i = 0; i < selected_length; i++) {
         ids += selected[i].logId;
-        if (i != (selected_length - 1)) ids += ",";
+        if (i !== (selected_length - 1)) ids += ",";
     }
 
     $MB.confirm({
         text: "确定删除选中的调度日志？",
         confirmButtonText: "确定删除"
-    }, function() {
-        $.post(ctx + 'jobLog/delete', { "ids": ids }, function(r) {
-            if (r.code == 0) {
+    }, function () {
+        $.post(ctx + 'jobLog/delete', {"ids": ids}, function (r) {
+            if (r.code === 0) {
                 $MB.n_success(r.msg);
                 refresh();
             } else {
@@ -86,22 +88,22 @@ function deleteJobLog() {
 }
 
 
-function exportJobLogExcel(){
-	$.post(ctx+"jobLog/excel",$(".jobLog-table-form").serialize(),function(r){
-		if (r.code == 0) {
-			window.location.href = "common/download?fileName=" + r.msg + "&delete=" + true;
-		} else {
-			$MB.n_warning(r.msg);
-		}
-	});
+function exportJobLogExcel() {
+    $.post(ctx + "jobLog/excel", $(".jobLog-table-form").serialize(), function (r) {
+        if (r.code === 0) {
+            window.location.href = "common/download?fileName=" + r.msg + "&delete=" + true;
+        } else {
+            $MB.n_warning(r.msg);
+        }
+    });
 }
 
-function exportJobLogCsv(){
-	$.post(ctx+"jobLog/csv",$(".jobLog-table-form").serialize(),function(r){
-		if (r.code == 0) {
-			window.location.href = "common/download?fileName=" + r.msg + "&delete=" + true;
-		} else {
-			$MB.n_warning(r.msg);
-		}
-	});
+function exportJobLogCsv() {
+    $.post(ctx + "jobLog/csv", $(".jobLog-table-form").serialize(), function (r) {
+        if (r.code === 0) {
+            window.location.href = "common/download?fileName=" + r.msg + "&delete=" + true;
+        } else {
+            $MB.n_warning(r.msg);
+        }
+    });
 }

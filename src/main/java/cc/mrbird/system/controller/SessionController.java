@@ -33,7 +33,7 @@ public class SessionController {
 	@RequestMapping("session/list")
 	public Map<String, Object> list() {
 		List<UserOnline> list = sessionService.list();
-		Map<String, Object> rspData = new HashMap<String, Object>();
+		Map<String, Object> rspData = new HashMap<>();
 		rspData.put("rows", list);
 		rspData.put("total", list.size());
 		return rspData;

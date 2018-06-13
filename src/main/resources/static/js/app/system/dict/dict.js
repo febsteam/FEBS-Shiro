@@ -1,4 +1,5 @@
 $(function() {
+    var $dictTableForm = $(".dict-table-form");
     var settings = {
         url: ctx + "dict/list",
         pageSize: 10,
@@ -6,10 +7,10 @@ $(function() {
             return {
                 pageSize: params.limit,
                 pageNum: params.offset / params.limit + 1,
-                key: $(".dict-table-form").find("input[name='key']").val().trim(),
-                value: $(".dict-table-form").find("input[name='value']").val().trim(),
-                tableName: $(".dict-table-form").find("input[name='tableName']").val().trim(),
-                fieldName: $(".dict-table-form").find("input[name='fieldName']").val().trim(),
+                keyy: $dictTableForm.find("input[name='key']").val().trim(),
+                valuee: $dictTableForm.find("input[name='value']").val().trim(),
+                tableName: $dictTableForm.find("input[name='tableName']").val().trim(),
+                fieldName: $dictTableForm.find("input[name='fieldName']").val().trim()
             };
         },
         columns: [{
@@ -20,20 +21,21 @@ $(function() {
                 title: '字典ID',
                 width: 150
             }, {
-                field: 'key',
+                field: 'keyy',
                 title: '键'
             }, {
-                field: 'value',
+                field: 'valuee',
                 title: '值'
             }, {
                 field: 'tableName',
-                title: '表名',
+                title: '表名'
             }, {
                 field: 'fieldName',
-                title: '列名'
+                title: '字段名'
             }
         ]
-    }
+    };
+
     $MB.initTable('dictTable', settings);
 });
 
@@ -43,7 +45,7 @@ function search() {
 
 function refresh() {
     $(".dict-table-form")[0].reset();
-    $MB.refreshTable('dictTable');
+    search();
 }
 
 function deleteDicts() {
@@ -56,15 +58,14 @@ function deleteDicts() {
     var ids = "";
     for (var i = 0; i < selected_length; i++) {
         ids += selected[i].dictId;
-        if (i != (selected_length - 1)) ids += ",";
+        if (i !== (selected_length - 1)) ids += ",";
     }
-
     $MB.confirm({
         text: "确定删除选中的字典？",
         confirmButtonText: "确定删除"
     }, function() {
         $.post(ctx + 'dict/delete', { "ids": ids }, function(r) {
-            if (r.code == 0) {
+            if (r.code === 0) {
                 $MB.n_success(r.msg);
                 refresh();
             } else {
@@ -76,7 +77,7 @@ function deleteDicts() {
 
 function exportDictExcel(){
 	$.post(ctx+"dict/excel",$(".dict-table-form").serialize(),function(r){
-		if (r.code == 0) {
+		if (r.code === 0) {
 			window.location.href = "common/download?fileName=" + r.msg + "&delete=" + true;
 		} else {
 			$MB.n_warning(r.msg);
@@ -86,7 +87,7 @@ function exportDictExcel(){
 
 function exportDictCsv(){
 	$.post(ctx+"dict/csv",$(".dict-table-form").serialize(),function(r){
-		if (r.code == 0) {
+		if (r.code === 0) {
 			window.location.href = "common/download?fileName=" + r.msg + "&delete=" + true;
 		} else {
 			$MB.n_warning(r.msg);

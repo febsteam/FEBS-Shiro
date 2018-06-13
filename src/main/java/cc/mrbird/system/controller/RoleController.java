@@ -39,7 +39,7 @@ public class RoleController extends BaseController {
 	public Map<String, Object> roleList(QueryRequest request, Role role) {
 		PageHelper.startPage(request.getPageNum(), request.getPageSize());
 		List<Role> list = this.roleService.findAllRole(role);
-		PageInfo<Role> pageInfo = new PageInfo<Role>(list);
+		PageInfo<Role> pageInfo = new PageInfo<>(list);
 		return getDataTable(pageInfo);
 	}
 	
@@ -86,9 +86,7 @@ public class RoleController extends BaseController {
 			return true;
 		}
 		Role result = this.roleService.findByName(roleName);
-		if (result != null)
-			return false;
-		return true;
+		return result == null;
 	}
 
 	@Log("新增角色")

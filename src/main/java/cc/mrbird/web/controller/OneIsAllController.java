@@ -14,6 +14,8 @@ import cc.mrbird.common.util.HttpUtils;
 import cc.mrbird.common.util.UrlUtils;
 import cc.mrbird.web.domain.IdList;
 
+import java.util.Objects;
+
 @Controller
 public class OneIsAllController extends BaseController {
 
@@ -44,7 +46,7 @@ public class OneIsAllController extends BaseController {
 	@ResponseBody
 	public ResponseBo getOneList() {
 		try {
-			Long id = getIdList().getData()[0];
+			Long id = Objects.requireNonNull(getIdList()).getData()[0];
 			String data = HttpUtils.sendGet(UrlUtils.ONE_LIST_URL + id + "/0", STATIC_URL);
 			return ResponseBo.ok(data);
 		} catch (Exception e) {
@@ -57,7 +59,7 @@ public class OneIsAllController extends BaseController {
 	@ResponseBody
 	public ResponseBo getReadingList() {
 		try {
-			Long id = getIdList().getData()[0];
+			Long id = Objects.requireNonNull(getIdList()).getData()[0];
 			String data = HttpUtils.sendGet(UrlUtils.ONE_LIST_URL + id + "/0", STATIC_URL);
 			return ResponseBo.ok(data);
 		} catch (Exception e) {

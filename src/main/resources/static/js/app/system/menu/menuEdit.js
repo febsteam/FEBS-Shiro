@@ -10,9 +10,10 @@ function updateMenu() {
         return;
     }
     var menuId = selected[0].id;
-    $.post(ctx + "menu/getMenu", { "menuId": menuId }, function(r) {
-        if (r.code == 0) {
+    $.post(ctx + "menu/getMenu", {"menuId": menuId}, function (r) {
+        if (r.code === 0) {
             var $form = $('#menu-add');
+            var $menuTree = $('#menuTree');
             $form.modal();
             var menu = r.msg;
             $("#menu-add-modal-title").html('修改菜单/按钮');
@@ -23,8 +24,8 @@ function updateMenu() {
             $form.find("input[name='icon']").val(menu.icon);
             $form.find("input[name='url']").val(menu.url);
             $form.find("input[name='perms']").val(menu.perms);
-            $('#menuTree').jstree('select_node', menu.parentId, true);
-            $('#menuTree').jstree('disable_node', menu.menuId);
+            $menuTree.jstree('select_node', menu.parentId, true);
+            $menuTree.jstree('disable_node', menu.menuId);
             $("#menu-add-button").attr("name", "update");
         } else {
             $MB.n_danger(r.msg);

@@ -29,6 +29,8 @@ public class UserController extends BaseController {
 	@Autowired
 	private UserService userService;
 
+	private static final String ON = "on";
+
 	@Log("获取用户信息")
 	@RequestMapping("user")
 	@RequiresPermissions("user:list")
@@ -45,9 +47,7 @@ public class UserController extends BaseController {
 			return true;
 		}
 		User result = this.userService.findByName(username);
-		if (result != null)
-			return false;
-		return true;
+		return result == null;
 	}
 
 	@RequestMapping("user/getUser")
@@ -67,7 +67,7 @@ public class UserController extends BaseController {
 	public Map<String, Object> userList(QueryRequest request, User user) {
 		PageHelper.startPage(request.getPageNum(), request.getPageSize());
 		List<User> list = this.userService.findUserWithDept(user);
-		PageInfo<User> pageInfo = new PageInfo<User>(list);
+		PageInfo<User> pageInfo = new PageInfo<>(list);
 		return getDataTable(pageInfo);
 	}
 
@@ -130,7 +130,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public ResponseBo addUser(User user, Long[] roles) {
 		try {
-			if ("on".equalsIgnoreCase(user.getStatus()))
+			if (ON.equalsIgnoreCase(user.getStatus()))
 				user.setStatus("1");
 			else
 				user.setStatus("0");
@@ -148,7 +148,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public ResponseBo updateUser(User user, Long[] rolesSelect) {
 		try {
-			if ("on".equalsIgnoreCase(user.getStatus()))
+			if (ON.equalsIgnoreCase(user.getStatus()))
 				user.setStatus("1");
 			else
 				user.setStatus("0");
@@ -179,9 +179,7 @@ public class UserController extends BaseController {
 	public boolean checkPassword(String password) {
 		User user = getCurrentUser();
 		String encrypt = MD5Utils.encrypt(user.getUsername().toLowerCase(), password);
-		if (user.getPassword().equals(encrypt))
-			return true;
-		return false;
+		return user.getPassword().equals(encrypt);
 	}
 
 	@RequestMapping("user/updatePassword")
@@ -201,9 +199,9 @@ public class UserController extends BaseController {
 		User user = super.getCurrentUser();
 		user = this.userService.findUserProfile(user);
 		String ssex = user.getSsex();
-		if ("0".equals(ssex)) {
+		if (User.SEX_MALE.equals(ssex)) {
 			user.setSsex("性别：男");
-		} else if ("1".equals(ssex)) {
+		} else if (User.SEX_FEMALE.equals(ssex)) {
 			user.setSsex("性别：女");
 		} else {
 			user.setSsex("性别：保密");

@@ -77,18 +77,17 @@ public class ShiroConfig {
     }
 	
 	@Bean  
-    public ShiroRealm shiroRealm(){  
-       ShiroRealm shiroRealm = new ShiroRealm();  
-       return shiroRealm;  
+    public ShiroRealm shiroRealm(){
+		return new ShiroRealm();
     }  
 	
-	public SimpleCookie rememberMeCookie() {
+	private SimpleCookie rememberMeCookie() {
 		SimpleCookie cookie = new SimpleCookie("rememberMe");
 		cookie.setMaxAge(86400);
 		return cookie;
 	}
 	
-	public CookieRememberMeManager rememberMeManager() {
+	private CookieRememberMeManager rememberMeManager() {
 		CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
 		cookieRememberMeManager.setCookie(rememberMeCookie());
 		cookieRememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));
@@ -117,14 +116,13 @@ public class ShiroConfig {
     
 	@Bean
 	public SessionDAO sessionDAO() {
-		MemorySessionDAO sessionDAO = new MemorySessionDAO();
-		return sessionDAO;
+		return new MemorySessionDAO();
 	}
 
 	@Bean
 	public SessionManager sessionManager() {
 		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-		Collection<SessionListener> listeners = new ArrayList<SessionListener>();
+		Collection<SessionListener> listeners = new ArrayList<>();
 		listeners.add(new ShiroSessionListener());
 		sessionManager.setSessionListeners(listeners);
 		sessionManager.setSessionDAO(sessionDAO());

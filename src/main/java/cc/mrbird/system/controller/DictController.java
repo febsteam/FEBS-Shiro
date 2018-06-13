@@ -38,7 +38,7 @@ public class DictController extends BaseController {
 	public Map<String, Object> dictList(QueryRequest request, Dict dict) {
 		PageHelper.startPage(request.getPageNum(), request.getPageSize());
 		List<Dict> list = this.dictService.findAllDicts(dict);
-		PageInfo<Dict> pageInfo = new PageInfo<Dict>(list);
+		PageInfo<Dict> pageInfo = new PageInfo<>(list);
 		return getDataTable(pageInfo);
 	}
 

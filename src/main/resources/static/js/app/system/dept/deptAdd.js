@@ -1,28 +1,28 @@
 var validator;
 var $deptAddForm = $("#dept-add-form");
 
-$(function() {
+$(function () {
     validateRule();
     createDeptTree();
 
-    $("#dept-add .btn-save").click(function() {
+    $("#dept-add .btn-save").click(function () {
         var name = $(this).attr("name");
         getDept();
         validator = $deptAddForm.validate();
         var flag = validator.form();
         if (flag) {
-            if (name == "save") {
-                $.post(ctx + "dept/add", $deptAddForm.serialize(), function(r) {
-                    if (r.code == 0) {
+            if (name === "save") {
+                $.post(ctx + "dept/add", $deptAddForm.serialize(), function (r) {
+                    if (r.code === 0) {
                         closeModal();
                         refresh();
                         $MB.n_success(r.msg);
                     } else $MB.n_danger(r.msg);
                 });
             }
-            if (name == "update") {
-                $.post(ctx + "dept/update", $deptAddForm.serialize(), function(r) {
-                    if (r.code == 0) {
+            if (name === "update") {
+                $.post(ctx + "dept/update", $deptAddForm.serialize(), function (r) {
+                    if (r.code === 0) {
                         closeModal();
                         refresh();
                         $MB.n_success(r.msg);
@@ -32,18 +32,18 @@ $(function() {
         }
     });
 
-    $("#dept-add .btn-close").click(function() {
+    $("#dept-add .btn-close").click(function () {
         closeModal();
     });
 
 });
 
 function closeModal() {
-	$("#dept-add-button").attr("name", "save");
-    $MB.closeAndRestModal("dept-add");
-    validator.resetForm();
-    $MB.refreshJsTree("deptTree", createDeptTree());
+    $("#dept-add-button").attr("name", "save");
     $("#dept-add-modal-title").html('新增部门');
+    validator.resetForm();
+    $MB.closeAndRestModal("dept-add");
+    $MB.refreshJsTree("deptTree", createDeptTree());
 }
 
 function validateRule() {
@@ -59,10 +59,10 @@ function validateRule() {
                     type: "get",
                     dataType: "json",
                     data: {
-                        deptName: function() {
+                        deptName: function () {
                             return $("input[name='deptName']").val().trim();
                         },
-                        oldDeptName: function() {
+                        oldDeptName: function () {
                             return $("input[name='oldDeptName']").val().trim();
                         }
                     }
@@ -80,8 +80,8 @@ function validateRule() {
 }
 
 function createDeptTree() {
-    $.post(ctx + "dept/tree", {}, function(r) {
-        if (r.code == 0) {
+    $.post(ctx + "dept/tree", {}, function (r) {
+        if (r.code === 0) {
             var data = r.msg;
             $('#deptTree').jstree({
                 "core": {
@@ -106,6 +106,5 @@ function createDeptTree() {
 function getDept() {
     var ref = $('#deptTree').jstree(true);
     var deptIds = ref.get_checked();
-
     $("[name='parentId']").val(deptIds[0]);
 }

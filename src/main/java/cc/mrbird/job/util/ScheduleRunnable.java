@@ -18,7 +18,7 @@ public class ScheduleRunnable implements Runnable {
 	private Method method;
 	private String params;
 
-	public ScheduleRunnable(String beanName, String methodName, String params)
+	ScheduleRunnable(String beanName, String methodName, String params)
 			throws NoSuchMethodException, SecurityException {
 		this.target = SpringContextUtils.getBean(beanName);
 		this.params = params;

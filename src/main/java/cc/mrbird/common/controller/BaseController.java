@@ -15,7 +15,7 @@ import cc.mrbird.system.domain.User;
 public class BaseController {
 
 	protected Map<String, Object> getDataTable(PageInfo<?> pageInfo) {
-		Map<String, Object> rspData = new HashMap<String, Object>();
+		Map<String, Object> rspData = new HashMap<>();
 		rspData.put("rows", pageInfo.getList());
 		rspData.put("total", pageInfo.getTotal());
 		return rspData;

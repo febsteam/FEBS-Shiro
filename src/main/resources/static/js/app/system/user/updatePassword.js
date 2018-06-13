@@ -1,15 +1,15 @@
 var validateUpdatePassword;
 var $updatePasswordForm = $("#update-password-form");
 
-$(function() {
+$(function () {
     validateUpdatePasswordRule();
 
-    $("#update-password .btn-save").click(function() {
+    $("#update-password .btn-save").click(function () {
         validateUpdatePassword = $updatePasswordForm.validate();
         var flag = validateUpdatePassword.form();
         if (flag) {
-            $.post(ctx + "user/updatePassword", $updatePasswordForm.serialize(), function(r) {
-                if (r.code == 0) {
+            $.post(ctx + "user/updatePassword", $updatePasswordForm.serialize(), function (r) {
+                if (r.code === 0) {
                     validateUpdatePassword.resetForm();
                     $MB.closeAndRestModal("update-password");
                     $MB.n_success(r.msg);
@@ -18,7 +18,7 @@ $(function() {
         }
     });
 
-    $("#update-password .btn-close").click(function() {
+    $("#update-password .btn-close").click(function () {
         validateUpdatePassword.resetForm();
         $MB.closeAndRestModal("update-password");
     });
@@ -36,7 +36,7 @@ function validateUpdatePasswordRule() {
                     type: "get",
                     dataType: "json",
                     data: {
-                        password: function() {
+                        password: function () {
                             return $("input[name='oldPassword']").val().trim();
                         }
                     }

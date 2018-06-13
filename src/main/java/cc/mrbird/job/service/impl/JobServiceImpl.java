@@ -73,12 +73,12 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
 			return this.selectByExample(example);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
-			return new ArrayList<Job>();
+			return new ArrayList<>();
 		}
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void addJob(Job job) {
 		job.setJobId(this.getSequence(Job.SEQ));
 		job.setCreateTime(new Date());
@@ -88,14 +88,14 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void updateJob(Job job) {
 		ScheduleUtils.updateScheduleJob(scheduler, job);
 		this.updateNotNull(job);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void deleteBatch(String jobIds) {
 		List<String> list = Arrays.asList(jobIds.split(","));
 		for (String jobId : list) {
@@ -105,7 +105,7 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public int updateBatch(String jobIds, String status) {
 		List<String> list = Arrays.asList(jobIds.split(","));
 		Example example = new Example(Job.class);
@@ -116,18 +116,18 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void run(String jobIds) {
-		List<String> list = Arrays.asList(jobIds.split(","));
+		String[] list = jobIds.split(",");
 		for (String jobId : list) {
 			ScheduleUtils.run(scheduler, this.findJob(Long.valueOf(jobId)));
 		}
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void pause(String jobIds) {
-		List<String> list = Arrays.asList(jobIds.split(","));
+		String[] list = jobIds.split(",");
 		for (String jobId : list) {
 			ScheduleUtils.pauseJob(scheduler, Long.valueOf(jobId));
 		}
@@ -135,9 +135,9 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional
 	public void resume(String jobIds) {
-		List<String> list = Arrays.asList(jobIds.split(","));
+		String[] list = jobIds.split(",");
 		for (String jobId : list) {
 			ScheduleUtils.resumeJob(scheduler, Long.valueOf(jobId));
 		}
