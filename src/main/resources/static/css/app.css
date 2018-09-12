@@ -12691,8 +12691,7 @@ label.error{
 }
 
 .dataTables_filter {
-  /*overflow: hidden;*/
-  width: 85%;
+  overflow: hidden;
 }
 .dataTables_filter > label:before, .dataTables_filter > label:after {
   content: '';
