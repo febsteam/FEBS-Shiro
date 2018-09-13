@@ -16,6 +16,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFRow;
@@ -121,17 +122,17 @@ public class ExcelUtils {
                 CellStyle cellStyle = wb.createCellStyle();
                 Font font = wb.createFont();
                 cellStyle.setFillForegroundColor((short) 12);
-                cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);// 填充模式
-                cellStyle.setBorderTop(CellStyle.BORDER_THIN);// 上边框为细边框
-                cellStyle.setBorderRight(CellStyle.BORDER_THIN);// 右边框为细边框
-                cellStyle.setBorderBottom(CellStyle.BORDER_THIN);// 下边框为细边框
-                cellStyle.setBorderLeft(CellStyle.BORDER_THIN);// 左边框为细边框
-                cellStyle.setAlignment(CellStyle.ALIGN_LEFT);// 对齐
-                cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
-                cellStyle.setFillBackgroundColor(HSSFColor.GREEN.index);
-                font.setBoldweight(Font.BOLDWEIGHT_NORMAL);
-                // font.setFontHeightInPoints((short) 12);// 字体大小
-                font.setColor(HSSFColor.WHITE.index);
+                cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);// 填充模式
+//                cellStyle.setBorderTop(FillPatternType.BORDER_THIN);// 上边框为细边框
+//                cellStyle.setBorderRight(FillPatternType.BORDER_THIN);// 右边框为细边框
+//                cellStyle.setBorderBottom(FillPatternType.BORDER_THIN);// 下边框为细边框
+//                cellStyle.setBorderLeft(FillPatternType.BORDER_THIN);// 左边框为细边框
+//                cellStyle.setAlignment(FillPatternType.ALIGN_LEFT);// 对齐
+//                cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
+//                cellStyle.setFillBackgroundColor(HSSFColor.GREEN.index);
+//                font.setBoldweight(Font.BOLDWEIGHT_NORMAL);
+//                // font.setFontHeightInPoints((short) 12);// 字体大小
+//                font.setColor(HSSFColor.WHITE.index);
                 // 应用标题字体到标题样式
                 cellStyle.setFont(font);
                 return cellStyle;
@@ -161,7 +162,7 @@ public class ExcelUtils {
                         .setDisplay("field".equals(currentExportConfig.value()) ? field.getName()
                                 : currentExportConfig.value())
                         .setWidth(currentExportConfig.width()).setConvert(currentExportConfig.convert())
-                        .setColor(currentExportConfig.color()).setReplace(currentExportConfig.replace());
+                        .setColor(currentExportConfig.color().getIndex2()).setReplace(currentExportConfig.replace());
                 exportItems.add(currentExportItem);
             }
 
