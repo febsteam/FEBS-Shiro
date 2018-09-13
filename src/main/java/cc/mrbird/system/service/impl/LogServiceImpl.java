@@ -4,12 +4,10 @@ import cc.mrbird.common.annotation.Log;
 import cc.mrbird.common.service.impl.BaseService;
 import cc.mrbird.common.util.AddressUtils;
 import cc.mrbird.system.domain.SysLog;
-import cc.mrbird.system.domain.User;
 import cc.mrbird.system.service.LogService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
@@ -98,12 +96,10 @@ public class LogServiceImpl extends BaseService<SysLog> implements LogService {
         save(log);
     }
 
+    @SuppressWarnings("unchecked")
     private StringBuilder handleParams(StringBuilder params, Object[] args, List paramNames) throws JsonProcessingException {
-
         for (int i = 0; i < args.length; i++) {
-
             if (args[i] instanceof Map) {
-
                 Set set = ((Map) args[i]).keySet();
                 List list = new ArrayList();
                 List paramList = new ArrayList<>();
@@ -112,18 +108,16 @@ public class LogServiceImpl extends BaseService<SysLog> implements LogService {
                     paramList.add(key);
                 }
                 return handleParams(params, list.toArray(), paramList);
-
             } else {
                 if (args[i] instanceof Serializable) {
                     Class<?> aClass = args[i].getClass();
                     try {
-                        aClass.getDeclaredMethod("toString", null);
+                        aClass.getDeclaredMethod("toString", new Class[]{null});
                         // 如果不抛出NoSuchMethodException 异常则存在 toString 方法 ，安全的writeValueAsString ，否则 走 Object的 toString方法
                         params.append("  ").append(paramNames.get(i)).append(": ").append(objectMapper.writeValueAsString(args[i]));
                     } catch (NoSuchMethodException e) {
                         params.append("  ").append(paramNames.get(i)).append(": ").append(objectMapper.writeValueAsString(args[i].toString()));
                     }
-
                 } else if (args[i] instanceof MultipartFile) {
                     MultipartFile file = (MultipartFile) args[i];
                     params.append("  ").append(paramNames.get(i)).append(": ").append(file.getName());
@@ -131,8 +125,6 @@ public class LogServiceImpl extends BaseService<SysLog> implements LogService {
                     params.append("  ").append(paramNames.get(i)).append(": ").append(args[i]);
                 }
             }
-
-
         }
         return params;
     }

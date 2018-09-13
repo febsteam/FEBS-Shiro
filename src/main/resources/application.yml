@@ -124,13 +124,14 @@ jasypt:
     password: febs
 
 mybatis:
-  config-location: classpath:config/mybatis-config.xml
   # type-aliases扫描路径
-  type-aliases-package: cc.mrbird.system.domain
+  type-aliases-package: cc.mrbird.system.domain,cc.mrbird.job.domain
   # mapper xml实现扫描路径
   mapper-locations: classpath:mapper/*/*.xml
   property:
     order: BEFORE
+  configuration:
+    jdbc-type-for-null: null
 
 #mappers 多个接口时逗号隔开
 mapper:

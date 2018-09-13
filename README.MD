@@ -8,7 +8,9 @@
 FEBS是一个简单高效的后台权限管理系统。项目基础框架采用全新的Java Web开发框架 —— Spring Boot2.0.4，消除了繁杂的XML配置，使得二次开发更为简单；数据访问层采用Mybatis，同时引入了通用Mapper和PageHelper插件，可快速高效的对单表进行增删改查操作，消除了大量传统XML配置SQL的代码；安全框架采用时下流行的Apache Shiro，可实现对按钮级别的权限控制；前端页面使用Bootstrap构建，主题风格为时下Google最新设计语言Material Design，并提供多套配色以供选择。FEBS意指：Fast，Easy use，Beautiful和Safe。
 
 注：精力有限，Oracle分支于2018年8月21日停止更新并删除，如有需要可到群里获取。
-<!--more-->
+
+[项目文档](https://shiro.mrbird.cc/)
+
 ### 功能模块
 系统功能模块组成如下所示：
 ```
@@ -132,75 +134,3 @@ FEBS是一个简单高效的后台权限管理系统。项目基础框架采用�
 ![2bd554ce2511cd1e7e3e7b3b56216ed6.png](http://olwqftdzl.bkt.clouddn.com/18-4-18/86512301.jpg)
 
 ![5e6d35e4390cf7f0752d7864ad701e2b.png](http://olwqftdzl.bkt.clouddn.com/18-4-18/81830531.jpg)
-
-### 开发与部署
-
-码云地址： https://gitee.com/github-16661027/project 
-
-GitHub 地址： https://github.com/wuyouzhuguli/FEBS
-
-下载后以Maven项目的方式导入Eclipse或者IDEA。
-
-开发时直接使用Spring Boot的入口类`cc.mrbird.Application`启动即可，访问地址[localhost:8080](localhost:8080)，账号mrbird，密码123456。
-
-部署时，使用Maven将项目打包成febs.jar，然后使用命令`java -jar febs.jar`启动即可。在Linux下部署Spring Boot jar，并编写启停脚本可参考链接[https://mrbird.cc/Linux%20Spring-Boot-jar.html](https://mrbird.cc/Linux%20Spring-Boot-jar.html)。
-
-### docker 支持
-下载安装好 docker 后，用命令`docker run -d -p 5000:5000 registry` 拉取 registry镜像并运行，并执行`mvn clean package docker:build`命令即可将应用创建到私有个人docker registry中
-` <dockerHost>http://<HOST yours >:2375</dockerHost>`  or `  set DOCKER_HOST=tcp://<HOST yours >:2375 `
-
-### 关于配置文件切换问题以及数据库加密配置
-#### 自定义`application.yml` 
-由于本地开发所用数据库并不与项目默认配置数据库链接参数相同，所以可采用在`application.yml`文件中加入如下属性
-```bash
-spring
-    profiles:
-       active: local
-``` 
-然后在`application.yml`同级目录建立`application-local.yml`文件，里面可以自定义自己的数据库配置， 这样在spring boot启动时，优先加载 `local`配置文件里的属性配置。
-`local`名称自定义。
-#### jasypt 加密数据库用户名密码
-在 `pom.xml`中引入
-```xml
-        <!-- jasypt-->
-        <dependency>
-            <groupId>com.github.ulisesbocchio</groupId>
-            <artifactId>jasypt-spring-boot-starter</artifactId>
-            <version>2.1.0</version>
-        </dependency>
-```
-在`application.yml`或`application-local.yml`中配置用于加密的密码
-
-```yaml
-jasypt:
-  encryptor:
-    password: jyao
-```
-建立个util工具类：
-```java_holder_method_tree
- public void jasyptTest() {
-        BasicTextEncryptor encryptor = new BasicTextEncryptor();
-        encryptor.setPassword("jyao");//application.yml配置的jasypt.encryptor.password
-        String encrypted = encryptor.encrypt("root");//要加密的数据（数据库连接的用户名或密码）
-        System.out.println(encrypted);
-    }
-```
-把生成的密钥加上 ENC(密钥)，例如
-```cmd
-ENC(YiYjVwTulDGN//YaB3KbuA==) #明文root
-以上替换原来的数据库用户名或密码
-
-```
-如图所示：
-![jasypt_config](screenshots/jasypt_config.png)
-![jasypt_config11](screenshots/Inkedjasypt_config_LI.jpg)
-### 常见问题
-[https://mrbird.cc/基于Spring Boot和Shiro的后台管理系统FEBS.html#常见问题](https://mrbird.cc/Spring-Boot%20Shiro%20FEBS.html)
-
-### 反馈交流
-
-对于想通过此项目来学习Spring Boot及Shiro的同学可以结合个人Spring Boot系列教程一起学习，效果更佳[https://github.com/wuyouzhuguli/Spring-Boot-Demos](https://github.com/wuyouzhuguli/Spring-Boot-Demos)。
-
-此外，也欢迎加入Q群一起探讨交流。
-
-![http://olwqftdzl.bkt.clouddn.com/18-3-23/40328650.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-23/40328650.jpg)
