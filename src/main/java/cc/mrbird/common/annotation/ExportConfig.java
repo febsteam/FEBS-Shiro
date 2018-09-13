@@ -39,7 +39,7 @@ public @interface ExportConfig {
 	/**
 	 * @return 当前单元格的字体颜色 (默认 HSSFColor.BLACK.index)
 	 */
-	short color() default HSSFColor.BLACK.index;
+	HSSFColor.HSSFColorPredefined color() default HSSFColor.HSSFColorPredefined.BLACK;
 
 	/**
 	 * 将单元格的值替换为当前配置的值：<br/>
