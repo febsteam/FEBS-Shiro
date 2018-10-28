@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.pet.dao.AreaMapper">
+    <resultMap id="areaMap" type="cc.mrbird.pet.domain.Area">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="AREA_ID" jdbcType="DECIMAL" property="areaId" />
+        <result column="PARENT_ID" jdbcType="DECIMAL" property="parentId" />
+        <result column="AREA_NAME" jdbcType="VARCHAR" property="areaName" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+
+    <update id="changeToTop" parameterType="java.util.List">
+        update t_area set parent_id = 0 where area_id in ( select a.area_id from (
+        (select area_id from t_area where parent_id in
+        <foreach collection="list" item="areaId" index="index" open="(" close=")" separator=",">
+            #{areaId}
+        </foreach>
+        ) ) a )
+    </update>
+</mapper>

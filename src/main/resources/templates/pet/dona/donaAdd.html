@@ -1,0 +1,70 @@
+<div class="modal fade" id="dona-add" data-keyboard="false" data-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title pull-left" id="dona-add-modal-title">新增捐赠品</h3>
+            </div>
+            <div class="modal-body">
+                <form id="dona-add-form">
+                    <div class="row">
+                        <div class="col-sm-11">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+					               	捐赠人：
+					            </span>
+                                <div class="form-group">
+                                    <input type="text" name="donaUser" class="form-control">
+                                    <input type="text" name="oldDonaUser" hidden class="form-control">
+                                    <input type="text" name="donaId" hidden class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-11">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="justify-content: flex-start;margin-top: .5rem;">
+					               	上级捐赠人：
+					             </span>
+                                <div class="form-group">
+                                    <div id="donaTree"></div>
+                                </div>
+                                <input type="hidden" name="parentId">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-11">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+					               	 捐赠品：
+					            </span>
+                                <div class="form-group">
+                                    <input type="text" name="donaName" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-11">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+					               	 描述：
+					            </span>
+                                <div class="form-group">
+                                    <input type="text" name="donaDesc" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-save" id="dona-add-button" name="save">保存</button>
+                <button type="button" class="btn btn-secondary btn-close">关闭</button>
+                <button class="btn-hide"></button>
+            </div>
+        </div>
+    </div>
+</div>
+<script data-th-src="@{js/app/pet/dona/donaAdd.js}"></script>

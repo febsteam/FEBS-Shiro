@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.pet.dao.DonaMapper">
+    <resultMap id="donaMap" type="cc.mrbird.pet.domain.Dona">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="DONA_ID" jdbcType="DECIMAL" property="donaId" />
+        <result column="PARENT_ID" jdbcType="DECIMAL" property="parentId" />
+        <result column="DONA_USER" jdbcType="VARCHAR" property="donaUser" />
+        <result column="DONA_NAME" jdbcType="VARCHAR" property="donaName" />
+        <result column="DONA_DESC" jdbcType="VARCHAR" property="donaDesc" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+
+    </resultMap>
+
+    <update id="changeToTop" parameterType="java.util.List">
+        update t_dona set parent_id = 0 where dona_id in ( select a.dona_id from (
+        (select dona_id from t_dona where parent_id in
+        <foreach collection="list" item="donaId" index="index" open="(" close=")" separator=",">
+            #{donaId}
+        </foreach>
+        ) ) a )
+    </update>
+</mapper>

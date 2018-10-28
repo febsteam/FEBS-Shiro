@@ -1,0 +1,52 @@
+<div data-th-include="pet/area/areaAdd"></div>
+<div class="card">
+    <div class="card-block">
+        <div class="table-responsive">
+            <div id="data-table_wrapper" class="dataTables_wrapper">
+                <div class="dataTables_buttons hidden-sm-down actions">
+                    <span class="actions__item zmdi zmdi-search" onclick="search()" title="搜索" />
+                    <span class="actions__item zmdi zmdi-refresh-alt" onclick="refresh()" title="刷新" />
+                    <div class="dropdown actions__item">
+                        <i data-toggle="dropdown" class="zmdi zmdi-download"></i>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <a href="javascript:void(0)" class="dropdown-item" data-table-action="excel"  onclick="exportAreaExcel()">
+                                Excel (.xlsx)
+                            </a>
+                            <a href="javascript:void(0)" class="dropdown-item" data-table-action="csv"  onclick="exportAreaCsv()">
+                                CSV (.csv)
+                            </a>
+                        </ul>
+                    </div>
+                    <div class="dropdown actions__item" shiro:hasAnyPermissions="area:add,area:delete,area:update">
+                        <i data-toggle="dropdown" class="zmdi zmdi-more-vert"></i>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="javascript:void(0)" class="dropdown-item" data-toggle="modal" data-target="#area-add" shiro:hasPermission="area:add">新增区域</a>
+                            <a href="javascript:void(0)" class="dropdown-item" onclick="updateArea()" shiro:hasPermission="area:update">修改区域</a>
+                            <a href="javascript:void(0)" class="dropdown-item" onclick="deleteAreas();" shiro:hasPermission="area:delete">删除区域</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="data-table_filter" class="dataTables_filter">
+                    <form class="area-table-form">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+					               	名称：
+					            </span>
+                                    <div class="form-group">
+                                        <input type="text" name="areaName" class="form-control">
+                                        <i class="form-group__bar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <table id="areaTable" data-mobile-responsive="true" class="mb-bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+</div>
+<script data-th-src="@{js/app/pet/area/area.js}"></script>
+<script data-th-src="@{js/app/pet/area/areaEdit.js}"></script>
