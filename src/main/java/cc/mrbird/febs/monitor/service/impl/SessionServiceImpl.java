@@ -3,9 +3,8 @@ package cc.mrbird.febs.monitor.service.impl;
 import cc.mrbird.febs.common.utils.AddressUtil;
 import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.monitor.entity.ActiveUser;
-import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.monitor.service.ISessionService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cc.mrbird.febs.system.entity.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -27,9 +26,6 @@ public class SessionServiceImpl implements ISessionService {
 
     @Autowired
     private SessionDAO sessionDAO;
-
-    @Autowired
-    private ObjectMapper mapper;
 
     @Override
     public List<ActiveUser> list(String username) {

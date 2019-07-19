@@ -21,9 +21,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Base64Utils;
 
-import javax.servlet.Filter;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 
 /**
  * Shiro 配置类
@@ -71,8 +73,6 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-
-        Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();//获取filters
 
         // 设置 securityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);

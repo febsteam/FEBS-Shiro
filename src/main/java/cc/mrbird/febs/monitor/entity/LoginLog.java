@@ -61,7 +61,7 @@ public class LoginLog implements Serializable {
     /**
      * 操作系统
      */
-    @TableField("SYSTEM")
+    @TableField("`SYSTEM`")
     @ExcelField("操作系统")
     private String system;
     /**

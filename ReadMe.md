@@ -1,6 +1,5 @@
 ### FEBS-Shiro 2.0
-![https://img.shields.io/badge/license-MIT-blue.svg?longCache=true&style=flat-square](https://img.shields.io/badge/license-MIT-blue.svg?longCache=true&style=flat-square)
-![https://img.shields.io/badge/download-1k%2Fm-green.svg?longCache=true&style=flat-square](https://img.shields.io/badge/download-1k%2Fm-green.svg?longCache=true&style=flat-square)
+![https://img.shields.io/badge/license-Apache%202.0-blue.svg?longCache=true&style=flat-square](https://img.shields.io/badge/license-Apache%202.0-blue.svg?longCache=true&style=flat-square)
 ![https://img.shields.io/badge/springboot-2.1.3-yellow.svg?style=flat-square](https://img.shields.io/badge/springboot-2.1.3-yellow.svg?style=flat-square)
 ![https://img.shields.io/badge/shiro-1.4.0-orange.svg?longCache=true&style=flat-square](https://img.shields.io/badge/shiro-1.4.0-orange.svg?longCache=true&style=flat-square)
 ![https://img.shields.io/badge/layui-2.5.4-brightgreen.svg?longCache=true&style=flat-square](https://img.shields.io/badge/layui-2.5.4-brightgreen.svg?longCache=true&style=flat-square)
@@ -9,7 +8,7 @@ FEBS-Shiro是一款简单高效的后台权限管理系统，使用Spring Boot�
 
 ### 演示地址
 
-[http://shiro.febs.我爱你:8080](http://shiro.febs.我爱你:8080)  or  [http://febshiro.mrbird.cc:8080/login](http://febshiro.mrbird.cc:8080/login)
+[http://shiro.febs.我爱你:8080](http://shiro.febs.我爱你:8080)  or  [http://49.234.20.223:8080/login](http://49.234.20.223:8080/login)
 
 演示环境账号密码：
 

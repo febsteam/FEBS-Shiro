@@ -1,7 +1,6 @@
 package cc.mrbird.febs.common.utils;
 
 import cc.mrbird.febs.common.entity.FebsConstant;
-import cc.mrbird.febs.common.exception.FebsException;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;

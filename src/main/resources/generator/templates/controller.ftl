@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -43,12 +44,14 @@ public class ${className}Controller extends BaseController {
     }
 
     @GetMapping("${className?uncap_first}")
+    @ResponseBody
     @RequiresPermissions("${className?uncap_first}:list")
     public FebsResponse getAll${className}s(${className} ${className?uncap_first}) {
         return new FebsResponse().success().data(${className?uncap_first}Service.find${className}s(${className?uncap_first}));
     }
 
     @GetMapping("${className?uncap_first}/list")
+    @ResponseBody
     @RequiresPermissions("${className?uncap_first}:list")
     public FebsResponse ${className?uncap_first}List(QueryRequest request, ${className} ${className?uncap_first}) {
         Map<String, Object> dataTable = getDataTable(this.${className?uncap_first}Service.find${className}s(request, ${className?uncap_first}));
@@ -57,6 +60,7 @@ public class ${className}Controller extends BaseController {
 
     @Log("新增${className}")
     @PostMapping("${className?uncap_first}")
+    @ResponseBody
     @RequiresPermissions("${className?uncap_first}:add")
     public FebsResponse add${className}(@Valid ${className} ${className?uncap_first}) throws FebsException {
         try {
@@ -71,6 +75,7 @@ public class ${className}Controller extends BaseController {
 
     @Log("删除${className}")
     @GetMapping("${className?uncap_first}/delete")
+    @ResponseBody
     @RequiresPermissions("${className?uncap_first}:delete")
     public FebsResponse delete${className}(${className} ${className?uncap_first}) throws FebsException {
         try {
@@ -85,6 +90,7 @@ public class ${className}Controller extends BaseController {
 
     @Log("修改${className}")
     @PostMapping("${className?uncap_first}/update")
+    @ResponseBody
     @RequiresPermissions("${className?uncap_first}:update")
     public FebsResponse update${className}(${className} ${className?uncap_first}) throws FebsException {
         try {
@@ -98,6 +104,7 @@ public class ${className}Controller extends BaseController {
     }
 
     @PostMapping("${className?uncap_first}/excel")
+    @ResponseBody
     @RequiresPermissions("${className?uncap_first}:export")
     public void export(QueryRequest queryRequest, ${className} ${className?uncap_first}, HttpServletResponse response) throws FebsException {
         try {
