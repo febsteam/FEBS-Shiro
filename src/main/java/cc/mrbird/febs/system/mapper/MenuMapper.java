@@ -25,11 +25,4 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @return 用户菜单集合
      */
     List<Menu> findUserMenus(String username);
-
-    /**
-     * 递归删除菜单/按钮
-     *
-     * @param menuId menuId
-     */
-    void deleteMenus(String menuId);
 }

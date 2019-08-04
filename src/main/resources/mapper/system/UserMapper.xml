@@ -45,7 +45,19 @@
         <if test="user.createTimeTo!= null and user.createTimeTo !=''">
             And u.create_time &lt; #{user.createTimeTo}
         </if>
-        group by u.username
+        GROUP BY
+            u.username,
+            u.user_id,
+            u.email,
+            u.mobile,
+            u.status,
+            u.create_time,
+            u.ssex,
+            u.dept_id,
+            u.last_login_time,
+            u.modify_time,
+            u.description,
+            u.avatar
     </sql>
     <select id="findUserDetailPage" parameterType="user" resultType="user">
         <include refid="findUserDetailSql"/>
@@ -81,6 +93,21 @@
         LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id)
         LEFT JOIN t_role r ON r.role_id = ur.role_id
         WHERE  u.username = #{username}
-        group by u.username
+        GROUP BY
+            u.username,
+            u.user_id,
+            u.email,
+            u.mobile,
+            u.password,
+            u.status,
+            u.create_time,
+            u.ssex,
+            u.dept_id,
+            u.last_login_time,
+            u.modify_time,
+            u.description,
+            u.avatar,
+            u.theme,
+            u.is_tab
     </select>
 </mapper>

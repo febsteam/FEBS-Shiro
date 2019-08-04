@@ -59,7 +59,7 @@ public class LoginLogController extends BaseController {
     public void export(QueryRequest request, LoginLog loginLog, HttpServletResponse response) throws FebsException {
         try {
             List<LoginLog> loginLogs = this.loginLogService.findLoginLogs(loginLog, request).getRecords();
-            ExcelKit.$Export(Log.class, response).downXlsx(loginLogs, false);
+            ExcelKit.$Export(LoginLog.class, response).downXlsx(loginLogs, false);
         } catch (Exception e) {
             String message = "导出Excel失败";
             log.error(message, e);

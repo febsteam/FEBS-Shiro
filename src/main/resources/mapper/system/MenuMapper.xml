@@ -50,13 +50,4 @@
         ORDER BY
           m.order_num
     </select>
-
-    <!-- 递归删除菜单，findMenuChildren为自定义的 MySQL函数，作用为根据当前 menuId递归查找出其所有下级菜单或按钮-->
-    <delete id="deleteMenus" parameterType="string">
-        DELETE
-        FROM
-            t_menu
-        WHERE
-                menu_id IN ( SELECT m.menu_id FROM ( SELECT menu_id FROM t_menu WHERE FIND_IN_SET( menu_id, findMenuChildren ( #{menuId} ) ) > 0 ) m )
-    </delete>
 </mapper>

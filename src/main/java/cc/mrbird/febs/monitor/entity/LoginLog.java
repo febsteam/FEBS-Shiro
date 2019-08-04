@@ -43,14 +43,14 @@ public class LoginLog implements Serializable {
      * 登录时间
      */
     @TableField("LOGIN_TIME")
-    @ExcelField("登录时间")
+    @ExcelField(value = "登录时间", writeConverter = TimeConverter.class)
     private Date loginTime;
 
     /**
      * 登录地点
      */
     @TableField("LOCATION")
-    @ExcelField(value = "登录地点", writeConverter = TimeConverter.class)
+    @ExcelField(value = "登录地点")
     private String location;
     /**
      * 登录 IP
