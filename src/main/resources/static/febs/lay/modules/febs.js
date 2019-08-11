@@ -227,15 +227,6 @@ layui.extend({
         self.initView(self.route)
     });
 
-    //回车提交 form 表单
-    $(document).on('keydown', function (e) {
-        var ev = document.all ? window.event : e;
-        if (ev.keyCode === 13) {
-            var form = $(':focus').parents('.layui-form');
-            form.find('[lay-submit]').click()
-        }
-    });
-
     $(document).on('click', '[lay-href]', function (e) {
         var href = $(this).attr('lay-href');
         var target = $(this).attr('target');
