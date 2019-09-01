@@ -2,3 +2,7 @@
 log/
 target/
 *.iml
+/bin/
+/.classpath
+/.factorypath
+/.project
