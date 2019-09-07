@@ -3,11 +3,13 @@ package cc.mrbird.febs.common.utils;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.exception.RedisConnectException;
 import cc.mrbird.febs.monitor.service.IRedisService;
-import com.wf.captcha.Captcha;
 import com.wf.captcha.GifCaptcha;
 import com.wf.captcha.SpecCaptcha;
+import com.wf.captcha.base.Captcha;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -119,12 +121,12 @@ public class CaptchaUtil {
 
     public static void setHeader(HttpServletResponse response, int cType) {
         if (cType == GIF_TYPE) {
-            response.setContentType("image/gif");
+            response.setContentType(MediaType.IMAGE_GIF_VALUE);
         } else {
-            response.setContentType("image/png");
+            response.setContentType(MediaType.IMAGE_PNG_VALUE);
         }
-        response.setHeader("Pragma", "No-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0L);
+        response.setHeader(HttpHeaders.PRAGMA, "No-cache");
+        response.setHeader(HttpHeaders.CACHE_CONTROL, "No-cache");
+        response.setDateHeader(HttpHeaders.EXPIRES, 0L);
     }
 }

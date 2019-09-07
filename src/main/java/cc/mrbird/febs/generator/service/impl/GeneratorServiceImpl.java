@@ -1,4 +1,4 @@
-package cc.mrbird.febs.generator.servie.impl;
+package cc.mrbird.febs.generator.service.impl;
 
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
@@ -6,7 +6,7 @@ import cc.mrbird.febs.common.utils.SortUtil;
 import cc.mrbird.febs.generator.entity.Column;
 import cc.mrbird.febs.generator.entity.Table;
 import cc.mrbird.febs.generator.mapper.GeneratorMapper;
-import cc.mrbird.febs.generator.servie.IGeneratorService;
+import cc.mrbird.febs.generator.service.IGeneratorService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;

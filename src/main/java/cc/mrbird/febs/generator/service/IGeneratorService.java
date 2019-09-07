@@ -1,4 +1,4 @@
-package cc.mrbird.febs.generator.servie;
+package cc.mrbird.febs.generator.service;
 
 import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.generator.entity.Column;

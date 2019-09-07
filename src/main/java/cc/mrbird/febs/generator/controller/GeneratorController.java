@@ -11,8 +11,8 @@ import cc.mrbird.febs.generator.entity.Column;
 import cc.mrbird.febs.generator.entity.GeneratorConfig;
 import cc.mrbird.febs.generator.entity.GeneratorConstant;
 import cc.mrbird.febs.generator.helper.GeneratorHelper;
-import cc.mrbird.febs.generator.servie.IGeneratorConfigService;
-import cc.mrbird.febs.generator.servie.IGeneratorService;
+import cc.mrbird.febs.generator.service.IGeneratorConfigService;
+import cc.mrbird.febs.generator.service.IGeneratorService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class GeneratorController extends BaseController {
 
             String className = name;
             if (GeneratorConfig.TRIM_YES.equals(generatorConfig.getIsTrim())) {
-                className = name.replace(generatorConfig.getTrimValue(), "");
+                className = name.replaceFirst(generatorConfig.getTrimValue(), "");
             }
 
             generatorConfig.setTableName(name);

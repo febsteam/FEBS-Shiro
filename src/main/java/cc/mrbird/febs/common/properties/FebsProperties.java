@@ -16,4 +16,5 @@ public class FebsProperties {
 
     private ShiroProperties shiro = new ShiroProperties();
     private boolean openAopLog = true;
+    private SwaggerProperties swagger = new SwaggerProperties();
 }

@@ -51,6 +51,10 @@ public class ${className} {
     private Long ${column.field?uncap_first};
 
     </#if>
+    <#if column.type = 'double'>
+    private Double ${column.field?uncap_first};
+
+    </#if>
     <#if column.type = 'tinyint'>
     private Byte ${column.field?uncap_first};
 

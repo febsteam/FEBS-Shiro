@@ -10,7 +10,7 @@ import cc.mrbird.febs.monitor.entity.LoginLog;
 import cc.mrbird.febs.monitor.service.ILoginLogService;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IUserService;
-import com.wf.captcha.Captcha;
+import com.wf.captcha.base.Captcha;
 import org.apache.shiro.authc.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -50,20 +50,14 @@ public class LoginController extends BaseController {
         }
         password = MD5Util.encrypt(username.toLowerCase(), password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
-        try {
-            super.login(token);
-            // 保存登录日志
-            LoginLog loginLog = new LoginLog();
-            loginLog.setUsername(username);
-            loginLog.setSystemBrowserInfo();
-            this.loginLogService.saveLoginLog(loginLog);
+        super.login(token);
+        // 保存登录日志
+        LoginLog loginLog = new LoginLog();
+        loginLog.setUsername(username);
+        loginLog.setSystemBrowserInfo();
+        this.loginLogService.saveLoginLog(loginLog);
 
-            return new FebsResponse().success();
-        } catch (UnknownAccountException | IncorrectCredentialsException | LockedAccountException e) {
-            throw new FebsException(e.getMessage());
-        } catch (AuthenticationException e) {
-            throw new FebsException("认证失败！");
-        }
+        return new FebsResponse().success();
     }
 
     @PostMapping("regist")

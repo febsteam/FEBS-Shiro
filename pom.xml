@@ -20,6 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <mybatis.plus.version>3.1.1</mybatis.plus.version>
+        <swagger.ui>2.9.2</swagger.ui>
     </properties>
 
     <dependencies>
@@ -39,6 +40,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.lettuce</groupId>
+                    <artifactId>lettuce-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -112,6 +119,12 @@
             <groupId>org.crazycake</groupId>
             <artifactId>shiro-redis</artifactId>
             <version>3.2.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.puppycrawl.tools</groupId>
+                    <artifactId>checkstyle</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.github.theborakompanioni</groupId>
@@ -168,9 +181,10 @@
         <!-- 验证码生成插件 -->
         <dependency>
             <groupId>com.github.whvcse</groupId>
-            <artifactId>EasyCaptcha</artifactId>
-            <version>1.5.0</version>
+            <artifactId>easy-captcha</artifactId>
+            <version>1.6.2</version>
         </dependency>
+
 
         <!-- xss过滤 -->
         <dependency>
@@ -178,14 +192,18 @@
             <artifactId>jsoup</artifactId>
             <version>1.9.2</version>
         </dependency>
-    </dependencies>
 
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.ui}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.ui}</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>

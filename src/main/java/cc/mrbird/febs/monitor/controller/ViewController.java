@@ -11,6 +11,7 @@ import cc.mrbird.febs.monitor.helper.FebsActuatorHelper;
 import cc.mrbird.febs.monitor.service.IRedisService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -102,4 +103,8 @@ public class ViewController {
         return FebsUtil.view("monitor/serverInfo");
     }
 
+    @GetMapping("swagger")
+    public String swagger() {
+        return FebsUtil.view("monitor/swagger");
+    }
 }

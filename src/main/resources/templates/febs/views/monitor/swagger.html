@@ -1,0 +1,12 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-swagger" lay-title="Swagger文档">
+    <div class="layui-row febs-container">
+        <iframe id="container" data-th-src="@{/swagger-ui.html}" frameborder="no" style="width: 100%;" scrolling="auto" />
+    </div>
+</div>
+<script data-th-inline="javascript" type="text/javascript">
+    layui.use(['jquery'], function () {
+        var $ = layui.jquery,
+            $view = $('#febs-swagger');
+        $view.find('#container').css({"height": document.documentElement.clientHeight - 97 + 'px'});
+    });
+</script>

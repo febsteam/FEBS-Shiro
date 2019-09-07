@@ -87,7 +87,7 @@ public class RedisConfigure extends CachingConfigurerSupport {
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
 
-        //使用 fastjson 序列化
+        //使用 Jackson 序列化
         JacksonRedisSerializer jacksonRedisSerializer = new JacksonRedisSerializer(Object.class);
         // value 值的序列化采用 jacksonRedisSerializer
         template.setValueSerializer(jacksonRedisSerializer);
@@ -139,7 +139,6 @@ public class RedisConfigure extends CachingConfigurerSupport {
 }
 
 class JacksonRedisSerializer<T> implements RedisSerializer<T> {
-    private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
     private Class<T> clazz;
     private ObjectMapper mapper;
 

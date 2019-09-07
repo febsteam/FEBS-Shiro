@@ -6,6 +6,7 @@ import cc.mrbird.febs.common.exception.FileDownloadException;
 import cc.mrbird.febs.common.exception.LimitAccessException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.session.ExpiredSessionException;
 import org.springframework.core.Ordered;
@@ -39,7 +40,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = FebsException.class)
     public FebsResponse handleFebsException(FebsException e) {
-        log.error("系统错误", e);
+        log.debug("系统错误", e);
         return new FebsResponse().code(HttpStatus.INTERNAL_SERVER_ERROR).message(e.getMessage());
     }
 
@@ -81,19 +82,25 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = LimitAccessException.class)
     public FebsResponse handleLimitAccessException(LimitAccessException e) {
-        log.error("LimitAccessException", e);
+        log.debug("LimitAccessException", e);
         return new FebsResponse().code(HttpStatus.TOO_MANY_REQUESTS).message(e.getMessage());
     }
 
     @ExceptionHandler(value = UnauthorizedException.class)
     public FebsResponse handleUnauthorizedException(UnauthorizedException e) {
-        log.error("UnauthorizedException", e);
+        log.debug("UnauthorizedException", e);
         return new FebsResponse().code(HttpStatus.FORBIDDEN).message(e.getMessage());
+    }
+
+    @ExceptionHandler(value = AuthenticationException.class)
+    public FebsResponse handleAuthenticationException(AuthenticationException e) {
+        log.debug("AuthenticationException", e);
+        return new FebsResponse().code(HttpStatus.INTERNAL_SERVER_ERROR).message(e.getMessage());
     }
 
     @ExceptionHandler(value = ExpiredSessionException.class)
     public FebsResponse handleExpiredSessionException(ExpiredSessionException e) {
-        log.error("ExpiredSessionException", e);
+        log.debug("ExpiredSessionException", e);
         return new FebsResponse().code(HttpStatus.UNAUTHORIZED).message(e.getMessage());
     }
 

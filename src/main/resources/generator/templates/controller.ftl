@@ -39,7 +39,7 @@ public class ${className}Controller extends BaseController {
     private I${className}Service ${className?uncap_first}Service;
 
     @GetMapping(FebsConstant.VIEW_PREFIX + "${className?uncap_first}")
-    private String ${className?uncap_first}Index(){
+    public String ${className?uncap_first}Index(){
         return FebsUtil.view("${className?uncap_first}/${className?uncap_first}");
     }
 

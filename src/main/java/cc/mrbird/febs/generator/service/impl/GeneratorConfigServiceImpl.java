@@ -1,8 +1,8 @@
-package cc.mrbird.febs.generator.servie.impl;
+package cc.mrbird.febs.generator.service.impl;
 
 import cc.mrbird.febs.generator.entity.GeneratorConfig;
 import cc.mrbird.febs.generator.mapper.GeneratorConfigMapper;
-import cc.mrbird.febs.generator.servie.IGeneratorConfigService;
+import cc.mrbird.febs.generator.service.IGeneratorConfigService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;

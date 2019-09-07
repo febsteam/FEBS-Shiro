@@ -1,4 +1,4 @@
-package cc.mrbird.febs.generator.servie;
+package cc.mrbird.febs.generator.service;
 
 import cc.mrbird.febs.generator.entity.GeneratorConfig;
 import com.baomidou.mybatisplus.extension.service.IService;

@@ -1,5 +1,6 @@
 package cc.mrbird.febs.common.controller;
 
+import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.system.entity.User;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.shiro.SecurityUtils;
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 public class BaseController {
 
-    protected static Subject getSubject() {
+    protected Subject getSubject() {
         return SecurityUtils.getSubject();
     }
 
@@ -36,7 +37,11 @@ public class BaseController {
     }
 
     protected Map<String, Object> getDataTable(IPage<?> pageInfo) {
-        Map<String, Object> data = new HashMap<>();
+        return getDataTable(pageInfo, FebsConstant.DATA_MAP_INITIAL_CAPACITY);
+    }
+
+    protected Map<String, Object> getDataTable(IPage<?> pageInfo, int dataMapInitialCapacity) {
+        Map<String, Object> data = new HashMap<>(dataMapInitialCapacity);
         data.put("rows", pageInfo.getRecords());
         data.put("total", pageInfo.getTotal());
         return data;

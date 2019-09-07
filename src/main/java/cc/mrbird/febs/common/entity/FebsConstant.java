@@ -20,4 +20,10 @@ public class FebsConstant {
 
     // 允许下载的文件类型，根据需求自己添加（小写）
     public static final String[] VALID_FILE_TYPE = {"xlsx", "zip"};
+
+    /**
+     * {@link cc.mrbird.febs.common.controller.BaseController}
+     * getDataTable 中 HashMap 默认的初始化容量
+     */
+    public static final int DATA_MAP_INITIAL_CAPACITY = 4;
 }
