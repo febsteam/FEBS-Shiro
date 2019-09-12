@@ -10,7 +10,7 @@ import cc.mrbird.febs.monitor.entity.LoginLog;
 import cc.mrbird.febs.monitor.service.ILoginLogService;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IUserService;
-import com.wf.captcha.Captcha;
+import com.wf.captcha.base.Captcha;
 import org.apache.shiro.authc.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

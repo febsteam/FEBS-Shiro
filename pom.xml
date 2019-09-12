@@ -181,9 +181,10 @@
         <!-- 验证码生成插件 -->
         <dependency>
             <groupId>com.github.whvcse</groupId>
-            <artifactId>EasyCaptcha</artifactId>
-            <version>1.5.0</version>
+            <artifactId>easy-captcha</artifactId>
+            <version>1.6.2</version>
         </dependency>
+
 
         <!-- xss过滤 -->
         <dependency>
@@ -203,13 +204,6 @@
             <version>${swagger.ui}</version>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>EasyCaptcha repository</id>
-            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
-        </repository>
-    </repositories>
 
     <build>
         <plugins>

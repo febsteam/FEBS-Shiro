@@ -204,7 +204,7 @@
                 'arg': args
             }, function (r) {
                 var data = r.data;
-                if (r.code === 0) {
+                if (r.code === 200) {
                     if (data.length) {
                         for (var i = 0; i < data.length; i++) {
                             printf('"' + data[i] + '"\n');
@@ -227,7 +227,7 @@
                 'arg': args
             }, function (r) {
                 var data = r.data;
-                if (r.code === 0 && data !== '') {
+                if (r.code === 200 && data !== '') {
                     printf(data + "\n");
                 } else {
                     printf("(nil)\n");
