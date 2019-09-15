@@ -47,7 +47,3 @@ spring:
         max-wait: 10000
     # 连接超时时间（毫秒）
     timeout: 0
-
-logging:
-  level:
-    cc.mrbird.febs.common.handler: debug

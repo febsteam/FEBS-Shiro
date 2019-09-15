@@ -1,6 +1,6 @@
 package cc.mrbird.febs.monitor.controller;
 
-import cc.mrbird.febs.common.annotation.Log;
+import cc.mrbird.febs.common.annotation.ControllerEndpoint;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.exception.RedisConnectException;
 import cc.mrbird.febs.monitor.service.IRedisService;
@@ -37,22 +37,22 @@ public class RedisController {
         return redisService.getMemoryInfo();
     }
 
-    @Log("执行Redis keys命令")
     @GetMapping("keys")
+    @ControllerEndpoint(operation = "执行Redis keys命令")
     public FebsResponse keys(String arg) throws RedisConnectException {
         Set<String> set = this.redisService.getKeys(arg);
         return new FebsResponse().success().data(set);
     }
 
-    @Log("执行Redis get命令")
     @GetMapping("get")
+    @ControllerEndpoint(operation = "执行Redis get命令")
     public FebsResponse get(String arg) throws RedisConnectException {
         String result = this.redisService.get(arg);
         return new FebsResponse().success().data(result == null ? "" : result);
     }
 
-    @Log("执行Redis set命令")
     @GetMapping("set")
+    @ControllerEndpoint(operation = "执行Redis set命令")
     public FebsResponse set(String arg) throws RedisConnectException {
         String[] args = arg.split(",");
         if (args.length == 1)
@@ -63,16 +63,16 @@ public class RedisController {
         return new FebsResponse().success().data(result);
     }
 
-    @Log("执行Redis del命令")
     @GetMapping("del")
+    @ControllerEndpoint(operation = "执行Redis del命令")
     public FebsResponse del(String arg) throws RedisConnectException {
         String[] args = arg.split(",");
         Long result = this.redisService.del(args);
         return new FebsResponse().success().data(INTEGER_PREFIX + result);
     }
 
-    @Log("执行Redis exists命令")
     @GetMapping("exists")
+    @ControllerEndpoint(operation = "执行Redis exists命令")
     public FebsResponse exists(String arg) throws RedisConnectException {
         int count = 0;
         String[] arr = arg.split(",");
@@ -83,14 +83,14 @@ public class RedisController {
         return new FebsResponse().success().data(INTEGER_PREFIX + count);
     }
 
-    @Log("执行Redis pttl命令")
     @GetMapping("pttl")
+    @ControllerEndpoint(operation = "执行Redis pttl命令")
     public FebsResponse pttl(String arg) throws RedisConnectException {
         return new FebsResponse().success().data(INTEGER_PREFIX + this.redisService.pttl(arg));
     }
 
-    @Log("执行Redis pexpire命令")
     @GetMapping("pexpire")
+    @ControllerEndpoint(operation = "执行Redis pexpire命令")
     public FebsResponse pexpire(String arg) throws RedisConnectException {
         String[] arr = arg.split(",");
         if (arr.length != 2 || !isValidLong(arr[1])) {

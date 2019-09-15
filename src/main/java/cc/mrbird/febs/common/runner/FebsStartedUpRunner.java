@@ -13,7 +13,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
-import java.util.Arrays;
 
 /**
  * @author MrBird

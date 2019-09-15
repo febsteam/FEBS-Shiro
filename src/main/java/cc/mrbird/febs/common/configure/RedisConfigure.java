@@ -27,7 +27,6 @@ import redis.clients.jedis.JedisPoolConfig;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.Arrays;
 

@@ -1,9 +1,9 @@
 package cc.mrbird.febs.job.controller;
 
+import cc.mrbird.febs.common.annotation.ControllerEndpoint;
 import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.entity.QueryRequest;
-import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.job.entity.JobLog;
 import cc.mrbird.febs.job.service.IJobLogService;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
@@ -43,28 +43,18 @@ public class JobLogController extends BaseController {
 
     @GetMapping("delete/{jobIds}")
     @RequiresPermissions("job:log:delete")
-    public FebsResponse deleteJobLog(@NotBlank(message = "{required}") @PathVariable String jobIds) throws FebsException {
-        try {
-            String[] ids = jobIds.split(StringPool.COMMA);
-            this.jobLogService.deleteJobLogs(ids);
-            return new FebsResponse().success();
-        } catch (Exception e) {
-            String message = "删除调度日志失败";
-            log.error(message, e);
-            throw new FebsException(message);
-        }
+    @ControllerEndpoint(exceptionMessage = "删除调度日志失败")
+    public FebsResponse deleteJobLog(@NotBlank(message = "{required}") @PathVariable String jobIds) {
+        String[] ids = jobIds.split(StringPool.COMMA);
+        this.jobLogService.deleteJobLogs(ids);
+        return new FebsResponse().success();
     }
 
     @GetMapping("excel")
     @RequiresPermissions("job:log:export")
-    public void export(QueryRequest request, JobLog jobLog, HttpServletResponse response) throws FebsException {
-        try {
-            List<JobLog> jobLogs = this.jobLogService.findJobLogs(request, jobLog).getRecords();
-            ExcelKit.$Export(JobLog.class, response).downXlsx(jobLogs, false);
-        } catch (Exception e) {
-            String message = "导出Excel失败";
-            log.error(message, e);
-            throw new FebsException(message);
-        }
+    @ControllerEndpoint(exceptionMessage = "导出Excel失败")
+    public void export(QueryRequest request, JobLog jobLog, HttpServletResponse response) {
+        List<JobLog> jobLogs = this.jobLogService.findJobLogs(request, jobLog).getRecords();
+        ExcelKit.$Export(JobLog.class, response).downXlsx(jobLogs, false);
     }
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.List;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = FebsException.class)
     public FebsResponse handleFebsException(FebsException e) {
-        log.debug("系统错误", e);
+        log.error("系统错误", e);
         return new FebsResponse().code(HttpStatus.INTERNAL_SERVER_ERROR).message(e.getMessage());
     }
 
