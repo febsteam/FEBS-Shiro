@@ -7,6 +7,7 @@ import cc.mrbird.febs.common.exception.LimitAccessException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.session.ExpiredSessionException;
 import org.springframework.core.Ordered;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.List;
 import java.util.Set;
 
@@ -98,6 +98,13 @@ public class GlobalExceptionHandler {
         log.debug("AuthenticationException", e);
         return new FebsResponse().code(HttpStatus.INTERNAL_SERVER_ERROR).message(e.getMessage());
     }
+
+    @ExceptionHandler(value = AuthorizationException.class)
+    public FebsResponse handleAuthorizationException(AuthorizationException e){
+        log.debug("AuthorizationException", e);
+        return new FebsResponse().code(HttpStatus.UNAUTHORIZED).message(e.getMessage());
+    }
+
 
     @ExceptionHandler(value = ExpiredSessionException.class)
     public FebsResponse handleExpiredSessionException(ExpiredSessionException e) {
