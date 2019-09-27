@@ -28,7 +28,7 @@ public class AddressUtil {
             File file = new File(dbPath);
             if (!file.exists()) {
                 String tmpDir = System.getProperties().getProperty("java.io.tmpdir");
-                dbPath = tmpDir + "ip.db";
+                dbPath = tmpDir + File.separator + "ip.db";
                 file = new File(dbPath);
                 InputStream resourceAsStream = AddressUtil.class.getClassLoader().getResourceAsStream("classpath:ip2region/ip2region.db");
                 if (resourceAsStream != null) {
