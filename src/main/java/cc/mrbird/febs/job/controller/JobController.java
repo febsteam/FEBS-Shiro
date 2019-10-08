@@ -1,10 +1,9 @@
 package cc.mrbird.febs.job.controller;
 
-import cc.mrbird.febs.common.annotation.Log;
+import cc.mrbird.febs.common.annotation.ControllerEndpoint;
 import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.entity.QueryRequest;
-import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.job.entity.Job;
 import cc.mrbird.febs.job.service.IJobService;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
@@ -50,100 +49,59 @@ public class JobController extends BaseController {
         }
     }
 
-    @Log("新增定时任务")
     @PostMapping
     @RequiresPermissions("job:add")
-    public FebsResponse addJob(@Valid Job job) throws FebsException {
-        try {
-            this.jobService.createJob(job);
-            return new FebsResponse().success();
-        } catch (Exception e) {
-            String message = "新增定时任务失败";
-            log.error(message, e);
-            throw new FebsException(message);
-        }
+    @ControllerEndpoint(operation = "新增定时任务", exceptionMessage = "新增定时任务失败")
+    public FebsResponse addJob(@Valid Job job) {
+        this.jobService.createJob(job);
+        return new FebsResponse().success();
     }
 
-    @Log("删除定时任务")
     @GetMapping("delete/{jobIds}")
     @RequiresPermissions("job:delete")
-    public FebsResponse deleteJob(@NotBlank(message = "{required}") @PathVariable String jobIds) throws FebsException {
-        try {
-            String[] ids = jobIds.split(StringPool.COMMA);
-            this.jobService.deleteJobs(ids);
-            return new FebsResponse().success();
-        } catch (Exception e) {
-            String message = "删除定时任务失败";
-            log.error(message, e);
-            throw new FebsException(message);
-        }
+    @ControllerEndpoint(operation = "删除定时任务", exceptionMessage = "删除定时任务失败")
+    public FebsResponse deleteJob(@NotBlank(message = "{required}") @PathVariable String jobIds) {
+        String[] ids = jobIds.split(StringPool.COMMA);
+        this.jobService.deleteJobs(ids);
+        return new FebsResponse().success();
     }
 
-    @Log("修改定时任务")
     @PostMapping("update")
-    public FebsResponse updateJob(@Valid Job job) throws FebsException {
-        try {
-            this.jobService.updateJob(job);
-            return new FebsResponse().success();
-        } catch (Exception e) {
-            String message = "修改定时任务失败";
-            log.error(message, e);
-            throw new FebsException(message);
-        }
+    @ControllerEndpoint(operation = "修改定时任务", exceptionMessage = "修改定时任务失败")
+    public FebsResponse updateJob(@Valid Job job) {
+        this.jobService.updateJob(job);
+        return new FebsResponse().success();
     }
 
-    @Log("执行定时任务")
-    @RequiresPermissions("job:run")
     @GetMapping("run/{jobIds}")
-    public FebsResponse runJob(@NotBlank(message = "{required}") @PathVariable String jobIds) throws FebsException {
-        try {
-            this.jobService.run(jobIds);
-            return new FebsResponse().success();
-        } catch (Exception e) {
-            String message = "执行定时任务失败";
-            log.error(message, e);
-            throw new FebsException(message);
-        }
+    @RequiresPermissions("job:run")
+    @ControllerEndpoint(operation = "执行定时任务", exceptionMessage = "执行定时任务失败")
+    public FebsResponse runJob(@NotBlank(message = "{required}") @PathVariable String jobIds) {
+        this.jobService.run(jobIds);
+        return new FebsResponse().success();
     }
 
-    @Log("暂停定时任务")
     @GetMapping("pause/{jobIds}")
     @RequiresPermissions("job:pause")
-    public FebsResponse pauseJob(@NotBlank(message = "{required}") @PathVariable String jobIds) throws FebsException {
-        try {
-            this.jobService.pause(jobIds);
-            return new FebsResponse().success();
-        } catch (Exception e) {
-            String message = "暂停定时任务失败";
-            log.error(message, e);
-            throw new FebsException(message);
-        }
+    @ControllerEndpoint(operation = "暂停定时任务", exceptionMessage = "暂停定时任务失败")
+    public FebsResponse pauseJob(@NotBlank(message = "{required}") @PathVariable String jobIds) {
+        this.jobService.pause(jobIds);
+        return new FebsResponse().success();
     }
 
-    @Log("恢复定时任务")
     @GetMapping("resume/{jobIds}")
     @RequiresPermissions("job:resume")
-    public FebsResponse resumeJob(@NotBlank(message = "{required}") @PathVariable String jobIds) throws FebsException {
-        try {
-            this.jobService.resume(jobIds);
-            return new FebsResponse().success();
-        } catch (Exception e) {
-            String message = "恢复定时任务失败";
-            log.error(message, e);
-            throw new FebsException(message);
-        }
+    @ControllerEndpoint(operation = "恢复定时任务", exceptionMessage = "恢复定时任务失败")
+    public FebsResponse resumeJob(@NotBlank(message = "{required}") @PathVariable String jobIds) {
+        this.jobService.resume(jobIds);
+        return new FebsResponse().success();
     }
 
     @GetMapping("excel")
     @RequiresPermissions("job:export")
-    public void export(QueryRequest request, Job job, HttpServletResponse response) throws FebsException {
-        try {
-            List<Job> jobs = this.jobService.findJobs(request, job).getRecords();
-            ExcelKit.$Export(Job.class, response).downXlsx(jobs, false);
-        } catch (Exception e) {
-            String message = "导出Excel失败";
-            log.error(message, e);
-            throw new FebsException(message);
-        }
+    @ControllerEndpoint(exceptionMessage = "导出Excel失败")
+    public void export(QueryRequest request, Job job, HttpServletResponse response) {
+        List<Job> jobs = this.jobService.findJobs(request, job).getRecords();
+        ExcelKit.$Export(Job.class, response).downXlsx(jobs, false);
     }
 }

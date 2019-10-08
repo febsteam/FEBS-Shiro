@@ -7,6 +7,7 @@ import cc.mrbird.febs.common.exception.LimitAccessException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.session.ExpiredSessionException;
 import org.springframework.core.Ordered;
@@ -40,7 +41,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = FebsException.class)
     public FebsResponse handleFebsException(FebsException e) {
-        log.debug("系统错误", e);
+        log.error("系统错误", e);
         return new FebsResponse().code(HttpStatus.INTERNAL_SERVER_ERROR).message(e.getMessage());
     }
 
@@ -97,6 +98,13 @@ public class GlobalExceptionHandler {
         log.debug("AuthenticationException", e);
         return new FebsResponse().code(HttpStatus.INTERNAL_SERVER_ERROR).message(e.getMessage());
     }
+
+    @ExceptionHandler(value = AuthorizationException.class)
+    public FebsResponse handleAuthorizationException(AuthorizationException e){
+        log.debug("AuthorizationException", e);
+        return new FebsResponse().code(HttpStatus.UNAUTHORIZED).message(e.getMessage());
+    }
+
 
     @ExceptionHandler(value = ExpiredSessionException.class)
     public FebsResponse handleExpiredSessionException(ExpiredSessionException e) {

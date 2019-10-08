@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class BaseController {
 
-    protected Subject getSubject() {
+    private Subject getSubject() {
         return SecurityUtils.getSubject();
     }
 

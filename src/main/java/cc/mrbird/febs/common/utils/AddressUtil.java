@@ -1,6 +1,7 @@
 package cc.mrbird.febs.common.utils;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbSearcher;
@@ -10,8 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.Objects;
 
 /**
  * @author MrBird
@@ -27,9 +28,12 @@ public class AddressUtil {
             File file = new File(dbPath);
             if (!file.exists()) {
                 String tmpDir = System.getProperties().getProperty("java.io.tmpdir");
-                dbPath = tmpDir + "ip.db";
+                dbPath = tmpDir + File.separator + "ip.db";
                 file = new File(dbPath);
-                FileUtils.copyInputStreamToFile(Objects.requireNonNull(AddressUtil.class.getClassLoader().getResourceAsStream("classpath:ip2region/ip2region.db")), file);
+                InputStream resourceAsStream = AddressUtil.class.getClassLoader().getResourceAsStream("classpath:ip2region/ip2region.db");
+                if (resourceAsStream != null) {
+                    FileUtils.copyInputStreamToFile(resourceAsStream, file);
+                }
             }
             DbConfig config = new DbConfig();
             searcher = new DbSearcher(config, file.getPath());
@@ -40,9 +44,10 @@ public class AddressUtil {
             DataBlock dataBlock = (DataBlock) method.invoke(searcher, ip);
             return dataBlock.getRegion();
         } catch (Exception e) {
-            log.error("获取地址信息异常", e);
-        }finally {
-            if (searcher !=null) {
+            log.error("获取地址信息异常，{}", e.getMessage());
+            return StringUtils.EMPTY;
+        } finally {
+            if (searcher != null) {
                 try {
                     searcher.close();
                 } catch (IOException e) {
@@ -50,7 +55,5 @@ public class AddressUtil {
                 }
             }
         }
-        return "";
     }
-
 }

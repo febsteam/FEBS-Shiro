@@ -18,7 +18,7 @@ import java.util.Date;
 @Data
 @TableName("t_log")
 @Excel("系统日志表")
-public class Log implements Serializable {
+public class SystemLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

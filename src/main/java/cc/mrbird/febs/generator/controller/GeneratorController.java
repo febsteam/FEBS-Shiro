@@ -1,10 +1,10 @@
 package cc.mrbird.febs.generator.controller;
 
+import cc.mrbird.febs.common.annotation.ControllerEndpoint;
 import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.common.exception.FebsException;
-import cc.mrbird.febs.common.exception.FileDownloadException;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.common.utils.FileUtil;
 import cc.mrbird.febs.generator.entity.Column;
@@ -14,6 +14,8 @@ import cc.mrbird.febs.generator.helper.GeneratorHelper;
 import cc.mrbird.febs.generator.service.IGeneratorConfigService;
 import cc.mrbird.febs.generator.service.IGeneratorService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RegExUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,40 +53,35 @@ public class GeneratorController extends BaseController {
 
     @GetMapping
     @RequiresPermissions("generator:generate")
-    public void generate(@NotBlank(message = "{required}") String name, String remark, HttpServletResponse response) throws FileDownloadException {
-        try {
-            GeneratorConfig generatorConfig = generatorConfigService.findGeneratorConfig();
-            if (generatorConfig == null) {
-                throw new FebsException("代码生成配置为空");
-            }
-
-            String className = name;
-            if (GeneratorConfig.TRIM_YES.equals(generatorConfig.getIsTrim())) {
-                className = name.replaceFirst(generatorConfig.getTrimValue(), "");
-            }
-
-            generatorConfig.setTableName(name);
-            generatorConfig.setClassName(FebsUtil.underscoreToCamel(className));
-            generatorConfig.setTableComment(remark);
-            // 生成代码到临时目录
-            List<Column> columns = generatorService.getColumns(GeneratorConstant.DATABASE_TYPE, GeneratorConstant.DATABASE_NAME, name);
-            generatorHelper.generateEntityFile(columns, generatorConfig);
-            generatorHelper.generateMapperFile(columns, generatorConfig);
-            generatorHelper.generateMapperXmlFile(columns, generatorConfig);
-            generatorHelper.generateServiceFile(columns, generatorConfig);
-            generatorHelper.generateServiceImplFile(columns, generatorConfig);
-            generatorHelper.generateControllerFile(columns, generatorConfig);
-            // 打包
-            String zipFile = System.currentTimeMillis() + SUFFIX;
-            FileUtil.compress(GeneratorConstant.TEMP_PATH + "src", zipFile);
-            // 下载
-            FileUtil.download(zipFile, name + SUFFIX, true, response);
-            // 删除临时目录
-            FileUtil.delete(GeneratorConstant.TEMP_PATH);
-        } catch (Exception e) {
-            String message = "代码生成失败，" + e.getMessage();
-            log.error(message, e);
-            throw new FileDownloadException(message);
+    @ControllerEndpoint(exceptionMessage = "代码生成失败")
+    public void generate(@NotBlank(message = "{required}") String name, String remark, HttpServletResponse response) throws Exception {
+        GeneratorConfig generatorConfig = generatorConfigService.findGeneratorConfig();
+        if (generatorConfig == null) {
+            throw new FebsException("代码生成配置为空");
         }
+
+        String className = name;
+        if (GeneratorConfig.TRIM_YES.equals(generatorConfig.getIsTrim())) {
+            className = RegExUtils.replaceFirst(name, generatorConfig.getTrimValue(), StringUtils.EMPTY);
+        }
+
+        generatorConfig.setTableName(name);
+        generatorConfig.setClassName(FebsUtil.underscoreToCamel(className));
+        generatorConfig.setTableComment(remark);
+        // 生成代码到临时目录
+        List<Column> columns = generatorService.getColumns(GeneratorConstant.DATABASE_TYPE, GeneratorConstant.DATABASE_NAME, name);
+        generatorHelper.generateEntityFile(columns, generatorConfig);
+        generatorHelper.generateMapperFile(columns, generatorConfig);
+        generatorHelper.generateMapperXmlFile(columns, generatorConfig);
+        generatorHelper.generateServiceFile(columns, generatorConfig);
+        generatorHelper.generateServiceImplFile(columns, generatorConfig);
+        generatorHelper.generateControllerFile(columns, generatorConfig);
+        // 打包
+        String zipFile = System.currentTimeMillis() + SUFFIX;
+        FileUtil.compress(GeneratorConstant.TEMP_PATH + "src", zipFile);
+        // 下载
+        FileUtil.download(zipFile, name + SUFFIX, true, response);
+        // 删除临时目录
+        FileUtil.delete(GeneratorConstant.TEMP_PATH);
     }
 }

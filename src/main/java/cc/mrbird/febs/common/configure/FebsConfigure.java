@@ -1,5 +1,6 @@
 package cc.mrbird.febs.common.configure;
 
+import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.properties.FebsProperties;
 import cc.mrbird.febs.common.properties.SwaggerProperties;
 import cc.mrbird.febs.common.xss.XssFilter;
@@ -31,7 +32,7 @@ public class FebsConfigure {
     @Autowired
     private FebsProperties properties;
 
-    @Bean("febsAsyncThreadPool")
+    @Bean(FebsConstant.ASYNC_POOL)
     public ThreadPoolTaskExecutor asyncThreadPoolTaskExecutor(){
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(5);

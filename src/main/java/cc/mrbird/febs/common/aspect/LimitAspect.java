@@ -3,6 +3,7 @@ package cc.mrbird.febs.common.aspect;
 import cc.mrbird.febs.common.annotation.Limit;
 import cc.mrbird.febs.common.entity.LimitType;
 import cc.mrbird.febs.common.exception.LimitAccessException;
+import cc.mrbird.febs.common.utils.HttpContextUtil;
 import cc.mrbird.febs.common.utils.IPUtil;
 import com.google.common.collect.ImmutableList;
 import lombok.extern.slf4j.Slf4j;
@@ -11,19 +12,15 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Objects;
 
 
 /**
@@ -34,7 +31,7 @@ import java.util.Objects;
 @Slf4j
 @Aspect
 @Component
-public class LimitAspect {
+public class LimitAspect extends AspectSupport {
 
     private final RedisTemplate<String, Serializable> limitRedisTemplate;
 
@@ -45,15 +42,12 @@ public class LimitAspect {
 
     @Pointcut("@annotation(cc.mrbird.febs.common.annotation.Limit)")
     public void pointcut() {
-        // do nothing
     }
 
     @Around("pointcut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
-        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-
-        MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = signature.getMethod();
+        HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
+        Method method = resolveMethod(point);
         Limit limitAnnotation = method.getAnnotation(Limit.class);
         LimitType limitType = limitAnnotation.limitType();
         String name = limitAnnotation.name();

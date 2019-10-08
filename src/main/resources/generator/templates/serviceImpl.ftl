@@ -1,5 +1,6 @@
 package ${basePackage}.${serviceImplPackage};
 
+import cc.mrbird.febs.common.entity.QueryRequest;
 import ${basePackage}.${entityPackage}.${className};
 import ${basePackage}.${mapperPackage}.${className}Mapper;
 import ${basePackage}.${servicePackage}.I${className}Service;
@@ -56,8 +57,8 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
     @Override
     @Transactional
     public void delete${className}(${className} ${className?uncap_first}) {
-        LambdaQueryWrapper<${className}> wapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<${className}> wrapper = new LambdaQueryWrapper<>();
 	    // TODO 设置删除条件
-	    this.remove(wapper);
+	    this.remove(wrapper);
 	}
 }

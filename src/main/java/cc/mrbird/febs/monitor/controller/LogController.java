@@ -1,10 +1,10 @@
 package cc.mrbird.febs.monitor.controller;
 
+import cc.mrbird.febs.common.annotation.ControllerEndpoint;
 import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.entity.QueryRequest;
-import cc.mrbird.febs.common.exception.FebsException;
-import cc.mrbird.febs.monitor.entity.Log;
+import cc.mrbird.febs.monitor.entity.SystemLog;
 import cc.mrbird.febs.monitor.service.ILogService;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.wuwenze.poi.ExcelKit;
@@ -34,35 +34,25 @@ public class LogController extends BaseController {
 
     @GetMapping("list")
     @RequiresPermissions("log:view")
-    public FebsResponse logList(Log log, QueryRequest request) {
+    public FebsResponse logList(SystemLog log, QueryRequest request) {
         Map<String, Object> dataTable = getDataTable(this.logService.findLogs(log, request));
         return new FebsResponse().success().data(dataTable);
     }
 
     @GetMapping("delete/{ids}")
     @RequiresPermissions("log:delete")
-    public FebsResponse deleteLogss(@NotBlank(message = "{required}") @PathVariable String ids) throws FebsException {
-        try {
-            String[] logIds = ids.split(StringPool.COMMA);
-            this.logService.deleteLogs(logIds);
-            return new FebsResponse().success();
-        } catch (Exception e) {
-            String message = "删除日志失败";
-            log.error(message, e);
-            throw new FebsException(message);
-        }
+    @ControllerEndpoint(exceptionMessage = "删除日志失败")
+    public FebsResponse deleteLogss(@NotBlank(message = "{required}") @PathVariable String ids) {
+        String[] logIds = ids.split(StringPool.COMMA);
+        this.logService.deleteLogs(logIds);
+        return new FebsResponse().success();
     }
 
     @GetMapping("excel")
     @RequiresPermissions("log:export")
-    public void export(QueryRequest request, Log lg, HttpServletResponse response) throws FebsException {
-        try {
-            List<Log> logs = this.logService.findLogs(lg, request).getRecords();
-            ExcelKit.$Export(Log.class, response).downXlsx(logs, false);
-        } catch (Exception e) {
-            String message = "导出Excel失败";
-            log.error(message, e);
-            throw new FebsException(message);
-        }
+    @ControllerEndpoint(exceptionMessage = "导出Excel失败")
+    public void export(QueryRequest request, SystemLog lg, HttpServletResponse response) {
+        List<SystemLog> logs = this.logService.findLogs(lg, request).getRecords();
+        ExcelKit.$Export(SystemLog.class, response).downXlsx(logs, false);
     }
 }
