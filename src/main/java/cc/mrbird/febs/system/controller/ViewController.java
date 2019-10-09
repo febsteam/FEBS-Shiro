@@ -50,7 +50,6 @@ public class ViewController extends BaseController {
     }
 
 
-
     @GetMapping("/")
     public String redirectIndex() {
         return "redirect:/index";
@@ -60,10 +59,11 @@ public class ViewController extends BaseController {
     public String index(Model model) {
         AuthorizationInfo authorizationInfo = shiroHelper.getCurrentuserAuthorizationInfo();
         User user = super.getCurrentUser();
-        user.setPassword("It's a secret");
-        model.addAttribute("user", userService.findByName(user.getUsername())); // 获取实时的用户信息
+        User currentUserDetail = userService.findByName(user.getUsername());
+        currentUserDetail.setPassword("It's a secret");
+        model.addAttribute("user", currentUserDetail);
         model.addAttribute("permissions", authorizationInfo.getStringPermissions());
-        model.addAttribute("roles",authorizationInfo.getRoles());
+        model.addAttribute("roles", authorizationInfo.getRoles());
         return "index";
     }
 
