@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>FEBS 权限系统</title>
+    <title>FEBS [[#{login.logo}]]</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -19,31 +19,31 @@
         <div class="layui-container">
             <div class="layui-row">
                 <div class="layui-col-xs12 layui-col-lg4 layui-col-lg-offset4 febs-tc">
-                    <div class="layui-logo"><span><b>FEBS</b> 权限系统</span></div>
+                    <div class="layui-logo"><span><b>FEBS</b> <label th:text="#{login.logo}"/></span></div>
                 </div>
                 <div class="layui-col-xs12 layui-col-lg4 layui-col-lg-offset4" id="login-div">
                     <div class="layui-form" lay-filter="login-form">
                         <div class="layui-anim layui-anim-upbit">
                             <ul class="login-type-tab">
-                                <li class="active">系统登录</li>
+                                <li class="active"><label th:text="#{login.text}"/></li>
                             </ul>
                             <div class="normal-login-form">
                                 <div class="layui-form-item">
                                     <label class="layui-icon label-icon layui-icon-username"></label>
                                     <input type="text" name="username" lay-verify="required"
-                                           placeholder="用户名" autocomplete="off" class="layui-input">
+                                           th:placeholder="#{login.username}" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-form-item password-block">
                                     <label class="layui-icon label-icon layui-icon-password"></label>
                                     <input type="password" name="password" lay-verify="required"
-                                           placeholder="密码" autocomplete="off" class="layui-input">
+                                           th:placeholder="#{login.pwd}" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-row">
                                         <div class="layui-col-xs7">
                                             <label class="layui-icon label-icon layui-icon-vercode"></label>
                                             <input type="text" maxlength="4" name="verifyCode" lay-verify="required"
-                                                   placeholder="验证码" class="layui-input" autocomplete="off">
+                                                   th:placeholder="#{login.yzm}" class="layui-input" autocomplete="off">
                                         </div>
                                         <div class="layui-col-xs5">
                                             <img class="codeimg" id="codeimg"/>
@@ -51,19 +51,25 @@
                                     </div>
                                 </div>
                                 <div class="layui-form-item" style="margin-top: -10px;">
-                                    <input type="checkbox" name="rememberMe" title="记住我" lay-skin="primary">
+                                    <input type="checkbox" name="rememberMe" th:title="#{login.remember}" lay-skin="primary">
                                 </div>
                                 <div class="layui-form-item">
                                     <button class="layui-btn layui-btn-normal layui-btn-fluid" lay-submit
                                             lay-filter="login-submit" id="login">
                                         <i style="display: none"
                                            class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop"></i>
-                                        立即登录
+                                        [[#{login.login}]]
                                     </button>
                                 </div>
                             </div>
-                            <div class="layui-form-item febs-tr">
-                                <a id="regist-href">注册账号</a>
+                            <div class="layui-form-item">
+                                <div class="layui-col-md4 layui-col-md-offset4">
+                                    <a id="lang-chinese" th:href="@{/login(lang='zh_CN')}">中文</a> |
+                                    <a id="lang-english" th:href="@{/login(lang='en_US')}">English</a>
+                                </div>
+                                <div class="febs-tr">
+                                    <a id="regist-href">[[#{login.register}]]</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -112,7 +118,8 @@
 </div>
 <script th:src="@{layui/layui.js}"></script>
 <script th:inline="javascript">
-    var ctx = [[@{/}]];
+    var ctx = [[@{
+        /}]];
 
         layui.extend({
             validate: './febs/lay/modules/validate'

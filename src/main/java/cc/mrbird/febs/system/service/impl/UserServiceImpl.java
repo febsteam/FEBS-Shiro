@@ -163,11 +163,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     @Transactional
-    public void updateTheme(String username, String theme, String isTab) {
+    public void updateTheme(String username, String theme, String isTab, String i18n) {
         User user = new User();
         user.setTheme(theme);
         user.setIsTab(isTab);
         user.setModifyTime(new Date());
+        user.setI18n(i18n);
+
         this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
     }
 

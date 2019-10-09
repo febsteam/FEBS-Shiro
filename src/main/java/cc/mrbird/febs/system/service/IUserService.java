@@ -4,6 +4,7 @@ import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.system.entity.User;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author MrBird
@@ -100,8 +101,9 @@ public interface IUserService extends IService<User> {
      * @param username 用户名称
      * @param theme    主题风格
      * @param isTab    是否开启 TAB
+     * @param i18n     是否开始国际化
      */
-    void updateTheme(String username, String theme, String isTab);
+    void updateTheme(String username, String theme, String isTab, String i18n);
 
     /**
      * 更新个人信息

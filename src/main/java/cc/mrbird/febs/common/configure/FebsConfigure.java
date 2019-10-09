@@ -32,8 +32,9 @@ public class FebsConfigure {
     @Autowired
     private FebsProperties properties;
 
+
     @Bean(FebsConstant.ASYNC_POOL)
-    public ThreadPoolTaskExecutor asyncThreadPoolTaskExecutor(){
+    public ThreadPoolTaskExecutor asyncThreadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(5);
         executor.setMaxPoolSize(20);

@@ -49,6 +49,8 @@ public class User implements Serializable {
     public static final String TAB_OPEN = "1";
     // TAB关闭
     public static final String TAB_CLOSE = "0";
+    // 国际化关闭
+    public static final String I18N_CLOSE = "0";
 
 
     /**
@@ -149,6 +151,12 @@ public class User implements Serializable {
      */
     @TableField("IS_TAB")
     private String isTab;
+
+    /**
+     * 是否开启国际化 0开启，1关闭
+     */
+    @TableField("I18N")
+    private String i18n;
 
     /**
      * 描述

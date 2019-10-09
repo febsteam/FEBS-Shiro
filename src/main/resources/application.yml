@@ -6,6 +6,11 @@ server:
 spring:
   profiles:
     active: dev
+  messages:
+    basename: i18n/message
+  devtools:
+    restart:
+      enabled: false
 
   thymeleaf:
     cache: false

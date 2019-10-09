@@ -9,6 +9,7 @@ import cc.mrbird.febs.common.utils.MD5Util;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IUserService;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.sun.org.apache.regexp.internal.RE;
 import com.wuwenze.poi.ExcelKit;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +17,10 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -73,8 +77,9 @@ public class UserController extends BaseController {
     @RequiresPermissions("user:update")
     @ControllerEndpoint(operation = "修改用户", exceptionMessage = "修改用户失败")
     public FebsResponse updateUser(@Valid User user) {
-        if (user.getUserId() == null)
+        if (user.getUserId() == null) {
             throw new FebsException("用户ID为空");
+        }
         this.userService.updateUser(user);
         return new FebsResponse().success();
     }
@@ -111,9 +116,11 @@ public class UserController extends BaseController {
 
     @PostMapping("theme/update")
     @ControllerEndpoint(exceptionMessage = "修改系统配置失败")
-    public FebsResponse updateTheme(String theme, String isTab) {
+    public FebsResponse updateTheme(HttpServletRequest request, HttpServletResponse response, String theme, String isTab, String lang) {
         User user = getCurrentUser();
-        this.userService.updateTheme(user.getUsername(), theme, isTab);
+        this.userService.updateTheme(user.getUsername(), theme, isTab, lang);
+        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+        localeResolver.setLocale(request, response, RequestContextUtils.getLocale(request));
         return new FebsResponse().success();
     }
 

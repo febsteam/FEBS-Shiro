@@ -124,6 +124,15 @@
                                 <input type="radio" name="isTab" lay-filter="tab" value="0" title="关闭">
                             </div>
                         </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">语言设置：</label>
+                            <div class="layui-input-block">
+                                <select name="lang" lay-verify="required" lay-filter="i18n">
+                                    <option value="zh_CN">中文</option>
+                                    <option value="en_US">英文</option>
+                                </select>
+                            </div>
+                        </div>
                         <button class="febs-hide" lay-submit="" lay-filter="system-setting-form-submit"
                                 id="submit-form"></button>
                     </form>
@@ -142,10 +151,10 @@
             form = layui.form,
             _currentData = {
                 theme: currentUser.theme,
-                isTab: currentUser.isTab
+                isTab: currentUser.isTab,
+                lang: currentUser.i18n
             },
             $view = $('#febs-user-profile');
-
         form.render();
         initSettings();
 
@@ -192,7 +201,7 @@
             }
             febs.post(ctx + 'user/theme/update', data.field, function () {
                 _currentData = data.field;
-                febs.modal.confirm('修改成功','是否马上刷新页面生效？',function () {
+                febs.modal.confirm('修改成功', '是否马上刷新页面生效？', function () {
                     window.location.reload();
                 });
             });
