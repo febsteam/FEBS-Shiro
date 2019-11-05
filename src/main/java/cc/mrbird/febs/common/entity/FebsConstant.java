@@ -7,6 +7,9 @@ package cc.mrbird.febs.common.entity;
  */
 public class FebsConstant {
 
+    // 注册用户角色ID
+    public static final Long REGISTER_ROLE_ID = 2L;
+
     // 排序规则：降序
     public static final String ORDER_DESC = "desc";
     // 排序规则：升序

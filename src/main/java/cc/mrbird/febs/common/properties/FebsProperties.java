@@ -18,4 +18,6 @@ public class FebsProperties {
     private boolean autoOpenBrowser = true;
     private String[] autoOpenBrowserEnv = {};
     private SwaggerProperties swagger = new SwaggerProperties();
+
+    private int maxBatchInsertNum = 1000;
 }

@@ -5,8 +5,8 @@ import cc.mrbird.febs.common.entity.MenuTree;
 import cc.mrbird.febs.common.utils.TreeUtil;
 import cc.mrbird.febs.system.entity.Menu;
 import cc.mrbird.febs.system.mapper.MenuMapper;
-import cc.mrbird.febs.system.mapper.RoleMenuMapper;
 import cc.mrbird.febs.system.service.IMenuService;
+import cc.mrbird.febs.system.service.IRoleMenuService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -31,7 +31,7 @@ import java.util.List;
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
 
     @Autowired
-    private RoleMenuMapper roleMenuMapper;
+    private IRoleMenuService roleMenuService;
     @Autowired
     private ShiroRealm shiroRealm;
 
@@ -123,6 +123,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     }
 
     private void delete(List<String> menuIds) {
+        List<String> list = new ArrayList<>(menuIds);
         removeByIds(menuIds);
 
         LambdaQueryWrapper<Menu> queryWrapper = new LambdaQueryWrapper<>();
@@ -131,7 +132,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         if (CollectionUtils.isNotEmpty(menus)) {
             List<String> menuIdList = new ArrayList<>();
             menus.forEach(m -> menuIdList.add(String.valueOf(m.getMenuId())));
+            list.addAll(menuIdList);
+            this.roleMenuService.deleteRoleMenusByMenuId(list);
             this.delete(menuIdList);
+        } else {
+            this.roleMenuService.deleteRoleMenusByMenuId(list);
         }
     }
 }

@@ -73,11 +73,15 @@
                     if(!data || data.length == 0) return '';
                     var html = '
                     <dl class="layui-nav-child">';
-                        layui.each(data,function(i,child){
+                        layui.each(data, function(i, child) {
                         var left = index == 0 ? 50 : 50 + index * 20;
+                        var title = child.title;
+                        if (child.icon) {
+                            title = '<i class="layui-icon '+child.icon+'"></i>' + child.title
+                        }
                         html += '
                         <dd><a style="padding-left:' + left + 'px" target="'+(child.target||'')+'"
-                               lay-href="'+ (child.href||'') +'">' + child.title + '</a>';
+                               lay-href="'+ (child.href||'') +'">' + title + '</a>';
                             if(child.childs) html += __createSlidebar(child.childs,index+1);
                             html += '</dd>';
                         });
