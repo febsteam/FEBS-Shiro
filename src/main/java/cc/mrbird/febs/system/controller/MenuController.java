@@ -35,8 +35,9 @@ public class MenuController extends BaseController {
     @GetMapping("{username}")
     public FebsResponse getUserMenus(@NotBlank(message = "{required}") @PathVariable String username) throws FebsException {
         User currentUser = getCurrentUser();
-        if (!StringUtils.equalsIgnoreCase(username, currentUser.getUsername()))
+        if (!StringUtils.equalsIgnoreCase(username, currentUser.getUsername())) {
             throw new FebsException("您无权获取别人的菜单");
+        }
         MenuTree<Menu> userMenus = this.menuService.findUserMenus(username);
         return new FebsResponse().data(userMenus);
     }

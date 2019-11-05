@@ -1,0 +1,275 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-user" lay-title="国际化管理">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="user-table-form">
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">语言</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="username" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">Key</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="createTime" id="createTime" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="query">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="reset">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more"
+                                     shiro:hasAnyPermissions="user:add,user:update,user:password:reset,user:export">
+                                    <i class="layui-icon">&#xe875;</i>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <table lay-filter="userTable" lay-data="{id: 'userTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="user-status">
+    {{#
+    var status = {
+    1: {title: '有效', color: 'green'},
+    0: {title: '禁用', color: 'volcano'}
+    }[d.status];
+    }}
+    <span class="layui-badge febs-tag-{{status.color}}">{{ status.title }}</span>
+</script>
+<script type="text/html" id="user-sex">
+    {{#
+    var sex = {
+    2: {title: '保密'},
+    1: {title: '女'},
+    0: {title: '男'}
+    }[d.sex];
+    }}
+    <span>{{ sex.title }}</span>
+</script>
+<script type="text/html" id="user-option">
+    <span shiro:lacksPermission="user:view,user:update,user:delete">
+        <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+    </span>
+    <a lay-event="detail" shiro:hasPermission="user:view"><i
+            class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
+    <a lay-event="edit" shiro:hasPermission="user:update"><i
+            class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
+    <a lay-event="del" shiro:hasPermission="user:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'treeSelect'], function () {
+        var $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            treeSelect = layui.treeSelect,
+            dropdown = layui.dropdown,
+            $view = $('#febs-user'),
+            $query = $view.find('#query'),
+            $reset = $view.find('#reset'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'createTime', type: null},
+            tableIns;
+
+        form.render();
+
+        initTable();
+
+        laydate.render({
+            elem: '#createTime',
+            range: true,
+            trigger: 'click'
+        });
+
+        dropdown.render({
+            elem: $view.find('.action-more'),
+            click: function (name, elem, event) {
+                var checkStatus = table.checkStatus('userTable');
+                if (name === 'add') {
+                    febs.modal.open('新增用户', 'system/user/add', {
+                        btn: ['提交', '重置'],
+                        area: $(window).width() <= 750 ? '95%' : '50%',
+                        yes: function (index, layero) {
+                            $('#user-add').find('#submit').trigger('click');
+                        },
+                        btn2: function () {
+                            $('#user-add').find('#reset').trigger('click');
+                            return false;
+                        }
+                    });
+                }
+                if (name === 'delete') {
+                    if (!checkStatus.data.length) {
+                        febs.alert.warn('请选择需要删除的用户');
+                    } else {
+                        febs.modal.confirm('删除用户', '确定删除该用户？', function () {
+                            var userIds = [];
+                            layui.each(checkStatus.data, function (key, item) {
+                                userIds.push(item.userId)
+                            });
+                            deleteUsers(userIds.join(','));
+                        });
+                    }
+                }
+                if (name === 'reset') {
+                    if (!checkStatus.data.length) {
+                        febs.alert.warn('请选择需要重置密码的用户');
+                    } else {
+                        var usernames = [];
+                        layui.each(checkStatus.data, function (key, item) {
+                            usernames.push(item.username)
+                        });
+                        febs.post(ctx + 'user/password/reset/' + usernames.join(','), null, function () {
+                            febs.alert.success('所选用户密码已重置为1234qwer');
+                        });
+                    }
+                }
+                if (name === 'export') {
+                    var params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+                    params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
+                    params.pageNum = $view.find(".layui-laypage-em").next().html();
+                    febs.download(ctx + 'user/excel', params, '用户信息表.xlsx');
+                }
+            },
+            options: [{
+                name: 'add',
+                title: '新增用户',
+                perms: 'user:add'
+            }, {
+                name: 'delete',
+                title: '删除用户',
+                perms: 'user:delete'
+            }, {
+                name: 'reset',
+                title: '密码重置',
+                perms: 'user:password:reset'
+            }, {
+                name: 'export',
+                title: '导出Excel',
+                perms: 'user:export'
+            }]
+        });
+
+        treeSelect.render({
+            elem: $view.find('#dept'),
+            type: 'get',
+            data: ctx + 'dept/select/tree',
+            placeholder: '请选择',
+            search: false
+        });
+
+        table.on('tool(userTable)', function (obj) {
+            var data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'detail') {
+                febs.modal.view('用户信息', 'system/user/detail/' + data.username, {
+                    area: $(window).width() <= 750 ? '95%' : '660px'
+                });
+            }
+            if (layEvent === 'del') {
+                febs.modal.confirm('删除用户', '确定删除该用户？', function () {
+                    deleteUsers(data.userId);
+                });
+            }
+            if (layEvent === 'edit') {
+                febs.modal.open('修改用户', 'system/user/update/' + data.username, {
+                    area: $(window).width() <= 750 ? '90%' : '50%',
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        $('#user-update').find('#submit').trigger('click');
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+        });
+
+        table.on('sort(userTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+        $query.on('click', function () {
+            var params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            treeSelect.revokeNode('dept');
+            sortObject.type = 'null';
+            tableIns.reload({where: getQueryParams(), page: {curr: 1}, initSort: sortObject});
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'userTable',
+                url: ctx + 'user/list',
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'key', title: '标识', minWidth: 100},
+                    {field: 'cn', title: '中文'},
+                    {field: 'tw', title: '繁体', minWidth: 165},
+                    {field: 'en', title: '英文', minWidth: 180},
+                    {title: 'jp', title: '日文'},
+                    {title: '操作', toolbar: '#user-option', minWidth: 140}
+                ]]
+            });
+        }
+
+        function getQueryParams() {
+            var createTimeFrom,
+                createTimeTo,
+                createTime = $searchForm.find('input[name="createTime"]').val();
+            if (createTime) {
+                createTimeFrom = createTime.split(' - ')[0];
+                createTimeTo = createTime.split(' - ')[1];
+            }
+            return {
+                createTimeFrom: createTimeFrom,
+                createTimeTo: createTimeTo,
+                username: $searchForm.find('input[name="username"]').val().trim(),
+                status: $searchForm.find("select[name='status']").val(),
+                sex: $searchForm.find("select[name='sex']").val(),
+                mobile: $searchForm.find("input[name='mobile']").val().trim(),
+                deptId: $searchForm.find("input[name='dept']").val().trim(),
+                invalidate_ie_cache: new Date()
+            };
+        }
+
+        function deleteUsers(userIds) {
+            var currentUserId = currentUser.userId + '';
+            if (('' + userIds).split(',').indexOf(currentUserId) !== -1) {
+                febs.alert.warn('所选用户包含当前登录用户，无法删除');
+                return;
+            }
+            febs.get(ctx + 'user/delete/' + userIds, null, function () {
+                febs.alert.success('删除用户成功');
+                $query.click();
+            });
+        }
+    })
+</script>

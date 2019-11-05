@@ -30,4 +30,6 @@ public class FebsConstant {
      * 异步线程池名称
      */
     public static final String ASYNC_POOL = "febsAsyncThreadPool";
+
+    public static final String I18N_SUFFIX = "_i18n";
 }

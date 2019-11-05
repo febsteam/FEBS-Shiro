@@ -119,8 +119,6 @@ public class UserController extends BaseController {
     public FebsResponse updateTheme(HttpServletRequest request, HttpServletResponse response, String theme, String isTab, String lang) {
         User user = getCurrentUser();
         this.userService.updateTheme(user.getUsername(), theme, isTab, lang);
-        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-        localeResolver.setLocale(request, response, RequestContextUtils.getLocale(request));
         return new FebsResponse().success();
     }
 

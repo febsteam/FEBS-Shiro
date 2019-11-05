@@ -26,12 +26,6 @@ public class ViewController {
         return FebsUtil.view("others/febs/formGroup");
     }
 
-    @GetMapping("febs/tools")
-    @RequiresPermissions("febs:tools:view")
-    public String febsTools() {
-        return FebsUtil.view("others/febs/tools");
-    }
-
     @GetMapping("febs/icon")
     @RequiresPermissions("febs:icons:view")
     public String febsIcon() {
@@ -95,5 +89,11 @@ public class ViewController {
     @GetMapping("eximport/result")
     public String eximportResult() {
         return FebsUtil.view("others/eximport/eximportResult");
+    }
+
+    @GetMapping("febs/i18n")
+    @RequiresPermissions("febs:i18n:view")
+    public String i18n() {
+        return FebsUtil.view("others/i18n/i18n");
     }
 }
