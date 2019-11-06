@@ -6,6 +6,7 @@ import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.system.entity.User;
+import cc.mrbird.febs.system.service.I18nService;
 import cc.mrbird.febs.system.service.IUserService;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -31,6 +32,8 @@ public class ViewController extends BaseController {
     private IUserService userService;
     @Autowired
     private ShiroHelper shiroHelper;
+    @Autowired
+    private I18nService i18nService;
 
     @GetMapping("login")
     @ResponseBody
@@ -154,6 +157,13 @@ public class ViewController extends BaseController {
     @GetMapping(FebsConstant.VIEW_PREFIX + "500")
     public String error500() {
         return FebsUtil.view("error/500");
+    }
+
+    @GetMapping(FebsConstant.VIEW_PREFIX + "i18n/update/{key}")
+    @RequiresPermissions("i18n:update")
+    public String i18nUpdate(@PathVariable String key, Model model) {
+        model.addAttribute("i18n", i18nService.getLine(key));
+        return FebsUtil.view("others/i18n/i18nUpdate");
     }
 
     private void resolveUserModel(String username, Model model, Boolean transform) {

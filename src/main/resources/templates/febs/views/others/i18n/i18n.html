@@ -1,4 +1,4 @@
-<div class="layui-fluid layui-anim febs-anim" id="febs-user" lay-title="国际化管理">
+<div class="layui-fluid layui-anim febs-anim" id="febs-i18n" lay-title="国际化管理">
     <div class="layui-row febs-container">
         <div class="layui-col-md12">
             <div class="layui-card">
@@ -8,13 +8,7 @@
                             <div class="layui-col-md10">
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
-                                        <label class="layui-form-label layui-form-label-sm">语言</label>
-                                        <div class="layui-input-inline">
-                                            <input type="text" name="username" autocomplete="off" class="layui-input">
-                                        </div>
-                                    </div>
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label layui-form-label-sm">Key</label>
+                                        <label class="layui-form-label layui-form-label-sm">[[#{lang.key}]]</label>
                                         <div class="layui-input-inline">
                                             <input type="text" name="createTime" id="createTime" class="layui-input">
                                         </div>
@@ -29,7 +23,7 @@
                                     <i class="layui-icon">&#xe79b;</i>
                                 </div>
                                 <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more"
-                                     shiro:hasAnyPermissions="user:add,user:update,user:password:reset,user:export">
+                                     shiro:hasAnyPermissions="i18n:add,i18n:update">
                                     <i class="layui-icon">&#xe875;</i>
                                 </div>
                             </div>
@@ -41,37 +35,23 @@
         </div>
     </div>
 </div>
-<script type="text/html" id="user-status">
-    {{#
-    var status = {
-    1: {title: '有效', color: 'green'},
-    0: {title: '禁用', color: 'volcano'}
-    }[d.status];
-    }}
-    <span class="layui-badge febs-tag-{{status.color}}">{{ status.title }}</span>
-</script>
-<script type="text/html" id="user-sex">
-    {{#
-    var sex = {
-    2: {title: '保密'},
-    1: {title: '女'},
-    0: {title: '男'}
-    }[d.sex];
-    }}
-    <span>{{ sex.title }}</span>
-</script>
 <script type="text/html" id="user-option">
-    <span shiro:lacksPermission="user:view,user:update,user:delete">
+    <span shiro:lacksPermission="i18n:view,i18n:update,i18n:delete">
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
-    <a lay-event="detail" shiro:hasPermission="user:view"><i
-            class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
-    <a lay-event="edit" shiro:hasPermission="user:update"><i
+    <a lay-event="edit" shiro:hasPermission="i18n:update"><i
             class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
-    <a lay-event="del" shiro:hasPermission="user:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+    <a lay-event="del" shiro:hasPermission="i18n:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
 </script>
+<div id="cn">[[#{lang.cn}]]</div>
+<div id="en">[[#{lang.en}]]</div>
+<div id="tw">[[#{lang.tw}]]</div>
+<div id="jp">[[#{lang.jp}]]</div>
+<div id="key">[[#{lang.key}]]</div>
+<div id="bizAction">[[#{biz.action}]]</div>
+<div id="titleEdit">[[#{title.edit}]]</div>
 <script data-th-inline="none" type="text/javascript">
-    layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'treeSelect'], function () {
+    layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs'], function () {
         var $ = layui.jquery,
             laydate = layui.laydate,
             febs = layui.febs,
@@ -79,7 +59,7 @@
             table = layui.table,
             treeSelect = layui.treeSelect,
             dropdown = layui.dropdown,
-            $view = $('#febs-user'),
+            $view = $('#febs-i18n'),
             $query = $view.find('#query'),
             $reset = $view.find('#reset'),
             $searchForm = $view.find('form'),
@@ -148,7 +128,7 @@
             },
             options: [{
                 name: 'add',
-                title: '新增用户',
+                title: '新增名称',
                 perms: 'user:add'
             }, {
                 name: 'delete',
@@ -165,29 +145,16 @@
             }]
         });
 
-        treeSelect.render({
-            elem: $view.find('#dept'),
-            type: 'get',
-            data: ctx + 'dept/select/tree',
-            placeholder: '请选择',
-            search: false
-        });
-
         table.on('tool(userTable)', function (obj) {
             var data = obj.data,
                 layEvent = obj.event;
-            if (layEvent === 'detail') {
-                febs.modal.view('用户信息', 'system/user/detail/' + data.username, {
-                    area: $(window).width() <= 750 ? '95%' : '660px'
-                });
-            }
             if (layEvent === 'del') {
-                febs.modal.confirm('删除用户', '确定删除该用户？', function () {
-                    deleteUsers(data.userId);
+                febs.modal.confirm('删除', '确定删除？', function () {
+                    deleteUsers(data.key);
                 });
             }
             if (layEvent === 'edit') {
-                febs.modal.open('修改用户', 'system/user/update/' + data.username, {
+                febs.modal.open($("#titleEdit").html(), 'i18n/update/' + data.key, {
                     area: $(window).width() <= 750 ? '90%' : '50%',
                     btn: ['提交', '取消'],
                     yes: function (index, layero) {
@@ -227,15 +194,15 @@
             tableIns = febs.table.init({
                 elem: $view.find('table'),
                 id: 'userTable',
-                url: ctx + 'user/list',
+                url: ctx + 'i18n/list',
                 cols: [[
                     {type: 'checkbox'},
-                    {field: 'key', title: '标识', minWidth: 100},
-                    {field: 'cn', title: '中文'},
-                    {field: 'tw', title: '繁体', minWidth: 165},
-                    {field: 'en', title: '英文', minWidth: 180},
-                    {title: 'jp', title: '日文'},
-                    {title: '操作', toolbar: '#user-option', minWidth: 140}
+                    {field: 'key', title: $("#key").html()},
+                    {field: 'cn', title: $("#cn").html()},
+                    {field: 'tw', title: $("#tw").html()},
+                    {field: 'en', title: $("#en").html()},
+                    {field: 'jp', title: $("#jp").html()},
+                    {title: $("#bizAction").html(), toolbar: '#user-option', minWidth: 140}
                 ]]
             });
         }

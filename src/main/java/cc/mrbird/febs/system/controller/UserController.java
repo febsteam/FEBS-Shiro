@@ -52,7 +52,7 @@ public class UserController extends BaseController {
     @GetMapping("list")
     @RequiresPermissions("user:view")
     public FebsResponse userList(User user, QueryRequest request) {
-        Map<String, Object> dataTable = getDataTable(this.userService.findUserDetail(user, request));
+        Map<String, Object> dataTable = getDataTable(userService.findUserDetail(user, request));
         return new FebsResponse().success().data(dataTable);
     }
 

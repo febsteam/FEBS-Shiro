@@ -92,7 +92,7 @@ public class ViewController {
     }
 
     @GetMapping("febs/i18n")
-    @RequiresPermissions("febs:i18n:view")
+    @RequiresPermissions("i18n:view")
     public String i18n() {
         return FebsUtil.view("others/i18n/i18n");
     }

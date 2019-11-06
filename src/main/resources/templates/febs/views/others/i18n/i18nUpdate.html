@@ -1,0 +1,83 @@
+<style>
+    #user-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+
+<div class="layui-fluid" id="user-update">
+    <form class="layui-form" action="" lay-filter="i18n-update-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">[[#{lang.key}]]</label>
+            <div class="layui-input-block">
+                <input type="text" readonly name="key" data-th-value="${i18n.key}" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">[[#{lang.cn}]]</label>
+            <div class="layui-input-block">
+                <input type="text" name="cn" lay-verify="required" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">[[#{lang.tw}]]</label>
+            <div class="layui-input-block">
+                <input type="text" name="tw" lay-verify="required" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">[[#{lang.en}]]</label>
+            <div class="layui-input-block">
+                <input type="text" name="en" lay-verify="required" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">[[#{lang.jp}]]</label>
+            <div class="layui-input-block">
+                <input type="text" name="jp" lay-verify="required" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="i18n-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        var $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            formSelects = layui.formSelects,
+            treeSelect = layui.treeSelect,
+            form = layui.form,
+            i18n = [[${i18n}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+        initData();
+
+        function initData() {
+            form.val("i18n-update-form", {
+                "key": i18n.key,
+                "cn": i18n.cn,
+                "tw": i18n.tw,
+                "en": i18n.en,
+                "jp": i18n.jp
+            });
+        }
+
+        form.on('submit(i18n-update-form-submit)', function (data) {
+            if (febs.nativeEqual(data.field, i18n)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'i18n/update', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(i18n.key + ' 数据修改成功');
+                $('#febs-i18n').find('#query').click();
+            });
+            return false;
+        });
+    });
+</script>
