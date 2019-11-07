@@ -14,7 +14,10 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,7 +33,7 @@ import java.util.stream.Stream;
 @Slf4j
 public class I18nServiceImpl implements I18nService {
 
-    private List<I18nLine> lines = Lists.newArrayList();
+    private Map<String, I18nLine> lines;
     Map<String, Properties> propertiesMap = Maps.newHashMap();
 
     @Autowired
@@ -58,7 +61,7 @@ public class I18nServiceImpl implements I18nService {
             log.error("{}", e);
         }
         Properties defaultProperties = propertiesMap.get(de);
-        List<I18nLine> lines = Lists.newArrayListWithCapacity(defaultProperties.size());
+        lines = Maps.newLinkedHashMapWithExpectedSize(defaultProperties.size());
         defaultProperties.keySet().forEach(key -> {
             I18nLine i18nLine = new I18nLine();
             i18nLine.setKey(key.toString());
@@ -66,20 +69,32 @@ public class I18nServiceImpl implements I18nService {
             i18nLine.setEn((String) propertiesMap.get(en).get(key));
             i18nLine.setTw((String) propertiesMap.get(tw).get(key));
             i18nLine.setJp((String) propertiesMap.get(jp).get(key));
-            lines.add(i18nLine);
+            lines.put(key.toString(), i18nLine);
         });
-        this.lines = lines;
     }
 
     @Override
     public IPage<I18nLine> getI18nList(QueryRequest request) {
         Page<I18nLine> page = new Page<>(request.getPageNum(), request.getPageSize());
         page.setTotal(lines.size());
-        if (lines.size() <= request.getPageNum()) {
-            page.setRecords(lines);
+        List<I18nLine> values = Lists.newArrayList(lines.values());
+        if (values.size() <= request.getPageNum()) {
+            page.setRecords(values);
         } else {
+            int totalPage = values.size() / request.getPageSize();
+            int mod = values.size() % request.getPageSize();
+            if (mod != 0) {
+                totalPage++;
+            }
             int start = (request.getPageNum() - 1) * request.getPageSize();
-            page.setRecords(lines.subList(start, start + request.getPageSize() - 1));
+            if (request.getPageNum() > totalPage) {
+                start = (totalPage - 1) * request.getPageSize();
+            }
+            int end = start + request.getPageSize();
+            if (end > values.size()) {
+                end = values.size();
+            }
+            page.setRecords(values.subList(start, end));
         }
         return page;
     }
@@ -105,6 +120,7 @@ public class I18nServiceImpl implements I18nService {
             propertiesMap.get(jp).setProperty(i18nLine.getKey(), i18nLine.getJp());
             save_properties(propertiesMap.get(jp), jp);
         }
+        lines.put(i18nLine.getKey(), i18nLine);
     }
 
     @Override

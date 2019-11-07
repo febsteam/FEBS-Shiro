@@ -10,7 +10,7 @@
                                     <div class="layui-inline">
                                         <label class="layui-form-label layui-form-label-sm">[[#{lang.key}]]</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="createTime" id="createTime" class="layui-input">
+                                            <input type="text" name="key" id="input_key" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -43,13 +43,13 @@
             class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
     <a lay-event="del" shiro:hasPermission="i18n:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
 </script>
-<div id="cn">[[#{lang.cn}]]</div>
-<div id="en">[[#{lang.en}]]</div>
-<div id="tw">[[#{lang.tw}]]</div>
-<div id="jp">[[#{lang.jp}]]</div>
-<div id="key">[[#{lang.key}]]</div>
-<div id="bizAction">[[#{biz.action}]]</div>
-<div id="titleEdit">[[#{title.edit}]]</div>
+<div id="cn" class="febs-hide">[[#{lang.cn}]]</div>
+<div id="en" class="febs-hide">[[#{lang.en}]]</div>
+<div id="tw" class="febs-hide">[[#{lang.tw}]]</div>
+<div id="jp" class="febs-hide">[[#{lang.jp}]]</div>
+<div id="key" class="febs-hide">[[#{lang.key}]]</div>
+<div id="bizAction" class="febs-hide">[[#{biz.action}]]</div>
+<div id="titleEdit" class="febs-hide">[[#{title.edit}]]</div>
 <script data-th-inline="none" type="text/javascript">
     layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs'], function () {
         var $ = layui.jquery,
@@ -65,23 +65,14 @@
             $searchForm = $view.find('form'),
             sortObject = {field: 'createTime', type: null},
             tableIns;
-
         form.render();
-
         initTable();
-
-        laydate.render({
-            elem: '#createTime',
-            range: true,
-            trigger: 'click'
-        });
-
         dropdown.render({
             elem: $view.find('.action-more'),
             click: function (name, elem, event) {
                 var checkStatus = table.checkStatus('userTable');
                 if (name === 'add') {
-                    febs.modal.open('新增用户', 'system/user/add', {
+                    febs.modal.open('新增名称', 'system/user/add', {
                         btn: ['提交', '重置'],
                         area: $(window).width() <= 750 ? '95%' : '50%',
                         yes: function (index, layero) {
@@ -95,7 +86,7 @@
                 }
                 if (name === 'delete') {
                     if (!checkStatus.data.length) {
-                        febs.alert.warn('请选择需要删除的用户');
+                        febs.alert.warn('请选择需要删除的名称');
                     } else {
                         febs.modal.confirm('删除用户', '确定删除该用户？', function () {
                             var userIds = [];
@@ -129,19 +120,11 @@
             options: [{
                 name: 'add',
                 title: '新增名称',
-                perms: 'user:add'
+                perms: 'i18n:add'
             }, {
                 name: 'delete',
-                title: '删除用户',
-                perms: 'user:delete'
-            }, {
-                name: 'reset',
-                title: '密码重置',
-                perms: 'user:password:reset'
-            }, {
-                name: 'export',
-                title: '导出Excel',
-                perms: 'user:export'
+                title: '删除名称',
+                perms: 'i18n:delete'
             }]
         });
 
@@ -185,7 +168,6 @@
 
         $reset.on('click', function () {
             $searchForm[0].reset();
-            treeSelect.revokeNode('dept');
             sortObject.type = 'null';
             tableIns.reload({where: getQueryParams(), page: {curr: 1}, initSort: sortObject});
         });
@@ -208,21 +190,8 @@
         }
 
         function getQueryParams() {
-            var createTimeFrom,
-                createTimeTo,
-                createTime = $searchForm.find('input[name="createTime"]').val();
-            if (createTime) {
-                createTimeFrom = createTime.split(' - ')[0];
-                createTimeTo = createTime.split(' - ')[1];
-            }
             return {
-                createTimeFrom: createTimeFrom,
-                createTimeTo: createTimeTo,
-                username: $searchForm.find('input[name="username"]').val().trim(),
-                status: $searchForm.find("select[name='status']").val(),
-                sex: $searchForm.find("select[name='sex']").val(),
-                mobile: $searchForm.find("input[name='mobile']").val().trim(),
-                deptId: $searchForm.find("input[name='dept']").val().trim(),
+                username: $searchForm.find('input[name="key"]').val().trim(),
                 invalidate_ie_cache: new Date()
             };
         }
