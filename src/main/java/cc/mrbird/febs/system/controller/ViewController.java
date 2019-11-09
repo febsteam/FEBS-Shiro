@@ -165,6 +165,11 @@ public class ViewController extends BaseController {
         model.addAttribute("i18n", i18nService.getLine(key));
         return FebsUtil.view("others/i18n/i18nUpdate");
     }
+    @GetMapping(FebsConstant.VIEW_PREFIX + "i18n/add")
+    @RequiresPermissions("i18n:add")
+    public String i18nUpdate() {
+        return FebsUtil.view("others/i18n/i18nAdd");
+    }
 
     private void resolveUserModel(String username, Model model, Boolean transform) {
         User user = userService.findByName(username);

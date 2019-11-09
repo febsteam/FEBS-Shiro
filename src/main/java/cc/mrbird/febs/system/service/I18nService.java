@@ -15,6 +15,10 @@ public interface I18nService {
 
     I18nLine getLine(String key);
 
+    void add(I18nLine i18nLine);
+
+    void delete(String key);
+
     @Data
     class I18nLine {
         private String key;

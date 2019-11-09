@@ -10,7 +10,7 @@ import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -37,7 +38,7 @@ public class I18nServiceImpl implements I18nService {
     Map<String, Properties> propertiesMap = Maps.newHashMap();
 
     @Autowired
-    private ResourceBundleMessageSource resourceBundleMessageSource;
+    private ReloadableResourceBundleMessageSource resourceBundleMessageSource;
     public static final String cn = "messages_zh_CN.properties";
     public static final String en = "messages_en_US.properties";
     public static final String tw = "messages_zh_TW.properties";
@@ -78,6 +79,7 @@ public class I18nServiceImpl implements I18nService {
         Page<I18nLine> page = new Page<>(request.getPageNum(), request.getPageSize());
         page.setTotal(lines.size());
         List<I18nLine> values = Lists.newArrayList(lines.values());
+        Collections.sort(values, (o1, o2) -> o1.getKey().compareToIgnoreCase(o2.getKey()));
         if (values.size() <= request.getPageNum()) {
             page.setRecords(values);
         } else {
@@ -97,6 +99,27 @@ public class I18nServiceImpl implements I18nService {
             page.setRecords(values.subList(start, end));
         }
         return page;
+    }
+
+    @Override
+    public void add(I18nLine i18nLine) {
+        update(i18nLine);
+    }
+
+    @Override
+    public void delete(String key) {
+        propertiesMap.get(cn).remove(key);
+        propertiesMap.get(en).remove(key);
+        propertiesMap.get(tw).remove(key);
+        propertiesMap.get(jp).remove(key);
+        propertiesMap.get(de).remove(key);
+        save_properties(propertiesMap.get(de), de);
+        save_properties(propertiesMap.get(jp), jp);
+        save_properties(propertiesMap.get(tw), tw);
+        save_properties(propertiesMap.get(en), en);
+        save_properties(propertiesMap.get(cn), cn);
+        lines.remove(key);
+        resourceBundleMessageSource.clearCache();
     }
 
     @Override
@@ -121,6 +144,7 @@ public class I18nServiceImpl implements I18nService {
             save_properties(propertiesMap.get(jp), jp);
         }
         lines.put(i18nLine.getKey(), i18nLine);
+        resourceBundleMessageSource.clearCache();
     }
 
     @Override

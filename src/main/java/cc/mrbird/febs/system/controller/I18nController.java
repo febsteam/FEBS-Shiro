@@ -1,5 +1,6 @@
 package cc.mrbird.febs.system.controller;
-import	java.security.Policy;
+
+import java.security.Policy;
 
 
 import cc.mrbird.febs.common.annotation.ControllerEndpoint;
@@ -46,6 +47,28 @@ public class I18nController extends BaseController {
             throw new FebsException("国际化key不能为空");
         }
         i18nService.update(i18nLine);
+        return new FebsResponse().success();
+    }
+
+    @PostMapping("add")
+    @ControllerEndpoint(operation = "新增国际化名称", exceptionMessage = "新增国际化名称失败")
+    @RequiresPermissions("i18n:add")
+    public FebsResponse add(I18nService.I18nLine i18nLine) throws FebsException {
+        if (StringUtils.isEmpty(i18nLine.getKey())) {
+            throw new FebsException("国际化key不能为空");
+        }
+        i18nService.add(i18nLine);
+        return new FebsResponse().success();
+    }
+
+    @GetMapping("/delete/{key}")
+    @ControllerEndpoint(operation = "删除国际化名称", exceptionMessage = "删除国际化名称失败")
+    @RequiresPermissions("i18n:delete")
+    public FebsResponse delete(@PathVariable String key) throws FebsException {
+        if (StringUtils.isEmpty(key)) {
+            throw new FebsException("国际化key不能为空");
+        }
+        i18nService.delete(key);
         return new FebsResponse().success();
     }
 }

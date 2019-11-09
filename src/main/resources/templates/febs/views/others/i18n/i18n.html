@@ -43,15 +43,26 @@
             class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
     <a lay-event="del" shiro:hasPermission="i18n:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
 </script>
-<div id="cn" class="febs-hide">[[#{lang.cn}]]</div>
-<div id="en" class="febs-hide">[[#{lang.en}]]</div>
-<div id="tw" class="febs-hide">[[#{lang.tw}]]</div>
-<div id="jp" class="febs-hide">[[#{lang.jp}]]</div>
-<div id="key" class="febs-hide">[[#{lang.key}]]</div>
-<div id="bizAction" class="febs-hide">[[#{biz.action}]]</div>
-<div id="titleEdit" class="febs-hide">[[#{title.edit}]]</div>
+<script>
+    var cn = "[[#{lang.cn}]]"
+        , en = "[[#{lang.en}]]"
+        , tw = "[[#{lang.tw}]]"
+        , jp = "[[#{lang.jp}]]"
+        , key = "[[#{lang.key}]]"
+        , commit = "[[#{common.commit}]]"
+        , reset = "[[#{common.reset}]]"
+        , cancel = "[[#{common.cancel}]]"
+        , _delete = "[[#{common.delete}]]"
+        , add = "[[#{i18n.add}]]"
+        , del = "[[#{i18n.delete}]]"
+        , bizAction = "[[#{biz.action}]]"
+        , deleteSure = "[[#{i18n.delete.sure}]]"
+        , selectDelItem = "[[#{i18n.select.del.item}]]"
+        , deleteSuccess = "[[#{i18n.delete.success}]]"
+        , titleEdit = "[[#{title.edit}]]";
+</script>
 <script data-th-inline="none" type="text/javascript">
-    layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs'], function () {
+    layui.use(['dropdown', 'jquery', 'form', 'table', 'febs'], function () {
         var $ = layui.jquery,
             laydate = layui.laydate,
             febs = layui.febs,
@@ -63,7 +74,7 @@
             $query = $view.find('#query'),
             $reset = $view.find('#reset'),
             $searchForm = $view.find('form'),
-            sortObject = {field: 'createTime', type: null},
+            sortObject = {field: 'key', type: null},
             tableIns;
         form.render();
         initTable();
@@ -72,23 +83,23 @@
             click: function (name, elem, event) {
                 var checkStatus = table.checkStatus('userTable');
                 if (name === 'add') {
-                    febs.modal.open('新增名称', 'system/user/add', {
-                        btn: ['提交', '重置'],
+                    febs.modal.open(add, 'i18n/add', {
+                        btn: [commit, reset],
                         area: $(window).width() <= 750 ? '95%' : '50%',
                         yes: function (index, layero) {
-                            $('#user-add').find('#submit').trigger('click');
+                            $('#i18n-add').find('#submit').trigger('click');
                         },
                         btn2: function () {
-                            $('#user-add').find('#reset').trigger('click');
+                            $('#i18n-add').find('#reset').trigger('click');
                             return false;
                         }
                     });
                 }
                 if (name === 'delete') {
                     if (!checkStatus.data.length) {
-                        febs.alert.warn('请选择需要删除的名称');
+                        febs.alert.warn(selectDelItem);
                     } else {
-                        febs.modal.confirm('删除用户', '确定删除该用户？', function () {
+                        febs.modal.confirm(del, deleteSure, function () {
                             var userIds = [];
                             layui.each(checkStatus.data, function (key, item) {
                                 userIds.push(item.userId)
@@ -97,33 +108,14 @@
                         });
                     }
                 }
-                if (name === 'reset') {
-                    if (!checkStatus.data.length) {
-                        febs.alert.warn('请选择需要重置密码的用户');
-                    } else {
-                        var usernames = [];
-                        layui.each(checkStatus.data, function (key, item) {
-                            usernames.push(item.username)
-                        });
-                        febs.post(ctx + 'user/password/reset/' + usernames.join(','), null, function () {
-                            febs.alert.success('所选用户密码已重置为1234qwer');
-                        });
-                    }
-                }
-                if (name === 'export') {
-                    var params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
-                    params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
-                    params.pageNum = $view.find(".layui-laypage-em").next().html();
-                    febs.download(ctx + 'user/excel', params, '用户信息表.xlsx');
-                }
             },
             options: [{
                 name: 'add',
-                title: '新增名称',
+                title: add,
                 perms: 'i18n:add'
             }, {
                 name: 'delete',
-                title: '删除名称',
+                title: del,
                 perms: 'i18n:delete'
             }]
         });
@@ -132,16 +124,16 @@
             var data = obj.data,
                 layEvent = obj.event;
             if (layEvent === 'del') {
-                febs.modal.confirm('删除', '确定删除？', function () {
-                    deleteUsers(data.key);
+                febs.modal.confirm(_delete, deleteSure, function () {
+                    deleteItem(data.key);
                 });
             }
             if (layEvent === 'edit') {
-                febs.modal.open($("#titleEdit").html(), 'i18n/update/' + data.key, {
+                febs.modal.open(titleEdit, 'i18n/update/' + data.key, {
                     area: $(window).width() <= 750 ? '90%' : '50%',
-                    btn: ['提交', '取消'],
+                    btn: [commit, cancel],
                     yes: function (index, layero) {
-                        $('#user-update').find('#submit').trigger('click');
+                        $('#i18n-update').find('#submit').trigger('click');
                     },
                     btn2: function () {
                         layer.closeAll();
@@ -151,7 +143,6 @@
         });
 
         table.on('sort(userTable)', function (obj) {
-            sortObject = obj;
             tableIns.reload({
                 initSort: obj,
                 where: $.extend(getQueryParams(), {
@@ -168,7 +159,6 @@
 
         $reset.on('click', function () {
             $searchForm[0].reset();
-            sortObject.type = 'null';
             tableIns.reload({where: getQueryParams(), page: {curr: 1}, initSort: sortObject});
         });
 
@@ -177,33 +167,26 @@
                 elem: $view.find('table'),
                 id: 'userTable',
                 url: ctx + 'i18n/list',
-                cols: [[
-                    {type: 'checkbox'},
-                    {field: 'key', title: $("#key").html()},
-                    {field: 'cn', title: $("#cn").html()},
-                    {field: 'tw', title: $("#tw").html()},
-                    {field: 'en', title: $("#en").html()},
-                    {field: 'jp', title: $("#jp").html()},
-                    {title: $("#bizAction").html(), toolbar: '#user-option', minWidth: 140}
-                ]]
+                cols: [[{type: 'checkbox'},
+                    {field: 'key', title: key},
+                    {field: 'cn', title: cn},
+                    {field: 'tw', title: tw},
+                    {field: 'en', title: en},
+                    {field: 'jp', title: jp},
+                    {title: bizAction, toolbar: '#user-option', minWidth: 140}]]
             });
         }
 
         function getQueryParams() {
             return {
-                username: $searchForm.find('input[name="key"]').val().trim(),
+                key: $searchForm.find('input[name="key"]').val().trim(),
                 invalidate_ie_cache: new Date()
             };
         }
 
-        function deleteUsers(userIds) {
-            var currentUserId = currentUser.userId + '';
-            if (('' + userIds).split(',').indexOf(currentUserId) !== -1) {
-                febs.alert.warn('所选用户包含当前登录用户，无法删除');
-                return;
-            }
-            febs.get(ctx + 'user/delete/' + userIds, null, function () {
-                febs.alert.success('删除用户成功');
+        function deleteItem(key) {
+            febs.get(ctx + 'i18n/delete/' + key, null, function () {
+                febs.alert.success(deleteSuccess);
                 $query.click();
             });
         }

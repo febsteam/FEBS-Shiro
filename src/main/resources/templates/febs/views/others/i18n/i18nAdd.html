@@ -1,15 +1,14 @@
 <style>
-    #user-update {
+    #i18n-add {
         padding: 20px 25px 25px 0;
     }
 </style>
-
-<div class="layui-fluid" id="i18n-update">
-    <form class="layui-form" action="" lay-filter="i18n-update-form">
+<div class="layui-fluid" id="i18n-add">
+    <form class="layui-form" action="" lay-filter="user-add-form">
         <div class="layui-form-item">
             <label class="layui-form-label febs-form-item-require">[[#{lang.key}]]</label>
             <div class="layui-input-block">
-                <input type="text" readonly name="key" data-th-value="${i18n.key}" class="layui-input">
+                <input type="text" name="key" class="layui-input" lay-verify="required"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -37,48 +36,30 @@
             </div>
         </div>
         <div class="layui-form-item febs-hide">
-            <button class="layui-btn" lay-submit="" lay-filter="i18n-update-form-submit" id="submit"></button>
+            <button class="layui-btn" lay-submit="" lay-filter="i18n-add-form-submit" id="submit"></button>
+            <button type="reset" class="layui-btn" id="reset"></button>
         </div>
     </form>
 </div>
 
 <script>
-    var modifySuccess = "[[#{common.modify.success}]]";
-    var noDataModified = "[[#{i18n.no.modified.data}]]";
+    var addSuccess = "[[#{i18n.add.success}]]";
 </script>
-<script data-th-inline="javascript">
+
+<script>
     layui.use(['febs', 'form', 'validate'], function () {
         var $ = layui.$,
             febs = layui.febs,
             layer = layui.layer,
-            formSelects = layui.formSelects,
-            treeSelect = layui.treeSelect,
             form = layui.form,
-            i18n = [[${i18n}]],
             validate = layui.validate;
 
         form.verify(validate);
         form.render();
-        initData();
-
-        function initData() {
-            form.val("i18n-update-form", {
-                "key": i18n.key,
-                "cn": i18n.cn,
-                "tw": i18n.tw,
-                "en": i18n.en,
-                "jp": i18n.jp
-            });
-        }
-
-        form.on('submit(i18n-update-form-submit)', function (data) {
-            if (febs.nativeEqual(data.field, i18n)) {
-                febs.alert.warn(noDataModified);
-                return false;
-            }
-            febs.post(ctx + 'i18n/update', data.field, function () {
+        form.on('submit(i18n-add-form-submit)', function (data) {
+            febs.post(ctx + 'i18n/add', data.field, function () {
                 layer.closeAll();
-                febs.alert.success(i18n.key + modifySuccess);
+                febs.alert.success(addSuccess);
                 $('#febs-i18n').find('#query').click();
             });
             return false;
