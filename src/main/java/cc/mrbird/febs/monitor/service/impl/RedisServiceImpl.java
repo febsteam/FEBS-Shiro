@@ -111,17 +111,17 @@ public class RedisServiceImpl implements IRedisService {
 
     @Override
     public String get(String key) throws RedisConnectException {
-        return this.excuteByJedis(j -> j.get(key.toLowerCase()));
+        return this.excuteByJedis(j -> j.get(key));
     }
 
     @Override
     public String set(String key, String value) throws RedisConnectException {
-        return this.excuteByJedis(j -> j.set(key.toLowerCase(), value));
+        return this.excuteByJedis(j -> j.set(key, value));
     }
 
     @Override
     public String set(String key, String value, Long milliscends) throws RedisConnectException {
-        String result = this.set(key.toLowerCase(), value);
+        String result = this.set(key, value);
         this.pexpire(key, milliscends);
         return result;
     }

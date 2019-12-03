@@ -23,11 +23,4 @@ public interface IRoleMenuService extends IService<RoleMenu> {
      * @param menuIds 菜单（按钮）id
      */
     void deleteRoleMenusByMenuId(List<String> menuIds);
-
-    /**
-     * 递归删除菜单/按钮
-     *
-     * @param menuId menuId
-     */
-    void deleteRoleMenus(String menuId);
 }
