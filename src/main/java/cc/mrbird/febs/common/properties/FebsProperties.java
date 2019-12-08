@@ -20,4 +20,6 @@ public class FebsProperties {
     private SwaggerProperties swagger = new SwaggerProperties();
 
     private int maxBatchInsertNum = 1000;
+
+    private ValidateCodeProperties code = new ValidateCodeProperties();
 }

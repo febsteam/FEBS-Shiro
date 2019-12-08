@@ -1,7 +1,6 @@
 package cc.mrbird.febs.common.configure;
 
-import cc.mrbird.febs.common.exception.RedisConnectException;
-import cc.mrbird.febs.monitor.service.IRedisService;
+import cc.mrbird.febs.common.service.RedisService;
 import cc.mrbird.febs.system.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +31,7 @@ public class I18nConfigure implements WebMvcConfigurer {
     }
 
     @Autowired
-    private IRedisService iRedisService;
+    private RedisService redisService;
 
     @Bean(name = "messageSource")
     public ReloadableResourceBundleMessageSource messageSource() {
@@ -51,11 +50,7 @@ public class I18nConfigure implements WebMvcConfigurer {
                 language = request.getParameter("lang");
             } else {
                 User user = (User) principal;
-                try {
-                    language = iRedisService.get(user.getUsername() + I18N_SUFFIX);
-                } catch (RedisConnectException e) {
-                    log.error("{}", e);
-                }
+                language = (String) redisService.get(user.getUsername() + I18N_SUFFIX);
             }
             Locale locale = super.resolveLocale(request);
             if (!StringUtils.isEmpty(language)) {

@@ -118,7 +118,9 @@
             $reset = $view.find('#reset'),
             $searchForm = $view.find('form'),
             sortObject = {field: 'createTime', type: null},
-            tableIns;
+            tableIns,
+            createTimeFrom,
+            createTimeTo;
 
         form.render();
 
@@ -254,6 +256,8 @@
             $searchForm[0].reset();
             treeSelect.revokeNode('dept');
             sortObject.type = 'null';
+            createTimeTo = null;
+            createTimeFrom = null;
             tableIns.reload({where: getQueryParams(), page: {curr: 1}, initSort: sortObject});
         });
 
@@ -277,9 +281,7 @@
         }
 
         function getQueryParams() {
-            var createTimeFrom,
-                createTimeTo,
-                createTime = $searchForm.find('input[name="createTime"]').val();
+            var createTime = $searchForm.find('input[name="createTime"]').val();
             if (createTime) {
                 createTimeFrom = createTime.split(' - ')[0];
                 createTimeTo = createTime.split(' - ')[1];

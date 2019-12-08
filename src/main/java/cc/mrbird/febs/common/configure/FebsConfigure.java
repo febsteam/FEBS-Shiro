@@ -105,9 +105,8 @@ public class FebsConfigure {
      * XssFilter Bean
      */
     @Bean
-    @SuppressWarnings("all")
-    public FilterRegistrationBean xssFilterRegistrationBean() {
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+    public FilterRegistrationBean<XssFilter> xssFilterRegistrationBean() {
+        FilterRegistrationBean<XssFilter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new XssFilter());
         filterRegistrationBean.setOrder(1);
         filterRegistrationBean.setEnabled(true);

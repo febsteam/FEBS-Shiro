@@ -3,11 +3,10 @@ package cc.mrbird.febs.system.service.impl;
 import cc.mrbird.febs.common.authentication.ShiroRealm;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
-import cc.mrbird.febs.common.exception.RedisConnectException;
+import cc.mrbird.febs.common.service.RedisService;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.common.utils.MD5Util;
 import cc.mrbird.febs.common.utils.SortUtil;
-import cc.mrbird.febs.monitor.service.IRedisService;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.entity.UserRole;
 import cc.mrbird.febs.system.mapper.UserMapper;
@@ -20,7 +19,6 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -45,7 +43,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Autowired
     private ShiroRealm shiroRealm;
     @Autowired
-    private IRedisService iRedisService;
+    private RedisService redisService;
 
     @Override
     public User findByName(String username) {
@@ -177,11 +175,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setIsTab(isTab);
         user.setModifyTime(new Date());
         user.setI18n(i18n);
-        try {
-            iRedisService.set(username + I18N_SUFFIX, i18n);
-        } catch (RedisConnectException e) {
-            log.error("{}", e);
-        }
+        redisService.set(username + I18N_SUFFIX, i18n);
         this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
     }
 

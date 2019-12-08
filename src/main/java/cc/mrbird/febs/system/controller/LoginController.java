@@ -4,14 +4,13 @@ import cc.mrbird.febs.common.annotation.Limit;
 import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.exception.FebsException;
-import cc.mrbird.febs.common.utils.CaptchaUtil;
+import cc.mrbird.febs.common.service.ValidateCodeService;
 import cc.mrbird.febs.common.utils.MD5Util;
 import cc.mrbird.febs.monitor.entity.LoginLog;
 import cc.mrbird.febs.monitor.service.ILoginLogService;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IUserService;
-import com.wf.captcha.base.Captcha;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotBlank;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,8 @@ public class LoginController extends BaseController {
     @Autowired
     private IUserService userService;
     @Autowired
+    private ValidateCodeService validateCodeService;
+    @Autowired
     private ILoginLogService loginLogService;
 
     @PostMapping("login")
@@ -45,9 +48,8 @@ public class LoginController extends BaseController {
             @NotBlank(message = "{required}") String password,
             @NotBlank(message = "{required}") String verifyCode,
             boolean rememberMe, HttpServletRequest request) throws FebsException {
-        if (!CaptchaUtil.verify(verifyCode, request)) {
-            throw new FebsException("验证码错误！");
-        }
+        HttpSession session = request.getSession();
+        validateCodeService.check(session.getId(), verifyCode);
         password = MD5Util.encrypt(username.toLowerCase(), password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
         super.login(token);
@@ -95,7 +97,7 @@ public class LoginController extends BaseController {
     }
 
     @GetMapping("images/captcha")
-    public void captcha(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        CaptchaUtil.outPng(110, 34, 4, Captcha.TYPE_ONLY_NUMBER, request, response);
+    public void captcha(HttpServletRequest request, HttpServletResponse response) throws IOException, FebsException {
+        validateCodeService.create(request, response);
     }
 }

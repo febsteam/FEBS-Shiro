@@ -1,8 +1,7 @@
 package cc.mrbird.febs.common.authentication;
 
 import cc.mrbird.febs.common.entity.FebsConstant;
-import cc.mrbird.febs.common.exception.RedisConnectException;
-import cc.mrbird.febs.monitor.service.IRedisService;
+import cc.mrbird.febs.common.service.RedisService;
 import cc.mrbird.febs.system.entity.Menu;
 import cc.mrbird.febs.system.entity.Role;
 import cc.mrbird.febs.system.entity.User;
@@ -40,7 +39,7 @@ public class ShiroRealm extends AuthorizingRealm {
     @Autowired
     private IMenuService menuService;
     @Autowired
-    private IRedisService iRedisService;
+    private RedisService redisService;
 
     /**
      * 授权模块，获取用户角色和权限
@@ -92,11 +91,7 @@ public class ShiroRealm extends AuthorizingRealm {
         if (User.STATUS_LOCK.equals(user.getStatus())) {
             throw new LockedAccountException("账号已被锁定,请联系管理员！");
         }
-        try {
-            iRedisService.set(user.getUsername() + FebsConstant.I18N_SUFFIX, user.getI18n());
-        } catch (RedisConnectException e) {
-            log.error("{}", e);
-        }
+        redisService.set(user.getUsername() + FebsConstant.I18N_SUFFIX, user.getI18n());
         return new SimpleAuthenticationInfo(user, password, getName());
     }
 

@@ -198,7 +198,7 @@ public class FebsActuatorHelper {
                     NumberFormat numberFormat = NumberFormat.getInstance();
                     numberFormat.setMaximumFractionDigits(20);
                     numberFormat.setGroupingUsed(false);
-                    long timeMillis = Long.valueOf(StringUtils.replace(numberFormat.format(value), ".", ""));
+                    long timeMillis = Long.parseLong(StringUtils.replace(numberFormat.format(value), ".", ""));
                     String startTime = DateUtil.getDateFormat(new Date(timeMillis), DateUtil.FULL_TIME_SPLIT_PATTERN);
                     serverInfo.setProcessStartTime(startTime);
                 default:

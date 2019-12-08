@@ -16,7 +16,6 @@
 package com.hwtx.pf4j;
 
 import com.github.zafarkhaja.semver.Version;
-import com.github.zafarkhaja.semver.expr.Expression;
 import com.hwtx.pf4j.util.StringUtils;
 
 /**
