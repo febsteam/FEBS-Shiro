@@ -4,7 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cc.mrbird</groupId>
     <artifactId>FEBS-Shiro</artifactId>
+    <packaging>pom</packaging>
     <version>2.0.1</version>
+    <modules>
+        <module>plugins</module>
+    </modules>
     <name>febs</name>
     <description>Spring Boot,Shiro 权限管理系统，https://github.com/wuyouzhuguli/FEBS-Shiro</description>
 
@@ -24,6 +28,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.zafarkhaja</groupId>
+            <artifactId>java-semver</artifactId>
+            <version>0.9.0</version>
+        </dependency>
         <!-- Spring系列 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

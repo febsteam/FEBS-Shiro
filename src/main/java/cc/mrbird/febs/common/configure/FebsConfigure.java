@@ -5,10 +5,19 @@ import cc.mrbird.febs.common.properties.FebsProperties;
 import cc.mrbird.febs.common.properties.SwaggerProperties;
 import cc.mrbird.febs.common.xss.XssFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.stereotype.Component;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -17,6 +26,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +41,49 @@ public class FebsConfigure {
 
     @Autowired
     private FebsProperties properties;
+    @Autowired
+    private ApplicationContext applicationContext;
+
+
+    @Component
+    public class FebsWebMvcRegistrations implements WebMvcRegistrations {
+
+        @Override
+        public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
+            return new ModuleRequestMappingHandlerMapping();
+        }
+    }
+
+    class ModuleRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
+        public void addControllerMapping(String moduleName, Class<?> controllerClass) {
+            if (controllerClass != null && isHandler(controllerClass)) {
+                DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
+                BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(controllerClass);
+                defaultListableBeanFactory.registerBeanDefinition(moduleName + "_" + controllerClass.getSimpleName(), beanDefinitionBuilder.getBeanDefinition());
+                detectHandlerMethods(controllerClass);
+            } else {
+                throw new RuntimeException("Controller:" + controllerClass + " in module:" + moduleName + " is invalidate");
+            }
+        }
+
+        public void removeMapping(String moduleName, Class<?> controllerClass) {
+            Object controller = applicationContext.getBean(controllerClass);
+            if (controller == null) {
+                System.out.println("spring容器中已不存在该实体");
+            }
+            ReflectionUtils.doWithMethods(controllerClass, method -> {
+                Method specificMethod = ClassUtils.getMostSpecificMethod(method, controllerClass);
+                try {
+                    RequestMappingInfo requestMappingInfo = getMappingForMethod(specificMethod, controllerClass);
+                    if (requestMappingInfo != null) {
+                        unregisterMapping(requestMappingInfo);
+                    }
+                } catch (Exception e) {
+                    logger.error("unregisterMapping " + controllerClass + ",in module " + moduleName + " failure.", e);
+                }
+            }, ReflectionUtils.USER_DECLARED_METHODS);
+        }
+    }
 
 
     @Bean(FebsConstant.ASYNC_POOL)

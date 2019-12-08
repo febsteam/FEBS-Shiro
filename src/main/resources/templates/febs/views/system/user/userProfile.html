@@ -77,7 +77,7 @@
                                     {{currentUser.roleName}}
                                 </div>
                                 <div><span class="layui-icon layui-icon-home"></span> 部门：
-                                    {{currentUser.deptName}}
+                                    {{currentUser.deptName || '暂无所属部门'}}
                                 </div>
                                 <div><span class="layui-icon layui-icon-skin"></span> 性别：
                                     {{# if(currentUser.sex === '0'){ }}
