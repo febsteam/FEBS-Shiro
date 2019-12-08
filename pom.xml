@@ -4,7 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cc.mrbird</groupId>
     <artifactId>FEBS-Shiro</artifactId>
+    <packaging>pom</packaging>
     <version>2.0</version>
+    <modules>
+        <module>plugins</module>
+        <module>api</module>
+        <module>core</module>
+    </modules>
     <name>febs</name>
     <description>Spring Boot,Shiro 权限管理系统，https://github.com/wuyouzhuguli/FEBS-Shiro</description>
 
@@ -12,7 +18,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.1.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <properties>
@@ -219,13 +225,4 @@
             <version>1.4.01</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>
