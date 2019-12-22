@@ -32,7 +32,24 @@
                         <phase>package</phase>
                         <configuration>
                             <target>
-                                <unzip src="target/${artifactId}-${version}.${packaging}" dest="target/plugin-classes"/>
+                                <unzip src="target/${project.artifactId}-${project.version}.${project.packaging}"
+                                       dest="target/plugin-classes"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>copy zip file</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <copy todir="../../core/src/main/resources/plugins" overwrite="true">
+                                    <fileset dir="target" erroronmissingdir="false">
+                                        <include name="*.zip"/>
+                                    </fileset>
+                                </copy>
                             </target>
                         </configuration>
                         <goals>

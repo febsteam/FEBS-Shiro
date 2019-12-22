@@ -4,6 +4,8 @@ import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.properties.FebsProperties;
 import cc.mrbird.febs.common.properties.SwaggerProperties;
 import cc.mrbird.febs.common.xss.XssFilter;
+import cc.mrbird.febs.system.plugin.PluginFilter;
+import cc.mrbird.febs.system.plugin.PluginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -43,33 +45,34 @@ public class FebsConfigure {
     private FebsProperties properties;
     @Autowired
     private ApplicationContext applicationContext;
-
+    @Autowired
+    private PluginService pluginService;
 
     @Component
     public class FebsWebMvcRegistrations implements WebMvcRegistrations {
 
         @Override
         public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
-            return new ModuleRequestMappingHandlerMapping();
+            return new PluginRequestMappingHandlerMapping();
         }
     }
 
-    class ModuleRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
-        public void addControllerMapping(String moduleName, Class<?> controllerClass) {
+    public class PluginRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
+        public void addControllerMapping(String pluginName, Class<?> controllerClass) {
             if (controllerClass != null && isHandler(controllerClass)) {
                 DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
                 BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(controllerClass);
-                defaultListableBeanFactory.registerBeanDefinition(moduleName + "_" + controllerClass.getSimpleName(), beanDefinitionBuilder.getBeanDefinition());
-                detectHandlerMethods(controllerClass);
+                defaultListableBeanFactory.registerBeanDefinition(pluginName + "_" + controllerClass.getSimpleName(), beanDefinitionBuilder.getBeanDefinition());
+                detectHandlerMethods(pluginName + "_" + controllerClass.getSimpleName());
             } else {
-                throw new RuntimeException("Controller:" + controllerClass + " in module:" + moduleName + " is invalidate");
+                throw new RuntimeException("Controller:" + controllerClass + " in module:" + pluginName + " is invalidate");
             }
         }
 
-        public void removeMapping(String moduleName, Class<?> controllerClass) {
+        public void removeMapping(String pluginName, Class<?> controllerClass) {
             Object controller = applicationContext.getBean(controllerClass);
             if (controller == null) {
-                System.out.println("spring容器中已不存在该实体");
+                logger.error("spring容器中已不存在该实体");
             }
             ReflectionUtils.doWithMethods(controllerClass, method -> {
                 Method specificMethod = ClassUtils.getMostSpecificMethod(method, controllerClass);
@@ -79,7 +82,7 @@ public class FebsConfigure {
                         unregisterMapping(requestMappingInfo);
                     }
                 } catch (Exception e) {
-                    logger.error("unregisterMapping " + controllerClass + ",in module " + moduleName + " failure.", e);
+                    logger.error("unregisterMapping " + controllerClass + ",in plugin " + pluginName + " failure.", e);
                 }
             }, ReflectionUtils.USER_DECLARED_METHODS);
         }
@@ -115,6 +118,16 @@ public class FebsConfigure {
         initParameters.put("excludes", "/favicon.ico,/img/*,/js/*,/css/*");
         initParameters.put("isIncludeRichText", "true");
         filterRegistrationBean.setInitParameters(initParameters);
+        return filterRegistrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<PluginFilter> pluginFilterRegistrationBean() {
+        FilterRegistrationBean<PluginFilter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(new PluginFilter(pluginService));
+        filterRegistrationBean.setOrder(1);
+        filterRegistrationBean.setEnabled(true);
+        filterRegistrationBean.addUrlPatterns("/plugin/*");
         return filterRegistrationBean;
     }
 

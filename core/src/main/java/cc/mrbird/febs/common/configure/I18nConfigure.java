@@ -5,6 +5,7 @@ import cc.mrbird.febs.system.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.UnavailableSecurityManagerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,8 +45,13 @@ public class I18nConfigure implements WebMvcConfigurer {
     protected class NativeLocaleResolver extends AcceptHeaderLocaleResolver {
         @Override
         public Locale resolveLocale(HttpServletRequest request) {
+            try {
+                SecurityUtils.getSecurityManager();
+            } catch (UnavailableSecurityManagerException e) {
+                return super.resolveLocale(request);
+            }
             Object principal = SecurityUtils.getSubject().getPrincipal();
-            String language = null;
+            String language;
             if (principal == null) {
                 language = request.getParameter("lang");
             } else {
