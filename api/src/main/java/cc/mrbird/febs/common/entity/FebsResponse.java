@@ -1,5 +1,6 @@
 package cc.mrbird.febs.common.entity;
 
+
 import org.springframework.http.HttpStatus;
 
 import java.util.HashMap;

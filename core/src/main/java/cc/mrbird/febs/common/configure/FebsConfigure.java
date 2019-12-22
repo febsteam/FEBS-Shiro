@@ -64,8 +64,6 @@ public class FebsConfigure {
                 BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(controllerClass);
                 defaultListableBeanFactory.registerBeanDefinition(pluginName + "_" + controllerClass.getSimpleName(), beanDefinitionBuilder.getBeanDefinition());
                 detectHandlerMethods(pluginName + "_" + controllerClass.getSimpleName());
-            } else {
-                throw new RuntimeException("Controller:" + controllerClass + " in module:" + pluginName + " is invalidate");
             }
         }
 

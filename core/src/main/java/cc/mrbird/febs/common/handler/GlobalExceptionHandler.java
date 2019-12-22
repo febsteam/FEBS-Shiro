@@ -100,7 +100,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = AuthorizationException.class)
-    public FebsResponse handleAuthorizationException(AuthorizationException e){
+    public FebsResponse handleAuthorizationException(AuthorizationException e) {
         log.debug("AuthorizationException", e);
         return new FebsResponse().code(HttpStatus.UNAUTHORIZED).message(e.getMessage());
     }
