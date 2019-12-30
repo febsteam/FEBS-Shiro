@@ -19,7 +19,6 @@ import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
 import java.lang.reflect.Method;
 
 
@@ -33,11 +32,11 @@ import java.lang.reflect.Method;
 @Component
 public class LimitAspect extends AspectSupport {
 
-    private final RedisTemplate<String, Serializable> limitRedisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    public LimitAspect(RedisTemplate<String, Serializable> limitRedisTemplate) {
-        this.limitRedisTemplate = limitRedisTemplate;
+    public LimitAspect(RedisTemplate<String, Object> limitRedisTemplate) {
+        this.redisTemplate = limitRedisTemplate;
     }
 
     @Pointcut("@annotation(cc.mrbird.febs.common.annotation.Limit)")
@@ -68,7 +67,7 @@ public class LimitAspect extends AspectSupport {
         ImmutableList<String> keys = ImmutableList.of(StringUtils.join(limitAnnotation.prefix() + "_", key, ip));
         String luaScript = buildLuaScript();
         RedisScript<Number> redisScript = new DefaultRedisScript<>(luaScript, Number.class);
-        Number count = limitRedisTemplate.execute(redisScript, keys, limitCount, limitPeriod);
+        Number count = redisTemplate.execute(redisScript, keys, limitCount, limitPeriod);
         log.info("IP:{} 第 {} 次访问key为 {}，描述为 [{}] 的接口", ip, count, keys, name);
         if (count != null && count.intValue() <= limitCount) {
             return point.proceed();

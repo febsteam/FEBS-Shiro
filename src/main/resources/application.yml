@@ -18,12 +18,11 @@ spring:
     proxy-target-class: true
 
 mybatis-plus:
-  # 实体类扫描路径
-  type-aliases-package: cc.mrbird.febs.system.entity,cc.mrbird.febs.generator.entity,cc.mrbird.febs.job.entity
-  # xml 扫描路径
+  type-aliases-package: cc.mrbird.febs.*.entity
   mapper-locations: classpath:mapper/*/*.xml
   configuration:
     jdbc-type-for-null: null
   global-config:
-    # 关闭 mybatis-plus的 banner
     banner: false
+    db-config:
+      select-strategy: not_empty

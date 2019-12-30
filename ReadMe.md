@@ -2,8 +2,8 @@
 
 ### FEBS-Shiro 2.0
 ![https://img.shields.io/badge/license-Apache%202.0-blue.svg?longCache=true&style=flat-square](https://img.shields.io/badge/license-Apache%202.0-blue.svg?longCache=true&style=flat-square)
-![https://img.shields.io/badge/springboot-2.1.8-yellow.svg?style=flat-square](https://img.shields.io/badge/springboot-2.1.8-yellow.svg?style=flat-square)
-![https://img.shields.io/badge/shiro-1.4.0-orange.svg?longCache=true&style=flat-square](https://img.shields.io/badge/shiro-1.4.0-orange.svg?longCache=true&style=flat-square)
+![https://img.shields.io/badge/springboot-2.2.1-yellow.svg?style=flat-square](https://img.shields.io/badge/springboot-2.2.1-yellow.svg?style=flat-square)
+![https://img.shields.io/badge/shiro-1.4.2-orange.svg?longCache=true&style=flat-square](https://img.shields.io/badge/shiro-1.4.2-orange.svg?longCache=true&style=flat-square)
 ![https://img.shields.io/badge/layui-2.5.5-brightgreen.svg?longCache=true&style=flat-square](https://img.shields.io/badge/layui-2.5.5-brightgreen.svg?longCache=true&style=flat-square)
 
 FEBS-Shiro是一款简单高效的后台权限管理系统，使用Spring Boot，Shiro和Layui构建。FEBS意指：**F**ast，**E**asy use，**B**eautiful和**S**afe。相信无论作为企业级应用，私活开发脚手架或者权限系统构建学习，FEBS-Shiro都会是一个不错的选择。
@@ -33,9 +33,10 @@ Jana   | 1234qwer  |跑批人员，负责任务调度跑批模块
 
 名称 | 描述| 地址
 ---|---|---
-FEBS-Shiro 1.x | Spring Boot 2.0.4 & Shiro1.4.0 权限管理系统（单页）。 | [https://github.com/wuyouzhuguli/FEBS-Shiro/tree/mysql](https://github.com/wuyouzhuguli/FEBS-Shiro/tree/mysql)
+FEBS-Shiro 1.x | Spring Boot 2.0.4 & Shiro1.4.2 权限管理系统（单页）。 | [https://github.com/wuyouzhuguli/FEBS-Shiro/tree/mysql](https://github.com/wuyouzhuguli/FEBS-Shiro/tree/mysql)
 FEBS-Security | Spring Boot 2.0.4 & Spring Security 5.0.7 权限管理系统（单页）。 | [https://github.com/wuyouzhuguli/FEBS-Security](https://github.com/wuyouzhuguli/FEBS-Security)
 FEBS-Vue | FEBS-Shiro前后端分离版本，前端架构采用Vue全家桶。 | [https://github.com/wuyouzhuguli/FEBS-Vue](https://github.com/wuyouzhuguli/FEBS-Vue)
+FEBS-Cloud | 基于Spring Cloud的微服务权限系统 | [https://github.com/wuyouzhuguli/FEBS-Cloud](https://github.com/wuyouzhuguli/FEBS-Cloud)
 
 ### 系统模块
 系统功能模块组成如下所示：
@@ -49,8 +50,6 @@ FEBS-Vue | FEBS-Shiro前后端分离版本，前端架构采用Vue全家桶。 |
 │  ├─在线用户
 │  ├─系统日志
 │  ├─登录日志
-│  ├─Redis监控
-│  ├─Redis终端
 │  ├─请求追踪
 │  ├─系统信息
 │  │  ├─JVM信息
@@ -94,13 +93,13 @@ FEBS-Vue | FEBS-Shiro前后端分离版本，前端架构采用Vue全家桶。 |
 ### 技术选型
 
 #### 后端
-- [Spring Boot 2.1.3](http://spring.io/projects/spring-boot/)
+- [Spring Boot 2.2.1](http://spring.io/projects/spring-boot/)
 - [Mybatis-Plus](https://mp.baomidou.com/guide/)
 - [MySQL 5.7.x](https://dev.mysql.com/downloads/mysql/5.7.html#downloads),[Hikari](https://brettwooldridge.github.io/HikariCP/),[Redis](https://redis.io/)
-- [Shiro](http://shiro.apache.org/)
+- [Shiro 1.4.2](http://shiro.apache.org/)
 
 #### 前端
-- [Layui 2.5.4](https://www.layui.com/)
+- [Layui 2.5.5](https://www.layui.com/)
 - [Nepadmin](https://gitee.com/june000/nep-admin)
 - [formSelects 4.x 多选框](https://hnzzmsf.github.io/example/example_v4.html)
 - [eleTree 树组件](https://layuiextend.hsianglee.cn/eletree/)
@@ -138,7 +137,7 @@ FEBS-Vue | FEBS-Shiro前后端分离版本，前端架构采用Vue全家桶。 |
 <a href="https://github.com/yuuki80code">
     <img src="https://avatars0.githubusercontent.com/u/17798853?s=400&v=4" width="45px"></a>
 <a href="https://github.com/cinsin">
-        <img src="https://avatars1.githubusercontent.com/u/12856067?s=400&v=4" width="45px"></a>
+    <img src="https://avatars1.githubusercontent.com/u/12856067?s=400&v=4" width="45px"></a>
 <a href="https://github.com/Minnull">
     <img src="https://avatars2.githubusercontent.com/u/19608781?s=400&v=4" width="45px"></a>
 <a href="https://github.com/Harrison0x80">
@@ -152,8 +151,10 @@ FEBS-Vue | FEBS-Shiro前后端分离版本，前端架构采用Vue全家桶。 |
 <a href="https://github.com/pangPython">
     <img src="https://avatars3.githubusercontent.com/u/12680677?s=400&v=4" width="45px"></a>
 <a href="https://github.com/atsushinee">
-     <img src="https://avatars2.githubusercontent.com/u/26084189?s=400&v=4" width="45px"></a>
-        
+    <img src="https://avatars2.githubusercontent.com/u/26084189?s=400&v=4" width="45px"></a>
+<a href="https://github.com/liuzhuoming23">
+    <img src="https://avatars1.githubusercontent.com/u/41719224?s=400&v=4" width="45px"></a>
+                
 ### 反馈交流
 
 加入QQ群和大家一起~~交流~~吹水：

@@ -37,7 +37,7 @@ public class UserController extends BaseController {
 
     @GetMapping("{username}")
     public User getUser(@NotBlank(message = "{required}") @PathVariable String username) {
-        return this.userService.findUserDetail(username);
+        return this.userService.findUserDetailList(username);
     }
 
     @GetMapping("check/{username}")
@@ -48,7 +48,7 @@ public class UserController extends BaseController {
     @GetMapping("list")
     @RequiresPermissions("user:view")
     public FebsResponse userList(User user, QueryRequest request) {
-        Map<String, Object> dataTable = getDataTable(this.userService.findUserDetail(user, request));
+        Map<String, Object> dataTable = getDataTable(this.userService.findUserDetailList(user, request));
         return new FebsResponse().success().data(dataTable);
     }
 
@@ -130,7 +130,7 @@ public class UserController extends BaseController {
     @RequiresPermissions("user:export")
     @ControllerEndpoint(exceptionMessage = "导出Excel失败")
     public void export(QueryRequest queryRequest, User user, HttpServletResponse response) {
-        List<User> users = this.userService.findUserDetail(user, queryRequest).getRecords();
+        List<User> users = this.userService.findUserDetailList(user, queryRequest).getRecords();
         ExcelKit.$Export(User.class, response).downXlsx(users, false);
     }
 }

@@ -16,7 +16,7 @@
                                     <div class="layui-inline">
                                         <label class="layui-form-label layui-form-label-sm">操作时间</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="createTime" id="createTime" class="layui-input">
+                                            <input type="text" name="createTime" id="log-createTime" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-inline">
@@ -80,10 +80,12 @@
             $delete = $view.find('#delete'),
             $searchForm = $view.find('form'),
             sortObject = {field: 'time', type: null},
-            tableIns;
+            tableIns,
+            createTimeFrom,
+            createTimeTo;
 
         laydate.render({
-            elem: '#createTime',
+            elem: '#log-createTime',
             range: true,
             trigger: 'click'
         });
@@ -155,6 +157,8 @@
         $reset.on('click', function () {
             $searchForm[0].reset();
             sortObject.type = 'null';
+            createTimeTo = null;
+            createTimeFrom = null;
             tableIns.reload({where: getQueryParams(), page: {curr: 1}, initSort: sortObject});
         });
 
@@ -186,9 +190,7 @@
         }
 
         function getQueryParams() {
-            var createTimeFrom,
-                createTimeTo,
-                createTime = $searchForm.find('input[name="createTime"]').val();
+            var createTime = $searchForm.find('input[name="createTime"]').val();
             if (createTime) {
                 createTimeFrom = createTime.split(' - ')[0];
                 createTimeTo = createTime.split(' - ')[1];

@@ -1,7 +1,7 @@
 package cc.mrbird.febs.common.validator;
 
 import cc.mrbird.febs.common.annotation.IsMobile;
-import cc.mrbird.febs.common.entity.RegexpConstant;
+import cc.mrbird.febs.common.entity.Regexp;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,7 +25,7 @@ public class MobileValidator implements ConstraintValidator<IsMobile, String> {
             if (StringUtils.isBlank(s)) {
                 return true;
             } else {
-                String regex = RegexpConstant.MOBILE_REG;
+                String regex = Regexp.MOBILE_REG;
                 return FebsUtil.match(regex, s);
             }
         } catch (Exception e) {

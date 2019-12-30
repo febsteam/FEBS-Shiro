@@ -3,6 +3,7 @@ package cc.mrbird.febs.system.service.impl;
 import cc.mrbird.febs.common.authentication.ShiroRealm;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
+import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.common.utils.MD5Util;
 import cc.mrbird.febs.common.utils.SortUtil;
@@ -46,14 +47,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public IPage<User> findUserDetail(User user, QueryRequest request) {
+    public IPage<User> findUserDetailList(User user, QueryRequest request) {
         Page<User> page = new Page<>(request.getPageNum(), request.getPageSize());
         SortUtil.handlePageSort(request, page, "userId", FebsConstant.ORDER_ASC, false);
         return this.baseMapper.findUserDetailPage(page, user);
     }
 
     @Override
-    public User findUserDetail(String username) {
+    public User findUserDetailList(String username) {
         User param = new User();
         param.setUsername(username);
         List<User> users = this.baseMapper.findUserDetail(param);
@@ -178,7 +179,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setUsername(null);
         user.setRoleId(null);
         user.setPassword(null);
-        updateById(user);
+        if (isCurrentUser(user.getId())) {
+            updateById(user);
+        } else {
+            throw new FebsException("您无权修改别人的账号信息！");
+        }
     }
 
     private void setUserRoles(User user, String[] roles) {
@@ -190,5 +195,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             userRoles.add(userRole);
         });
         userRoleService.saveBatch(userRoles);
+    }
+
+    private boolean isCurrentUser(Long id) {
+        User currentUser = FebsUtil.getCurrentUser();
+        return currentUser.getUserId().equals(id);
     }
 }

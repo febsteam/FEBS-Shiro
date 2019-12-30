@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 /**
  * @author MrBird
  */
-@SpringBootApplication
 @EnableAsync
+@SpringBootApplication
 @EnableTransactionManagement
 @MapperScan("cc.mrbird.febs.*.mapper")
 public class FebsApplication {

@@ -25,7 +25,7 @@ public interface IUserService extends IService<User> {
      * @param user    用户对象，用于传递查询条件
      * @return IPage
      */
-    IPage<User> findUserDetail(User user, QueryRequest request);
+    IPage<User> findUserDetailList(User user, QueryRequest request);
 
     /**
      * 通过用户名查找用户详细信息
@@ -33,7 +33,7 @@ public interface IUserService extends IService<User> {
      * @param username 用户名
      * @return 用户信息
      */
-    User findUserDetail(String username);
+    User findUserDetailList(String username);
 
     /**
      * 更新用户登录时间
