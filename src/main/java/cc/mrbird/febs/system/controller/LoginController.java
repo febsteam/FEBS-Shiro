@@ -50,7 +50,7 @@ public class LoginController extends BaseController {
             boolean rememberMe, HttpServletRequest request) throws FebsException {
         HttpSession session = request.getSession();
         validateCodeService.check(session.getId(), verifyCode);
-        password = MD5Util.encrypt(username.toLowerCase(), password);
+//        password = MD5Util.encrypt(username.toLowerCase(), password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
         super.login(token);
         // 保存登录日志

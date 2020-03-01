@@ -16,25 +16,27 @@ spring:
         # 数据源-1，名称为 base
         base:
           username: root
-          password: 123456
+          password: root
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://127.0.0.1:3306/febs_base?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+          url: jdbc:mysql://43.247.68.115:63306/febs_base?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
         # 数据源-2，名称为 quartz
         quartz:
           username: root
-          password: 123456
+          password: root
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://127.0.0.1:3306/febs_quartz?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+          url: jdbc:mysql://43.247.68.115:63306/febs_quartz?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
 
   redis:
     # Redis数据库索引（默认为 0）
     database: 0
     # Redis服务器地址
-    host: 127.0.0.1
+    host: 43.247.68.115
     # Redis服务器连接端口
     port: 6379
     # Redis 密码
-    password:
+    password: 111111
+      # 连接超时时间（毫秒）
+    timeout: 5000
     lettuce:
       pool:
         # 连接池中的最小空闲连接
@@ -44,6 +46,4 @@ spring:
         # 连接池最大连接数（使用负值表示没有限制）
         max-active: 2000
         # 连接池最大阻塞等待时间（使用负值表示没有限制）
-        max-wait: 10000
-    # 连接超时时间（毫秒）
-    timeout: 5000
+        max-wait: 1000
