@@ -117,7 +117,8 @@ CREATE TABLE `t_job`  (
                           `STATUS` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务状态  0：正常  1：暂停',
                           `REMARK` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
                           `CREATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-                          PRIMARY KEY (`JOB_ID`) USING BTREE
+                          PRIMARY KEY (`JOB_ID`) USING BTREE,
+                          KEY `t_job_create_time` (`CREATE_TIME`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
