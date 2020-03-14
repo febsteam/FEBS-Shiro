@@ -159,7 +159,8 @@ CREATE TABLE `t_log`  (
                           `IP` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作者IP',
                           `CREATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
                           `location` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作地点',
-                          PRIMARY KEY (`ID`) USING BTREE
+                          PRIMARY KEY (`ID`) USING BTREE,
+                          KEY `t_log_create_time` (`CREATE_TIME`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1011 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
