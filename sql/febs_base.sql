@@ -174,7 +174,8 @@ CREATE TABLE `t_login_log`  (
                                 `IP` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'IP地址',
                                 `SYSTEM` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作系统',
                                 `BROWSER` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '浏览器',
-                                PRIMARY KEY (`ID`) USING BTREE
+                                PRIMARY KEY (`ID`) USING BTREE,
+                                KEY `t_login_log_login_time` (`LOGIN_TIME`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 70 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
