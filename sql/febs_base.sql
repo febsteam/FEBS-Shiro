@@ -192,7 +192,8 @@ CREATE TABLE `t_menu`  (
                            `ORDER_NUM` bigint(20) NULL DEFAULT NULL COMMENT '排序',
                            `CREATE_TIME` datetime(0) NOT NULL COMMENT '创建时间',
                            `MODIFY_TIME` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
-                           PRIMARY KEY (`MENU_ID`) USING BTREE
+                           PRIMARY KEY (`MENU_ID`) USING BTREE,
+                           KEY `t_menu_parent_id` (`PARENT_ID`),
 ) ENGINE = InnoDB AUTO_INCREMENT = 178 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
