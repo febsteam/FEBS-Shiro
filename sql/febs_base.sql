@@ -28,7 +28,8 @@ CREATE TABLE `t_dept`  (
                            `ORDER_NUM` bigint(20) NULL DEFAULT NULL COMMENT '排序',
                            `CREATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
                            `MODIFY_TIME` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
-                           PRIMARY KEY (`DEPT_ID`) USING BTREE
+                           PRIMARY KEY (`DEPT_ID`) USING BTREE,
+                           KEY `t_dept_dept_name` (`DEPT_NAME`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
