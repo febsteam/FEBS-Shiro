@@ -22,7 +22,9 @@ import java.util.regex.Pattern;
 public class XssFilter implements Filter {
 
     private static Logger logger = LoggerFactory.getLogger(XssFilter.class);
-    // 是否过滤富文本内容
+    /**
+     * 是否过滤富文本内容
+     */
     private boolean flag = false;
 
     private List<String> excludes = new ArrayList<>();
@@ -45,7 +47,7 @@ public class XssFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
-        if (handleExcludeURL(req)) {
+        if (handleExcludeUrl(req)) {
             chain.doFilter(request, response);
             return;
         }
@@ -58,7 +60,7 @@ public class XssFilter implements Filter {
         // do nothing
     }
 
-    private boolean handleExcludeURL(HttpServletRequest request) {
+    private boolean handleExcludeUrl(HttpServletRequest request) {
         if (excludes == null || excludes.isEmpty()) {
             return false;
         }

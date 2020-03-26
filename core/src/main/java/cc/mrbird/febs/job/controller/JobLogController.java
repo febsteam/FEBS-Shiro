@@ -8,9 +8,9 @@ import cc.mrbird.febs.job.entity.JobLog;
 import cc.mrbird.febs.job.service.IJobLogService;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.wuwenze.poi.ExcelKit;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,10 +29,10 @@ import java.util.Map;
 @Validated
 @RestController
 @RequestMapping("jobLog")
+@RequiredArgsConstructor
 public class JobLogController extends BaseController {
 
-    @Autowired
-    private IJobLogService jobLogService;
+    private final IJobLogService jobLogService;
 
     @GetMapping
     @RequiresPermissions("job:log:view")

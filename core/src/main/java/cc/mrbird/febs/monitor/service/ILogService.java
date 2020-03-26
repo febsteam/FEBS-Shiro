@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.scheduling.annotation.Async;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
 /**
@@ -38,10 +37,10 @@ public interface ILogService extends IService<SystemLog> {
      *
      * @param point     切点
      * @param method    Method
-     * @param request   HttpServletRequest
+     * @param ip   ip
      * @param operation 操作内容
      * @param start     开始时间
      */
     @Async(FebsConstant.ASYNC_POOL)
-    void saveLog(ProceedingJoinPoint point, Method method, HttpServletRequest request, String operation, long start);
+    void saveLog(ProceedingJoinPoint point, Method method, String ip, String operation, long start);
 }

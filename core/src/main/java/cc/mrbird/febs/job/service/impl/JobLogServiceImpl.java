@@ -13,8 +13,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +22,6 @@ import java.util.List;
  */
 @Slf4j
 @Service("JobLogService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class JobLogServiceImpl extends ServiceImpl<JobLogMapper, JobLog> implements IJobLogService {
 
     @Override
@@ -46,13 +43,11 @@ public class JobLogServiceImpl extends ServiceImpl<JobLogMapper, JobLog> impleme
     }
 
     @Override
-    @Transactional
     public void saveJobLog(JobLog log) {
         this.save(log);
     }
 
     @Override
-    @Transactional
     public void deleteJobLogs(String[] jobLogIds) {
         List<String> list = Arrays.asList(jobLogIds);
         this.baseMapper.deleteBatchIds(list);

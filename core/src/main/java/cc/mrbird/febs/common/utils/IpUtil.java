@@ -5,13 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author MrBird
  */
-public class IPUtil {
+public class IpUtil {
 
 	private static final String UNKNOWN = "unknown";
-
-	protected IPUtil(){
-
-	}
 
 	/**
 	 * 获取 IP地址

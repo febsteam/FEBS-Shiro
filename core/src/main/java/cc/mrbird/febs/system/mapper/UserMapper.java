@@ -28,7 +28,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param user 用户对象，用于传递查询条件
      * @return Ipage
      */
-    IPage<User> findUserDetailPage(Page page, @Param("user") User user);
+    <T> IPage<User> findUserDetailPage(Page<T> page, @Param("user") User user);
 
     /**
      * 查找用户详细信息

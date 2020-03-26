@@ -4,8 +4,8 @@ import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.generator.entity.GeneratorConfig;
 import cc.mrbird.febs.generator.service.IGeneratorConfigService;
+import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller("generatorViews")
 @RequestMapping(FebsConstant.VIEW_PREFIX + "generator")
+@RequiredArgsConstructor
 public class ViewController {
 
-    @Autowired
-    private IGeneratorConfigService generatorConfigService;
+    private final IGeneratorConfigService generatorConfigService;
 
     @GetMapping("generator")
     @RequiresPermissions("generator:view")

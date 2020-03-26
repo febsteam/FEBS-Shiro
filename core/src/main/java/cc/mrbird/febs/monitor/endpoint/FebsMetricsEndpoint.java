@@ -102,7 +102,7 @@ public class FebsMetricsEndpoint {
     }
 
     private Map<String, Set<String>> getAvailableTags(Collection<Meter> meters) {
-        Map<String, Set<String>> availableTags = new HashMap<>();
+        Map<String, Set<String>> availableTags = new HashMap<>(10);
         meters.forEach((meter) -> this.mergeAvailableTags(availableTags, meter));
         return availableTags;
     }
@@ -142,6 +142,7 @@ public class FebsMetricsEndpoint {
             return this.value;
         }
 
+        @Override
         public String toString() {
             return "MeasurementSample{statistic=" + this.statistic + ", value=" + this.value + '}';
         }

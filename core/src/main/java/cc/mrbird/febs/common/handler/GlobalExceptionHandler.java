@@ -83,32 +83,32 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = LimitAccessException.class)
     public FebsResponse handleLimitAccessException(LimitAccessException e) {
-        log.debug("LimitAccessException", e);
+        log.error("LimitAccessException", e);
         return new FebsResponse().code(HttpStatus.TOO_MANY_REQUESTS).message(e.getMessage());
     }
 
     @ExceptionHandler(value = UnauthorizedException.class)
     public FebsResponse handleUnauthorizedException(UnauthorizedException e) {
-        log.debug("UnauthorizedException", e);
+        log.error("UnauthorizedException", e);
         return new FebsResponse().code(HttpStatus.FORBIDDEN).message(e.getMessage());
     }
 
     @ExceptionHandler(value = AuthenticationException.class)
     public FebsResponse handleAuthenticationException(AuthenticationException e) {
-        log.debug("AuthenticationException", e);
+        log.error("AuthenticationException", e);
         return new FebsResponse().code(HttpStatus.INTERNAL_SERVER_ERROR).message(e.getMessage());
     }
 
     @ExceptionHandler(value = AuthorizationException.class)
-    public FebsResponse handleAuthorizationException(AuthorizationException e) {
-        log.debug("AuthorizationException", e);
+    public FebsResponse handleAuthorizationException(AuthorizationException e){
+        log.error("AuthorizationException", e);
         return new FebsResponse().code(HttpStatus.UNAUTHORIZED).message(e.getMessage());
     }
 
 
     @ExceptionHandler(value = ExpiredSessionException.class)
     public FebsResponse handleExpiredSessionException(ExpiredSessionException e) {
-        log.debug("ExpiredSessionException", e);
+        log.error("ExpiredSessionException", e);
         return new FebsResponse().code(HttpStatus.UNAUTHORIZED).message(e.getMessage());
     }
 

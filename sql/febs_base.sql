@@ -28,7 +28,9 @@ CREATE TABLE `t_dept`  (
                            `ORDER_NUM` bigint(20) NULL DEFAULT NULL COMMENT '排序',
                            `CREATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
                            `MODIFY_TIME` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
-                           PRIMARY KEY (`DEPT_ID`) USING BTREE
+                           PRIMARY KEY (`DEPT_ID`) USING BTREE,
+                           KEY `t_dept_parent_id` (`PARENT_ID`),
+                           KEY `t_dept_dept_name` (`DEPT_NAME`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -54,7 +56,7 @@ CREATE TABLE `t_eximport`  (
                                `FIELD2` int(11) NOT NULL COMMENT '字段2',
                                `FIELD3` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字段3',
                                `CREATE_TIME` datetime(0) NOT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Excel导入导出测试' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Excel导入导出测试' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_eximport
@@ -117,8 +119,10 @@ CREATE TABLE `t_job`  (
                           `STATUS` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务状态  0：正常  1：暂停',
                           `REMARK` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
                           `CREATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-                          PRIMARY KEY (`JOB_ID`) USING BTREE
+                          PRIMARY KEY (`JOB_ID`) USING BTREE,
+                          KEY `t_job_create_time` (`CREATE_TIME`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务表' ROW_FORMAT = Dynamic;
+
 
 -- ----------------------------
 -- Records of t_job
@@ -142,8 +146,10 @@ CREATE TABLE `t_job_log`  (
                               `ERROR` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '失败信息',
                               `TIMES` decimal(11, 0) NULL DEFAULT NULL COMMENT '耗时(单位：毫秒)',
                               `CREATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-                              PRIMARY KEY (`LOG_ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2562 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '调度日志表' ROW_FORMAT = Dynamic;
+                              PRIMARY KEY (`LOG_ID`) USING BTREE,
+                              KEY `t_job_log_create_time` (`CREATE_TIME`)
+) ENGINE = MyISAM AUTO_INCREMENT = 2562 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '调度日志表' ROW_FORMAT = Dynamic;
+
 
 -- ----------------------------
 -- Table structure for t_log
@@ -159,8 +165,9 @@ CREATE TABLE `t_log`  (
                           `IP` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作者IP',
                           `CREATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
                           `location` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作地点',
-                          PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1011 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志表' ROW_FORMAT = Dynamic;
+                          PRIMARY KEY (`ID`) USING BTREE,
+                          KEY `t_log_create_time` (`CREATE_TIME`)
+) ENGINE = MyISAM AUTO_INCREMENT = 1011 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_login_log
@@ -174,8 +181,10 @@ CREATE TABLE `t_login_log`  (
                                 `IP` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'IP地址',
                                 `SYSTEM` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作系统',
                                 `BROWSER` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '浏览器',
-                                PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 70 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志表' ROW_FORMAT = Dynamic;
+                                PRIMARY KEY (`ID`) USING BTREE,
+                                KEY `t_login_log_login_time` (`LOGIN_TIME`)
+) ENGINE = MyISAM AUTO_INCREMENT = 70 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志表' ROW_FORMAT = Dynamic;
+
 
 -- ----------------------------
 -- Table structure for t_menu
@@ -192,7 +201,9 @@ CREATE TABLE `t_menu`  (
                            `ORDER_NUM` bigint(20) NULL DEFAULT NULL COMMENT '排序',
                            `CREATE_TIME` datetime(0) NOT NULL COMMENT '创建时间',
                            `MODIFY_TIME` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
-                           PRIMARY KEY (`MENU_ID`) USING BTREE
+                           PRIMARY KEY (`MENU_ID`) USING BTREE,
+                           KEY `t_menu_parent_id` (`PARENT_ID`),
+                           KEY `t_menu_menu_id` (`MENU_ID`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 178 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -300,7 +311,9 @@ INSERT INTO `t_role` VALUES (80, '开发人员', '拥有代码生成模块的权
 DROP TABLE IF EXISTS `t_role_menu`;
 CREATE TABLE `t_role_menu`  (
                                 `ROLE_ID` bigint(20) NOT NULL COMMENT '角色ID',
-                                `MENU_ID` bigint(20) NOT NULL COMMENT '菜单/按钮ID'
+                                `MENU_ID` bigint(20) NOT NULL COMMENT '菜单/按钮ID',
+                                KEY `t_role_menu_menu_id` (`MENU_ID`),
+                                KEY `t_role_menu_role_id` (`ROLE_ID`)
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色菜单关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -480,7 +493,9 @@ CREATE TABLE `t_user`  (
                            `THEME` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '主题',
                            `AVATAR` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像',
                            `DESCRIPTION` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
-                           PRIMARY KEY (`USER_ID`) USING BTREE
+                           PRIMARY KEY (`USER_ID`) USING BTREE,
+                           KEY `t_user_username` (`USERNAME`),
+                           KEY `t_user_mobile` (`MOBILE`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -500,7 +515,9 @@ INSERT INTO `t_user` VALUES (7, 'Margot', '31379841b9f4bfde22b8b40471e9a6ce', 9,
 DROP TABLE IF EXISTS `t_user_role`;
 CREATE TABLE `t_user_role`  (
                                 `USER_ID` bigint(20) NOT NULL COMMENT '用户ID',
-                                `ROLE_ID` bigint(20) NOT NULL COMMENT '角色ID'
+                                `ROLE_ID` bigint(20) NOT NULL COMMENT '角色ID',
+                                KEY `t_user_role_user_id` (`USER_ID`),
+                                KEY `t_user_role_role_id` (`ROLE_ID`)
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------

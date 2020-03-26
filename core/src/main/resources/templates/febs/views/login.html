@@ -121,100 +121,100 @@
     var ctx = [[@{
         /}]];
 
-        layui.extend({
-            validate: './febs/lay/modules/validate'
-        }).use(['form', 'layer', 'validate'], function (form, layer) {
-            var $ = layui.jquery,
-                validate = layui.validate,
-                $view = $('#febs-login'),
-                type = 'login',
-                $loginDiv = $view.find('#login-div'),
-                $registDiv = $view.find('#regist-div');
+    layui.extend({
+        validate: './febs/lay/modules/validate'
+    }).use(['form', 'layer', 'validate'], function (form, layer) {
+        var $ = layui.jquery,
+            validate = layui.validate,
+            $view = $('#febs-login'),
+            type = 'login',
+            $loginDiv = $view.find('#login-div'),
+            $registDiv = $view.find('#regist-div');
 
-            form.verify(validate);
-            form.render();
-            initCode();
+        form.verify(validate);
+        form.render();
+        initCode();
 
-            //提交登录表单
-            form.on('submit(login-submit)', function (data) {
-                var loading = $(this).find('.layui-icon');
-                if (loading.is(":visible")) return;
-                loading.show();
-                $.post(ctx + 'login', data.field, function (r) {
-                    if (r.code === 200) {
-                        location.href = ctx + 'index';
-                    } else {
-                        layer.msg(r.message);
-                        loading.hide();
-                        initCode();
-                    }
-                });
-                return false;
-            });
-
-            //提交注册表单
-            form.on('submit(regist-submit)', function (data) {
-                if (data.field.password !== data.field.passwordB) {
-                    layer.msg('两次密码输入不一致！');
-                    return;
-                }
-                var loading = $(this).find('.layui-icon');
-                if (loading.is(":visible")) return;
-                loading.show();
-                $.post(ctx + 'regist', data.field, function (r) {
-                    if (r.code === 200) {
-                        layer.msg('注册成功，请登录');
-                        loading.hide();
-                        $view.find('#login-href').trigger('click');
-                    } else {
-                        layer.msg(r.message);
-                        loading.hide();
-                    }
-                });
-                return false;
-            });
-
-            function initCode() {
-                $view.find('#codeimg').attr("src", ctx + "images/captcha?data=" + new Date().getTime());
-            }
-
-            $view.find('#codeimg').on('click', function () {
-                initCode();
-            });
-
-            $view.find('#regist-href').on('click', function () {
-                resetForm();
-                type = 'regist';
-                $loginDiv.hide();
-                $registDiv.show();
-            });
-
-            $view.find('#login-href').on('click', function () {
-                resetForm();
-                type = 'login';
-                $loginDiv.show();
-                $registDiv.hide();
-            });
-
-            function resetForm() {
-                $registDiv.find('input[name="username"]').val('')
-                    .end().find('input[name="password"]').val('')
-                    .end().find('input[name="passwordB"]').val('');
-
-                $loginDiv.find('input[name="username"]').val('')
-                    .end().find('input[name="password"]').val('')
-                    .end().find('input[name="verifyCode"]').val('');
-            }
-
-            $(document).on('keydown', function (e) {
-                if (e.keyCode === 13) {
-                    if (type === 'login')
-                        $view.find('#login').trigger("click");
-                    if (type === 'regist')
-                        $view.find('#regist').trigger("click");
+        //提交登录表单
+        form.on('submit(login-submit)', function (data) {
+            var loading = $(this).find('.layui-icon');
+            if (loading.is(":visible")) return;
+            loading.show();
+            $.post(ctx + 'login', data.field, function (r) {
+                if (r.code === 200) {
+                    location.href = ctx + 'index';
+                } else {
+                    layer.msg(r.message);
+                    loading.hide();
+                    initCode();
                 }
             });
+            return false;
         });
+
+        //提交注册表单
+        form.on('submit(regist-submit)', function (data) {
+            if (data.field.password !== data.field.passwordB) {
+                layer.msg('两次密码输入不一致！');
+                return;
+            }
+            var loading = $(this).find('.layui-icon');
+            if (loading.is(":visible")) return;
+            loading.show();
+            $.post(ctx + 'regist', data.field, function (r) {
+                if (r.code === 200) {
+                    layer.msg('注册成功，请登录');
+                    loading.hide();
+                    $view.find('#login-href').trigger('click');
+                } else {
+                    layer.msg(r.message);
+                    loading.hide();
+                }
+            });
+            return false;
+        });
+
+        function initCode() {
+            $view.find('#codeimg').attr("src", ctx + "images/captcha?data=" + new Date().getTime());
+        }
+
+        $view.find('#codeimg').on('click', function () {
+            initCode();
+        });
+
+        $view.find('#regist-href').on('click', function () {
+            resetForm();
+            type = 'regist';
+            $loginDiv.hide();
+            $registDiv.show();
+        });
+
+        $view.find('#login-href').on('click', function () {
+            resetForm();
+            type = 'login';
+            $loginDiv.show();
+            $registDiv.hide();
+        });
+
+        function resetForm() {
+            $registDiv.find('input[name="username"]').val('')
+                .end().find('input[name="password"]').val('')
+                .end().find('input[name="passwordB"]').val('');
+
+            $loginDiv.find('input[name="username"]').val('')
+                .end().find('input[name="password"]').val('')
+                .end().find('input[name="verifyCode"]').val('');
+        }
+
+        $(document).on('keydown', function (e) {
+            if (e.keyCode === 13) {
+                if (type === 'login')
+                    $view.find('#login').trigger("click");
+                if (type === 'regist')
+                    $view.find('#regist').trigger("click");
+            }
+        });
+    });
 </script>
 </body>
 </html>

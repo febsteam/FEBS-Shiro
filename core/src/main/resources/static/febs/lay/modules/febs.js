@@ -517,7 +517,7 @@ layui.extend({
         var defaultSetting = {
             cellMinWidth: 80,
             page: true,
-            skin: 'line',
+            skin: 'line row',
             limit: 10,
             limits: [5, 10, 20, 30, 40, 100],
             autoSort: false,

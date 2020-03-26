@@ -7,11 +7,7 @@ import org.apache.shiro.util.ByteSource;
 /**
  * @author MrBird
  */
-public class MD5Util {
-
-    protected MD5Util() {
-
-    }
+public class Md5Util {
 
     private static final String ALGORITH_NAME = "md5";
 

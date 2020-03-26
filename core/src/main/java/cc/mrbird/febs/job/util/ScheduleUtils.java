@@ -12,10 +12,6 @@ import org.quartz.*;
 @Slf4j
 public class ScheduleUtils {
 
-    protected ScheduleUtils() {
-
-    }
-
     private static final String JOB_NAME_PREFIX = "TASK_";
 
     /**

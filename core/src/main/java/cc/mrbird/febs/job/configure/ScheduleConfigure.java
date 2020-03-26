@@ -1,13 +1,15 @@
 package cc.mrbird.febs.job.configure;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import javax.sql.DataSource;
 import java.util.Properties;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 定时任务配置
@@ -15,10 +17,25 @@ import java.util.Properties;
  * @author MrBird
  */
 @Configuration
+@RequiredArgsConstructor
 public class ScheduleConfigure {
 
-    @Autowired
-    private DynamicRoutingDataSource dynamicRoutingDataSource;
+    private final DynamicRoutingDataSource dynamicRoutingDataSource;
+
+    @Bean
+    public ThreadPoolTaskExecutor scheduleJobExecutorService(){
+            ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+            executor.setCorePoolSize(5);
+            executor.setMaxPoolSize(10);
+            executor.setQueueCapacity(20);
+            executor.setKeepAliveSeconds(30);
+            executor.setThreadNamePrefix("Febs-Job-Thread");
+            executor.setWaitForTasksToCompleteOnShutdown(true);
+            executor.setAwaitTerminationSeconds(60);
+            executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+            executor.initialize();
+            return executor;
+    }
 
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean() {

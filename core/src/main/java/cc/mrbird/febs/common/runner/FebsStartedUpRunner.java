@@ -1,11 +1,11 @@
 package cc.mrbird.febs.common.runner;
 
+import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.properties.FebsProperties;
 import cc.mrbird.febs.common.service.RedisService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -20,14 +20,12 @@ import java.net.InetAddress;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class FebsStartedUpRunner implements ApplicationRunner {
 
-    @Autowired
-    private ConfigurableApplicationContext context;
-    @Autowired
-    private FebsProperties febsProperties;
-    @Autowired
-    private RedisService redisService;
+    private final ConfigurableApplicationContext context;
+    private final FebsProperties febsProperties;
+    private final RedisService redisService;
 
     @Value("${server.port:8080}")
     private String port;
@@ -55,10 +53,12 @@ public class FebsStartedUpRunner implements ApplicationRunner {
             InetAddress address = InetAddress.getLocalHost();
             String url = String.format("http://%s:%s", address.getHostAddress(), port);
             String loginUrl = febsProperties.getShiro().getLoginUrl();
-            if (StringUtils.isNotBlank(contextPath))
+            if (StringUtils.isNotBlank(contextPath)) {
                 url += contextPath;
-            if (StringUtils.isNotBlank(loginUrl))
+            }
+            if (StringUtils.isNotBlank(loginUrl)) {
                 url += loginUrl;
+            }
             log.info(" __    ___   _      ___   _     ____ _____  ____ ");
             log.info("/ /`  / / \\ | |\\/| | |_) | |   | |_   | |  | |_  ");
             log.info("\\_\\_, \\_\\_/ |_|  | |_|   |_|__ |_|__  |_|  |_|__ ");
@@ -66,11 +66,10 @@ public class FebsStartedUpRunner implements ApplicationRunner {
             log.info("FEBS 权限系统启动完毕，地址：{}", url);
 
             boolean auto = febsProperties.isAutoOpenBrowser();
-            String[] autoEnv = febsProperties.getAutoOpenBrowserEnv();
-            if (auto && ArrayUtils.contains(autoEnv, active)) {
+            if (auto && StringUtils.equalsIgnoreCase(active, FebsConstant.DEVELOP)) {
                 String os = System.getProperty("os.name");
                 // 默认为 windows时才自动打开页面
-                if (StringUtils.containsIgnoreCase(os, "windows")) {
+                if (StringUtils.containsIgnoreCase(os, FebsConstant.SYSTEM_WINDOWS)) {
                     //使用默认浏览器打开系统登录页
                     Runtime.getRuntime().exec("cmd  /c  start " + url);
                 }

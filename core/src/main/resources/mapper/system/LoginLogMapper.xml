@@ -6,11 +6,11 @@
     </select>
 
     <select id="findTodayVisitCount" resultType="long">
-        select count(1) from t_login_log where datediff(login_time,now())=0
+        SELECT count(1) FROM t_login_log WHERE login_time between CURDATE() and DATE_ADD(CURDATE(), INTERVAL 1 DAY)
     </select>
 
     <select id="findTodayIp" resultType="long">
-        select count(distinct(ip)) from t_login_log where datediff(login_time,now())=0
+        SELECT count(DISTINCT(ip)) FROM t_login_log WHERE login_time between CURDATE() and DATE_ADD(CURDATE(), INTERVAL 1 DAY)
     </select>
 
     <select id="findLastSevenDaysVisitCount" resultType="map" parameterType="string">

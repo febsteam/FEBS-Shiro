@@ -20,8 +20,6 @@ import java.util.Date;
 @Excel("系统日志表")
 public class SystemLog implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * 日志ID
      */

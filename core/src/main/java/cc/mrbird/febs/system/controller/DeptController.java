@@ -10,9 +10,9 @@ import cc.mrbird.febs.system.entity.Dept;
 import cc.mrbird.febs.system.service.IDeptService;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.wuwenze.poi.ExcelKit;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,11 +25,11 @@ import java.util.List;
  */
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("dept")
 public class DeptController {
 
-    @Autowired
-    private IDeptService deptService;
+    private final IDeptService deptService;
 
     @GetMapping("select/tree")
     @ControllerEndpoint(exceptionMessage = "获取部门树失败")

@@ -26,7 +26,7 @@ import java.util.List;
  * @author MrBird
  */
 @Service
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements IDeptService {
 
     @Override
@@ -62,25 +62,25 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void createDept(Dept dept) {
         Long parentId = dept.getParentId();
         if (parentId == null) {
-            dept.setParentId(0L);
+            dept.setParentId(Dept.TOP_NODE);
         }
         dept.setCreateTime(new Date());
         this.save(dept);
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateDept(Dept dept) {
         dept.setModifyTime(new Date());
         this.baseMapper.updateById(dept);
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteDepts(String[] deptIds) {
         this.delete(Arrays.asList(deptIds));
     }

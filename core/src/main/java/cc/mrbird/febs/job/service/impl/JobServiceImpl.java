@@ -12,11 +12,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,11 +31,11 @@ import java.util.List;
  */
 @Slf4j
 @Service("JobService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
+@RequiredArgsConstructor
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements IJobService {
 
-    @Autowired
-    private Scheduler scheduler;
+    private final Scheduler scheduler;
 
 
     /**
@@ -91,7 +91,7 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements IJobS
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void createJob(Job job) {
         job.setCreateTime(new Date());
         job.setStatus(Job.ScheduleStatus.PAUSE.getValue());
@@ -100,14 +100,14 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements IJobS
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateJob(Job job) {
         ScheduleUtils.updateScheduleJob(scheduler, job);
         this.baseMapper.updateById(job);
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteJobs(String[] jobIds) {
         List<String> list = Arrays.asList(jobIds);
         list.forEach(jobId -> ScheduleUtils.deleteScheduleJob(scheduler, Long.valueOf(jobId)));
@@ -115,23 +115,23 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements IJobS
     }
 
     @Override
-    @Transactional
-    public int updateBatch(String jobIds, String status) {
+    @Transactional(rollbackFor = Exception.class)
+    public void updateBatch(String jobIds, String status) {
         List<String> list = Arrays.asList(jobIds.split(StringPool.COMMA));
         Job job = new Job();
         job.setStatus(status);
-        return this.baseMapper.update(job, new LambdaQueryWrapper<Job>().in(Job::getJobId, list));
+        this.baseMapper.update(job, new LambdaQueryWrapper<Job>().in(Job::getJobId, list));
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void run(String jobIds) {
         String[] list = jobIds.split(StringPool.COMMA);
         Arrays.stream(list).forEach(jobId -> ScheduleUtils.run(scheduler, this.findJob(Long.valueOf(jobId))));
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void pause(String jobIds) {
         String[] list = jobIds.split(StringPool.COMMA);
         Arrays.stream(list).forEach(jobId -> ScheduleUtils.pauseJob(scheduler, Long.valueOf(jobId)));
@@ -139,7 +139,7 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements IJobS
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void resume(String jobIds) {
         String[] list = jobIds.split(StringPool.COMMA);
         Arrays.stream(list).forEach(jobId -> ScheduleUtils.resumeJob(scheduler, Long.valueOf(jobId)));

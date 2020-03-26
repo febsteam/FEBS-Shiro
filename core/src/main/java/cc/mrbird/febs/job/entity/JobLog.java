@@ -22,9 +22,13 @@ import java.util.Date;
 public class JobLog implements Serializable {
 
     private static final long serialVersionUID = -7114915445674333148L;
-    // 任务执行成功
+    /**
+     * 任务执行成功
+     */
     public static final String JOB_SUCCESS = "0";
-    // 任务执行失败
+    /**
+     * 任务执行失败
+     */
     public static final String JOB_FAIL = "1";
 
     @TableId(value = "LOG_ID", type = IdType.AUTO)

@@ -4,8 +4,8 @@ import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.job.entity.Job;
 import cc.mrbird.febs.job.service.IJobService;
+import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +19,10 @@ import javax.validation.constraints.NotBlank;
  */
 @Controller("jobView")
 @RequestMapping(FebsConstant.VIEW_PREFIX + "job")
+@RequiredArgsConstructor
 public class ViewController {
 
-    @Autowired
-    private IJobService jobService;
+    private final IJobService jobService;
 
     @GetMapping("job")
     @RequiresPermissions("job:view")

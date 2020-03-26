@@ -7,8 +7,8 @@ import cc.mrbird.febs.monitor.entity.JvmInfo;
 import cc.mrbird.febs.monitor.entity.ServerInfo;
 import cc.mrbird.febs.monitor.entity.TomcatInfo;
 import com.google.common.base.Predicates;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -26,12 +26,12 @@ import static cc.mrbird.febs.monitor.endpoint.FebsMetricsEndpoint.Sample;
  * @author MrBird
  */
 @Helper
+@RequiredArgsConstructor
 public class FebsActuatorHelper {
 
     private static final BigDecimal DECIMAL = new BigDecimal("1048576");
 
-    @Autowired
-    private FebsMetricsEndpoint metricsEndpoint;
+    private final FebsMetricsEndpoint metricsEndpoint;
 
     public List<FebsMetricResponse> getMetricResponseByType(String type) {
         FebsMetricsEndpoint.ListNamesResponse listNames = metricsEndpoint.listNames();
@@ -55,16 +55,16 @@ public class FebsActuatorHelper {
             Double value = sample.getValue();
             switch (name) {
                 case "jvm.memory.max":
-                    jvmInfo.setJvmMemoryMax(convertToMB(value));
+                    jvmInfo.setJvmMemoryMax(convertToMb(value));
                     break;
                 case "jvm.memory.committed":
-                    jvmInfo.setJvmMemoryCommitted(convertToMB(value));
+                    jvmInfo.setJvmMemoryCommitted(convertToMb(value));
                     break;
                 case "jvm.memory.used":
-                    jvmInfo.setJvmMemoryUsed(convertToMB(value));
+                    jvmInfo.setJvmMemoryUsed(convertToMb(value));
                     break;
                 case "jvm.buffer.memory.used":
-                    jvmInfo.setJvmBufferMemoryUsed(convertToMB(value));
+                    jvmInfo.setJvmBufferMemoryUsed(convertToMb(value));
                     break;
                 case "jvm.buffer.count":
                     jvmInfo.setJvmBufferCount(value);
@@ -85,16 +85,16 @@ public class FebsActuatorHelper {
                     jvmInfo.setJvmClassesUnloaded(value);
                     break;
                 case "jvm.gc.memory.allocated":
-                    jvmInfo.setJvmGcMemoryAllocated(convertToMB(value));
+                    jvmInfo.setJvmGcMemoryAllocated(convertToMb(value));
                     break;
                 case "jvm.gc.memory.promoted":
-                    jvmInfo.setJvmGcMemoryPromoted(convertToMB(value));
+                    jvmInfo.setJvmGcMemoryPromoted(convertToMb(value));
                     break;
                 case "jvm.gc.max.data.size":
-                    jvmInfo.setJvmGcMaxDataSize(convertToMB(value));
+                    jvmInfo.setJvmGcMaxDataSize(convertToMb(value));
                     break;
                 case "jvm.gc.live.data.size":
-                    jvmInfo.setJvmGcLiveDataSize(convertToMB(value));
+                    jvmInfo.setJvmGcLiveDataSize(convertToMb(value));
                     break;
                 default:
             }
@@ -207,7 +207,7 @@ public class FebsActuatorHelper {
         return serverInfo;
     }
 
-    private static Double convertToMB(Object value) {
+    private static Double convertToMb(Object value) {
         return new BigDecimal(String.valueOf(value))
                 .divide(DECIMAL, 3, RoundingMode.HALF_UP).doubleValue();
     }

@@ -5,13 +5,13 @@ import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.monitor.entity.ActiveUser;
 import cc.mrbird.febs.monitor.service.ISessionService;
 import cc.mrbird.febs.system.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,10 +22,10 @@ import java.util.List;
  * @author MrBird
  */
 @Service
+@RequiredArgsConstructor
 public class SessionServiceImpl implements ISessionService {
 
-    @Autowired
-    private SessionDAO sessionDAO;
+    private final SessionDAO sessionDAO;
 
     @Override
     public List<ActiveUser> list(String username) {

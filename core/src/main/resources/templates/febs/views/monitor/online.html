@@ -16,10 +16,10 @@
                                 </div>
                             </div>
                             <div class="layui-col-md1 table-action-area">
-                                <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="query">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain  table-action" id="query">
                                     <i class="layui-icon">&#xe848;</i>
                                 </div>
-                                <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="reset">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain  table-action" id="reset">
                                     <i class="layui-icon">&#xe79b;</i>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
     0: {title: '离线', color: 'volcano'}
     }[d.status];
     }}
-    <span class="layui-badge febs-tag-{{status.color}}">{{ status.title }}</span>
+    <span class="layui-badge febs-bg-{{status.color}}">{{ status.title }}</span>
 </script>
 <script type="text/html" id="online-option">
     <span shiro:lacksPermission="user:kickout">

@@ -1,6 +1,6 @@
 package cc.mrbird.febs.common.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +16,10 @@ import java.util.concurrent.TimeUnit;
  * @author MrBird
  */
 @Service
+@RequiredArgsConstructor
 public class RedisService {
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 指定缓存失效时间
@@ -147,7 +147,7 @@ public class RedisService {
      * 递减
      *
      * @param key   键
-     * @param delta 要减少几(小于0)
+     * @param delta 要减少几
      * @return Long
      */
     public Long decr(String key, Long delta) {
@@ -359,8 +359,9 @@ public class RedisService {
     public Long sSetAndTime(String key, Long time, Object... values) {
         try {
             Long count = redisTemplate.opsForSet().add(key, values);
-            if (time > 0)
+            if (time > 0) {
                 expire(key, time);
+            }
             return count;
         } catch (Exception e) {
             e.printStackTrace();
@@ -476,8 +477,9 @@ public class RedisService {
     public Boolean lSet(String key, Object value, Long time) {
         try {
             redisTemplate.opsForList().rightPush(key, value);
-            if (time > 0)
+            if (time > 0) {
                 expire(key, time);
+            }
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -513,8 +515,9 @@ public class RedisService {
     public Boolean lSet(String key, List<Object> value, Long time) {
         try {
             redisTemplate.opsForList().rightPushAll(key, value);
-            if (time > 0)
+            if (time > 0) {
                 expire(key, time);
+            }
             return true;
         } catch (Exception e) {
             e.printStackTrace();

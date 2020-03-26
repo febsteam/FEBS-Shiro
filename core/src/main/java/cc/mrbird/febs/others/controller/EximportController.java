@@ -13,11 +13,11 @@ import com.google.common.collect.Lists;
 import com.wuwenze.poi.ExcelKit;
 import com.wuwenze.poi.handler.ExcelReadHandler;
 import com.wuwenze.poi.pojo.ExcelErrorField;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,10 +38,10 @@ import java.util.stream.IntStream;
 @Slf4j
 @RestController
 @RequestMapping("eximport")
+@RequiredArgsConstructor
 public class EximportController extends BaseController {
 
-    @Autowired
-    private IEximportService eximportService;
+    private final IEximportService eximportService;
 
     @GetMapping
     @RequiresPermissions("others:eximport:view")

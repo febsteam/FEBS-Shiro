@@ -9,9 +9,9 @@ import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.system.entity.Role;
 import cc.mrbird.febs.system.service.IRoleService;
 import com.wuwenze.poi.ExcelKit;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,11 +25,11 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("role")
 public class RoleController extends BaseController {
 
-    @Autowired
-    private IRoleService roleService;
+    private final IRoleService roleService;
 
     @GetMapping
     public FebsResponse getAllRoles(Role role) {

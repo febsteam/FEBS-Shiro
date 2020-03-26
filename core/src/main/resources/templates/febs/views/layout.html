@@ -12,6 +12,11 @@
                  <span class="febs-breadcrumb"></span>
             </ul>
             <ul class="layui-nav layui-layout-right" lay-filter="febs-header">
+                <li class="layui-nav-item layui-hide-xs" id="fullscreen" lay-unselect>
+                    <a title="切换全屏">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </li>
                 <li class="layui-nav-item layui-user" lay-unselect>
                     <a>
                         <img style="width: 1.9rem;margin-right:.5rem;border-radius: 50%"
@@ -118,6 +123,33 @@
 
         $view.on('click', '.layui-logo', function () {
             febs.navigate("/index");
+        });
+
+        $view.on('click', '#fullscreen', function () {
+            var $this = $(this);
+            var normalCls = 'layui-icon-screen-full';
+            var activeCls = 'layui-icon-screen-restore';
+            var ico = $this.find('.layui-icon');
+
+            if (ico.hasClass(normalCls)) {
+                var a = document.body;
+                a.webkitRequestFullScreen
+                    ? a.webkitRequestFullScreen()
+                    : a.mozRequestFullScreen
+                    ? a.mozRequestFullScreen()
+                    : a.requestFullScreen && a.requestFullscreen();
+                ico.removeClass(normalCls).addClass(activeCls)
+            } else {
+                var b = document;
+                b.webkitCancelFullScreen
+                    ? b.webkitCancelFullScreen()
+                    : b.mozCancelFullScreen
+                    ? b.mozCancelFullScreen()
+                    : b.cancelFullScreen
+                        ? b.cancelFullScreen()
+                        : b.exitFullscreen && b.exitFullscreen();
+                ico.removeClass(activeCls).addClass(normalCls)
+            }
         });
 
         $view.on('click', '#password-update', function () {

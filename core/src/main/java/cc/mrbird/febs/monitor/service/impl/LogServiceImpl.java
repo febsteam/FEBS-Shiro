@@ -4,7 +4,6 @@ package cc.mrbird.febs.monitor.service.impl;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.common.utils.AddressUtil;
-import cc.mrbird.febs.common.utils.IPUtil;
 import cc.mrbird.febs.common.utils.SortUtil;
 import cc.mrbird.febs.monitor.entity.SystemLog;
 import cc.mrbird.febs.monitor.mapper.LogMapper;
@@ -15,17 +14,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -34,11 +30,10 @@ import java.util.*;
  * @author MrBird
  */
 @Service
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
+@RequiredArgsConstructor
 public class LogServiceImpl extends ServiceImpl<LogMapper, SystemLog> implements ILogService {
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @Override
     public IPage<SystemLog> findLogs(SystemLog systemLog, QueryRequest request) {
@@ -66,22 +61,21 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, SystemLog> implements
     }
 
     @Override
-    @Transactional
     public void deleteLogs(String[] logIds) {
         List<String> list = Arrays.asList(logIds);
         baseMapper.deleteBatchIds(list);
     }
 
     @Override
-    public void saveLog(ProceedingJoinPoint point, Method method,HttpServletRequest request, String operation, long start) {
+    public void saveLog(ProceedingJoinPoint point, Method method, String ip, String operation, long start) {
         SystemLog systemLog = new SystemLog();
         // 设置 IP地址
-        String ip = IPUtil.getIpAddr(request);
         systemLog.setIp(ip);
         // 设置操作用户
         User user = (User) SecurityUtils.getSubject().getPrincipal();
-        if (user != null)
+        if (user != null) {
             systemLog.setUsername(user.getUsername());
+        }
         // 设置耗时
         systemLog.setTime(System.currentTimeMillis() - start);
         // 设置操作描述
@@ -107,6 +101,7 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, SystemLog> implements
         save(systemLog);
     }
 
+    @SuppressWarnings("all")
     private StringBuilder handleParams(StringBuilder params, Object[] args, List paramNames) {
         try {
             for (int i = 0; i < args.length; i++) {

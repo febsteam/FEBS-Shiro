@@ -3,9 +3,9 @@ package cc.mrbird.febs.system.service.impl;
 import cc.mrbird.febs.common.authentication.ShiroRealm;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
-import cc.mrbird.febs.common.service.RedisService;
+import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.FebsUtil;
-import cc.mrbird.febs.common.utils.MD5Util;
+import cc.mrbird.febs.common.utils.Md5Util;
 import cc.mrbird.febs.common.utils.SortUtil;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.entity.UserRole;
@@ -18,8 +18,8 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,21 +29,16 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static cc.mrbird.febs.common.entity.FebsConstant.I18N_SUFFIX;
-
 /**
  * @author MrBird
  */
 @Service
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
+@RequiredArgsConstructor
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
-    @Autowired
-    private IUserRoleService userRoleService;
-    @Autowired
-    private ShiroRealm shiroRealm;
-    @Autowired
-    private RedisService redisService;
+    private final IUserRoleService userRoleService;
+    private final ShiroRealm shiroRealm;
 
     @Override
     public User findByName(String username) {
@@ -51,14 +46,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public IPage<User> findUserDetail(User user, QueryRequest request) {
+    public IPage<User> findUserDetailList(User user, QueryRequest request) {
         Page<User> page = new Page<>(request.getPageNum(), request.getPageSize());
         SortUtil.handlePageSort(request, page, "userId", FebsConstant.ORDER_ASC, false);
         return this.baseMapper.findUserDetailPage(page, user);
     }
 
     @Override
-    public User findUserDetail(String username) {
+    public User findUserDetailList(String username) {
         User param = new User();
         param.setUsername(username);
         List<User> users = this.baseMapper.findUserDetail(param);
@@ -66,7 +61,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateLoginTime(String username) {
         User user = new User();
         user.setLastLoginTime(new Date());
@@ -74,14 +69,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void createUser(User user) {
         user.setCreateTime(new Date());
         user.setStatus(User.STATUS_VALID);
         user.setAvatar(User.DEFAULT_AVATAR);
         user.setTheme(User.THEME_BLACK);
         user.setIsTab(User.TAB_OPEN);
-        user.setPassword(MD5Util.encrypt(user.getUsername(), User.DEFAULT_PASSWORD));
+        user.setPassword(Md5Util.encrypt(user.getUsername(), User.DEFAULT_PASSWORD));
         save(user);
         // 保存用户角色
         String[] roles = user.getRoleId().split(StringPool.COMMA);
@@ -89,7 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteUsers(String[] userIds) {
         List<String> list = Arrays.asList(userIds);
         // 删除用户
@@ -99,7 +94,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateUser(User user) {
         String username = user.getUsername();
         // 更新用户
@@ -119,20 +114,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void resetPassword(String[] usernames) {
         Arrays.stream(usernames).forEach(username -> {
             User user = new User();
-            user.setPassword(MD5Util.encrypt(username, User.DEFAULT_PASSWORD));
+            user.setPassword(Md5Util.encrypt(username, User.DEFAULT_PASSWORD));
             this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
         });
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void regist(String username, String password) {
         User user = new User();
-        user.setPassword(MD5Util.encrypt(username, password));
+        user.setPassword(Md5Util.encrypt(username, password));
         user.setUsername(username);
         user.setCreateTime(new Date());
         user.setStatus(User.STATUS_VALID);
@@ -150,16 +145,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updatePassword(String username, String password) {
         User user = new User();
-        user.setPassword(MD5Util.encrypt(username, password));
+        user.setPassword(Md5Util.encrypt(username, password));
         user.setModifyTime(new Date());
         this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateAvatar(String username, String avatar) {
         User user = new User();
         user.setAvatar(avatar);
@@ -168,24 +163,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    @Transactional
-    public void updateTheme(String username, String theme, String isTab, String i18n) {
+    @Transactional(rollbackFor = Exception.class)
+    public void updateTheme(String username, String theme, String isTab) {
         User user = new User();
         user.setTheme(theme);
         user.setIsTab(isTab);
         user.setModifyTime(new Date());
-        user.setI18n(i18n);
-        redisService.set(username + I18N_SUFFIX, i18n);
         this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateProfile(User user) {
         user.setUsername(null);
         user.setRoleId(null);
         user.setPassword(null);
-        updateById(user);
+        if (isCurrentUser(user.getId())) {
+            updateById(user);
+        } else {
+            throw new FebsException("您无权修改别人的账号信息！");
+        }
     }
 
     private void setUserRoles(User user, String[] roles) {
@@ -197,5 +194,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             userRoles.add(userRole);
         });
         userRoleService.saveBatch(userRoles);
+    }
+
+    private boolean isCurrentUser(Long id) {
+        User currentUser = FebsUtil.getCurrentUser();
+        return currentUser.getUserId().equals(id);
     }
 }

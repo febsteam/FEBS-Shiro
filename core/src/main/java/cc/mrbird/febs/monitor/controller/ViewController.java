@@ -6,8 +6,8 @@ import cc.mrbird.febs.monitor.entity.JvmInfo;
 import cc.mrbird.febs.monitor.entity.ServerInfo;
 import cc.mrbird.febs.monitor.entity.TomcatInfo;
 import cc.mrbird.febs.monitor.helper.FebsActuatorHelper;
+import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +22,10 @@ import static cc.mrbird.febs.monitor.endpoint.FebsMetricsEndpoint.FebsMetricResp
  */
 @Controller("monitorView")
 @RequestMapping(FebsConstant.VIEW_PREFIX + "monitor")
+@RequiredArgsConstructor
 public class ViewController {
 
-    @Autowired
-    private FebsActuatorHelper actuatorHelper;
+    private final FebsActuatorHelper actuatorHelper;
 
     @GetMapping("online")
     @RequiresPermissions("online:view")

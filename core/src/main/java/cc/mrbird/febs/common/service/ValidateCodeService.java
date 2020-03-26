@@ -8,8 +8,8 @@ import cc.mrbird.febs.common.properties.ValidateCodeProperties;
 import com.wf.captcha.GifCaptcha;
 import com.wf.captcha.SpecCaptcha;
 import com.wf.captcha.base.Captcha;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -25,14 +25,12 @@ import java.io.IOException;
  * @author MrBird
  */
 @Service
+@RequiredArgsConstructor
 public class ValidateCodeService {
 
-    @Autowired
-    private RedisService redisService;
-    @Autowired
-    private FebsProperties properties;
+    private final RedisService redisService;
+    private final FebsProperties properties;
 
-    
     public void create(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         String key = session.getId();
@@ -59,7 +57,7 @@ public class ValidateCodeService {
     }
 
     private Captcha createCaptcha(ValidateCodeProperties code) {
-        Captcha captcha = null;
+        Captcha captcha;
         if (StringUtils.equalsIgnoreCase(code.getType(), ImageType.GIF)) {
             captcha = new GifCaptcha(code.getWidth(), code.getHeight(), code.getLength());
         } else {
