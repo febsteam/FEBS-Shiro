@@ -30,6 +30,8 @@ public interface UserMapper extends BaseMapper<User> {
      */
     <T> IPage<User> findUserDetailPage(Page<T> page, @Param("user") User user);
 
+    long countUserDetail(@Param("user") User user);
+
     /**
      * 查找用户详细信息
      *

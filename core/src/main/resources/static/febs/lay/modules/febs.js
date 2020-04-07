@@ -232,6 +232,9 @@ layui.extend({
         var target = $(this).attr('target');
 
         if (href === '') return;
+        if (href.startsWith('http')) {
+            window.open(href)
+        }
         if (self.isUrl(href)) {
             next()
         }

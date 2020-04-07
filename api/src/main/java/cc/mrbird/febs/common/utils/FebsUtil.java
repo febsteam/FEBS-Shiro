@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 @Slf4j
 public class FebsUtil {
 
-    private static final Pattern CHINESE_PATTERN  = Pattern.compile("[\u4e00-\u9fa5]");
+    private static final Pattern CHINESE_PATTERN = Pattern.compile("[\u4e00-\u9fa5]");
 
     /**
      * 驼峰转下划线
@@ -103,6 +103,9 @@ public class FebsUtil {
      * @return 结果
      */
     public static boolean containChinese(String value) {
+        if (StringUtils.isBlank(value)) {
+            return false;
+        }
         Matcher matcher = CHINESE_PATTERN.matcher(value);
         return matcher.find();
     }
@@ -110,4 +113,5 @@ public class FebsUtil {
     public static String view(String viewName) {
         return FebsConstant.VIEW_PREFIX + viewName;
     }
+
 }

@@ -12,6 +12,7 @@ import java.util.List;
  * @author MrBird
  */
 public interface RoleMapper extends BaseMapper<Role> {
+    Long countRole(@Param("role") Role role);
 
     /**
      * 通过用户名查找用户角色

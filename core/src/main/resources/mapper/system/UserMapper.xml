@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.system.mapper.UserMapper">
+    <sql id="countUserDetailSql" >
+        SELECT
+        COUNT(1)
+        FROM
+        t_user u
+        WHERE 1 = 1
+        <if test="user.username != null and user.username != ''">
+            AND u.username = #{user.username}
+        </if>
+        <if test="user.deptId != null and user.deptId != ''">
+            AND d.dept_id = #{user.deptId}
+        </if>
+        <if test="user.sex != null and user.sex != ''">
+            AND u.ssex = #{user.sex}
+        </if>
+        <if test="user.status != null and user.status != ''">
+            AND u.status = #{user.status}
+        </if>
+        <if test="user.mobile != null and user.mobile != ''">
+            AND u.mobile = #{user.mobile}
+        </if>
+        <if test="user.createTimeFrom != null and user.createTimeFrom !=''">
+            And u.create_time &gt; #{user.createTimeFrom}
+        </if>
+        <if test="user.createTimeTo!= null and user.createTimeTo !=''">
+            And u.create_time &lt; #{user.createTimeTo}
+        </if>
+    </sql>
+
     <sql id="findUserDetailSql">
         SELECT
         u.user_id userId,
@@ -59,6 +88,11 @@
             u.description,
             u.avatar
     </sql>
+
+    <select id="countUserDetail" parameterType="user" resultType="long">
+        <include refid="countUserDetailSql"/>
+    </select>
+
     <select id="findUserDetailPage" parameterType="user" resultType="user">
         <include refid="findUserDetailSql"/>
     </select>

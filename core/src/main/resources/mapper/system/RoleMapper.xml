@@ -20,6 +20,17 @@
             u.username = #{username}
     </select>
 
+    <select id="countRole" parameterType="role" resultType="Long">
+        SELECT
+        COUNT(1)
+        FROM
+        t_role r
+        WHERE 1 = 1
+        <if test="role.roleName != null and role.roleName != ''">
+            AND r.role_name like CONCAT('%',#{role.roleName},'%')
+        </if>
+    </select>
+
     <select id="findRolePage" parameterType="role" resultType="role">
         SELECT
             r.role_id roleId,

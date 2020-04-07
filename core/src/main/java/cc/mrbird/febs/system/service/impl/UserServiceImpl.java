@@ -55,6 +55,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public IPage<User> findUserDetailList(User user, QueryRequest request) {
         Page<User> page = new Page<>(request.getPageNum(), request.getPageSize());
+        page.setSearchCount(false);
+        page.setTotal(baseMapper.countUserDetail(user));;
         SortUtil.handlePageSort(request, page, "userId", FebsConstant.ORDER_ASC, false);
         return this.baseMapper.findUserDetailPage(page, user);
     }
