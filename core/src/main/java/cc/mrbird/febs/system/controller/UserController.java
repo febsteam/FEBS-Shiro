@@ -17,6 +17,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -112,9 +113,9 @@ public class UserController extends BaseController {
 
     @PostMapping("theme/update")
     @ControllerEndpoint(exceptionMessage = "修改系统配置失败")
-    public FebsResponse updateTheme(String theme, String isTab) {
+    public FebsResponse updateTheme(HttpServletRequest request, HttpServletResponse response, String theme, String isTab, String lang) {
         User user = getCurrentUser();
-        this.userService.updateTheme(user.getUsername(), theme, isTab);
+        this.userService.updateTheme(user.getUsername(), theme, isTab, lang);
         return new FebsResponse().success();
     }
 

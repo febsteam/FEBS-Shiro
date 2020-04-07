@@ -4,6 +4,8 @@ import cc.mrbird.febs.common.authentication.ShiroRealm;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.common.exception.FebsException;
+import cc.mrbird.febs.common.exception.RedisConnectException;
+import cc.mrbird.febs.common.service.RedisService;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.common.utils.Md5Util;
 import cc.mrbird.febs.common.utils.SortUtil;
@@ -20,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import static cc.mrbird.febs.common.entity.FebsConstant.I18N_SUFFIX;
 
 /**
  * @author MrBird
@@ -39,6 +44,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     private final IUserRoleService userRoleService;
     private final ShiroRealm shiroRealm;
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public User findByName(String username) {
@@ -164,11 +171,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateTheme(String username, String theme, String isTab) {
+    public void updateTheme(String username, String theme, String isTab, String i18n) {
         User user = new User();
         user.setTheme(theme);
         user.setIsTab(isTab);
         user.setModifyTime(new Date());
+        user.setI18n(i18n);
+
+        redisService.set(username + I18N_SUFFIX, i18n);
         this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
     }
 

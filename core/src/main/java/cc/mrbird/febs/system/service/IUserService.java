@@ -103,8 +103,9 @@ public interface IUserService extends IService<User> {
      * @param username 用户名称
      * @param theme    主题风格
      * @param isTab    是否开启 TAB
+     * @param i18n     国际化
      */
-    void updateTheme(String username, String theme, String isTab);
+    void updateTheme(String username, String theme, String isTab, String i18n);
 
     /**
      * 更新个人信息

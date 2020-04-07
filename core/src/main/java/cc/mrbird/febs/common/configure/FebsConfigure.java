@@ -15,10 +15,13 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import springfox.documentation.builders.PathSelectors;
@@ -60,12 +63,10 @@ public class FebsConfigure {
 
     public class PluginRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
         public void addControllerMapping(String pluginName, Class<?> controllerClass) {
-            if (controllerClass != null && isHandler(controllerClass)) {
-                DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
-                BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(controllerClass);
-                defaultListableBeanFactory.registerBeanDefinition(pluginName + "_" + controllerClass.getSimpleName(), beanDefinitionBuilder.getBeanDefinition());
-                detectHandlerMethods(pluginName + "_" + controllerClass.getSimpleName());
-            }
+            DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
+            BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(controllerClass);
+            defaultListableBeanFactory.registerBeanDefinition(pluginName + "_" + controllerClass.getSimpleName(), beanDefinitionBuilder.getBeanDefinition());
+            detectHandlerMethods(pluginName + "_" + controllerClass.getSimpleName());
         }
 
         public void removeMapping(String pluginName, Class<?> controllerClass) {
@@ -84,6 +85,11 @@ public class FebsConfigure {
                     logger.error("unregisterMapping " + controllerClass + ",in plugin " + pluginName + " failure.", e);
                 }
             }, ReflectionUtils.USER_DECLARED_METHODS);
+        }
+
+        @Override
+        public boolean isHandler(Class<?> beanType) {
+            return super.isHandler(beanType);
         }
     }
 
