@@ -24,6 +24,8 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Map;
 
+import static cc.mrbird.febs.common.utils.FebsUtil.getCurrentUser;
+
 /**
  * @author MrBird
  */

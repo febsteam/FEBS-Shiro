@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.shiro.SecurityUtils.getSubject;
+
 /**
  * @author MrBird
  */
@@ -50,7 +52,7 @@ public class LoginController extends BaseController {
         validateCodeService.check(session.getId(), verifyCode);
         password = Md5Util.encrypt(username.toLowerCase(), password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
-        super.login(token);
+        getSubject().login(token);
         // 保存登录日志
         LoginLog loginLog = new LoginLog();
         loginLog.setUsername(username);

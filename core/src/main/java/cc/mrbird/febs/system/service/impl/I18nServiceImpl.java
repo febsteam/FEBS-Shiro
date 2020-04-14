@@ -62,7 +62,7 @@ public class I18nServiceImpl implements I18nService {
             log.error("{}", e);
         }
         Properties defaultProperties = propertiesMap.get(de);
-        lines = Maps.newLinkedHashMapWithExpectedSize(defaultProperties.size());
+        lines = Maps.newHashMapWithExpectedSize(defaultProperties.size());
         defaultProperties.keySet().forEach(key -> {
             I18nLine i18nLine = new I18nLine();
             i18nLine.setKey(key.toString());
