@@ -7,12 +7,14 @@ import ${basePackage}.${servicePackage}.I${className}Service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import java.util.List;
 
 /**
  * ${tableComment} Service实现
@@ -21,11 +23,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  * @date ${date}
  */
 @Service
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
+@RequiredArgsConstructor
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${className}> implements I${className}Service {
 
-    @Autowired
-    private ${className}Mapper ${className?uncap_first}Mapper;
+    private final ${className}Mapper ${className?uncap_first}Mapper;
 
     @Override
     public IPage<${className}> find${className}s(QueryRequest request, ${className} ${className?uncap_first}) {
@@ -43,19 +45,19 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void create${className}(${className} ${className?uncap_first}) {
         this.save(${className?uncap_first});
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void update${className}(${className} ${className?uncap_first}) {
         this.saveOrUpdate(${className?uncap_first});
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void delete${className}(${className} ${className?uncap_first}) {
         LambdaQueryWrapper<${className}> wrapper = new LambdaQueryWrapper<>();
 	    // TODO 设置删除条件

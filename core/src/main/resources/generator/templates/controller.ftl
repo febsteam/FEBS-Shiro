@@ -10,8 +10,9 @@ import ${basePackage}.${entityPackage}.${className};
 import ${basePackage}.${servicePackage}.I${className}Service;
 import com.wuwenze.poi.ExcelKit;
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,10 +33,10 @@ import java.util.Map;
 @Slf4j
 @Validated
 @Controller
+@RequiredArgsConstructor
 public class ${className}Controller extends BaseController {
 
-    @Autowired
-    private I${className}Service ${className?uncap_first}Service;
+    private final I${className}Service ${className?uncap_first}Service;
 
     @GetMapping(FebsConstant.VIEW_PREFIX + "${className?uncap_first}")
     public String ${className?uncap_first}Index(){

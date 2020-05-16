@@ -23,9 +23,9 @@
         <plugin.dependencies/>
         <plugin.description/>
     </properties>
-    <modules>
-        <module>dict</module>
-    </modules>
+<!--    <modules>-->
+<!--        <module>dict</module>-->
+<!--    </modules>-->
 
     <dependencies>
         <dependency>

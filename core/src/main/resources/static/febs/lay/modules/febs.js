@@ -42,6 +42,12 @@ layui.extend({
             layui.link(url + '?v=' + conf.v)
         });
         self.initView(self.route)
+        String.prototype.startsWith = function (str) {
+            if (str == null || str === "" || this.length === 0 || str.length > this.length) {
+                return false;
+            }
+            return this.substr(0, str.length) === str;
+        };
     };
     self.post = function (params) {
         view.request($.extend({type: 'post'}, params))

@@ -38,7 +38,11 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, SystemLog> implements
     @Override
     public IPage<SystemLog> findLogs(SystemLog systemLog, QueryRequest request) {
         QueryWrapper<SystemLog> queryWrapper = new QueryWrapper<>();
-
+        if (StringUtils.isNotBlank(systemLog.getCreateTimeFrom()) &&
+                StringUtils.equals(systemLog.getCreateTimeFrom(), systemLog.getCreateTimeTo())) {
+            systemLog.setCreateTimeFrom(systemLog.getCreateTimeFrom() + " 00:00:00");
+            systemLog.setCreateTimeTo(systemLog.getCreateTimeTo() + " 23:59:59");
+        }
         if (StringUtils.isNotBlank(systemLog.getUsername())) {
             queryWrapper.lambda().eq(SystemLog::getUsername, systemLog.getUsername().toLowerCase());
         }

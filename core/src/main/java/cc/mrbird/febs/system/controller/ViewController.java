@@ -21,8 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static cc.mrbird.febs.common.utils.FebsUtil.getCurrentUser;
-
 /**
  * @author MrBird
  */
@@ -58,8 +56,8 @@ public class ViewController extends BaseController {
 
     @GetMapping("index")
     public String index(Model model) {
-        AuthorizationInfo authorizationInfo = shiroHelper.getCurrentuserAuthorizationInfo();
-        User user = getCurrentUser();
+        AuthorizationInfo authorizationInfo = shiroHelper.getCurrentUserAuthorizationInfo();
+        User user = FebsUtil.getCurrentUser();
         User currentUserDetail = userService.findByName(user.getUsername());
         currentUserDetail.setPassword("It's a secret");
         model.addAttribute("user", currentUserDetail);

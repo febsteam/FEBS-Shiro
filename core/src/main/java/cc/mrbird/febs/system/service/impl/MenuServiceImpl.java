@@ -90,7 +90,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteMeuns(String menuIds) {
+    public void deleteMenus(String menuIds) {
         String[] menuIdsArray = menuIds.split(StringPool.COMMA);
         this.delete(Arrays.asList(menuIdsArray));
 

@@ -32,7 +32,11 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
     @Override
     public IPage<LoginLog> findLoginLogs(LoginLog loginLog, QueryRequest request) {
         QueryWrapper<LoginLog> queryWrapper = new QueryWrapper<>();
-
+        if (StringUtils.isNotBlank(loginLog.getLoginTimeFrom()) &&
+                StringUtils.equals(loginLog.getLoginTimeFrom(), loginLog.getLoginTimeTo())) {
+            loginLog.setLoginTimeFrom(loginLog.getLoginTimeFrom() + " 00:00:00");
+            loginLog.setLoginTimeTo(loginLog.getLoginTimeTo() + " 23:59:59");
+        }
         if (StringUtils.isNotBlank(loginLog.getUsername())) {
             queryWrapper.lambda().eq(LoginLog::getUsername, loginLog.getUsername().toLowerCase());
         }

@@ -107,19 +107,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = UnauthorizedException.class)
     public FebsResponse handleUnauthorizedException(UnauthorizedException e) {
-        log.error("UnauthorizedException", e);
+        log.error("UnauthorizedException, {}", e.getMessage());
         return new FebsResponse().code(HttpStatus.FORBIDDEN).message(e.getMessage());
     }
 
     @ExceptionHandler(value = AuthenticationException.class)
     public FebsResponse handleAuthenticationException(AuthenticationException e) {
-        log.error("AuthenticationException", e);
+        log.error("AuthenticationException, {}", e.getMessage());
         return new FebsResponse().code(HttpStatus.INTERNAL_SERVER_ERROR).message(e.getMessage());
     }
 
     @ExceptionHandler(value = AuthorizationException.class)
     public FebsResponse handleAuthorizationException(AuthorizationException e){
-        log.error("AuthorizationException", e);
+        log.error("AuthorizationException, {}", e.getMessage());
         return new FebsResponse().code(HttpStatus.UNAUTHORIZED).message(e.getMessage());
     }
 

@@ -1,0 +1,41 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-data-permission" lay-title="数据权限">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                   <span class="febs-alert-base febs-alert-success">
+                        数据权限测试，不同用户看到的数据不一样
+                    </span>
+                    <table lay-filter="dataPermissionTestTable" lay-data="{id: 'dataPermissionTestTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['jquery', 'table', 'febs'], function () {
+        var $ = layui.jquery,
+            febs = layui.febs,
+            table = layui.table,
+            $view = $('#febs-data-permission'),
+            tableIns;
+
+        initTable();
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'dataPermissionTestTable',
+                url: ctx + 'datapermission/test/list',
+                cols: [[
+                    {field: 'field1', title: '字段1'},
+                    {field: 'field2', title: '字段2'},
+                    {field: 'field3', title: '字段3'},
+                    {field: 'field4', title: '字段4'},
+                    {field: 'createTime', title: '创建时间'}
+                ]]
+            });
+        }
+
+    })
+</script>

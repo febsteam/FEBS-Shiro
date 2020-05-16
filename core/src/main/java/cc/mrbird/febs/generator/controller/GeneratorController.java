@@ -13,6 +13,8 @@ import cc.mrbird.febs.generator.entity.GeneratorConstant;
 import cc.mrbird.febs.generator.helper.GeneratorHelper;
 import cc.mrbird.febs.generator.service.IGeneratorConfigService;
 import cc.mrbird.febs.generator.service.IGeneratorService;
+import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
+import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RegExUtils;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,18 +44,31 @@ public class GeneratorController extends BaseController {
     private final IGeneratorService generatorService;
     private final IGeneratorConfigService generatorConfigService;
     private final GeneratorHelper generatorHelper;
+    private final DynamicDataSourceProperties properties;
+
+    @GetMapping("datasource")
+    @RequiresPermissions("generator:view")
+    public FebsResponse datasource() {
+        Map<String, DataSourceProperty> datasources = properties.getDatasource();
+        List<String> datasourcesName = new ArrayList<>();
+        datasources.forEach((k, v) -> {
+            String datasourceName = StringUtils.substringBefore(StringUtils.substringAfterLast(v.getUrl(), "/"), "?");
+            datasourcesName.add(datasourceName);
+        });
+        return new FebsResponse().success().data(datasourcesName);
+    }
 
     @GetMapping("tables/info")
     @RequiresPermissions("generator:view")
-    public FebsResponse tablesInfo(String tableName, QueryRequest request) {
-        Map<String, Object> dataTable = getDataTable(generatorService.getTables(tableName, request, GeneratorConstant.DATABASE_TYPE, GeneratorConstant.DATABASE_NAME));
+    public FebsResponse tablesInfo(String tableName, String datasource, QueryRequest request) {
+        Map<String, Object> dataTable = getDataTable(generatorService.getTables(tableName, request, GeneratorConstant.DATABASE_TYPE, datasource));
         return new FebsResponse().success().data(dataTable);
     }
 
     @GetMapping
     @RequiresPermissions("generator:generate")
     @ControllerEndpoint(exceptionMessage = "代码生成失败")
-    public void generate(@NotBlank(message = "{required}") String name, String remark, HttpServletResponse response) throws Exception {
+    public void generate(@NotBlank(message = "{required}") String name, String remark, String datasource, HttpServletResponse response) throws Exception {
         GeneratorConfig generatorConfig = generatorConfigService.findGeneratorConfig();
         if (generatorConfig == null) {
             throw new FebsException("代码生成配置为空");
@@ -67,7 +83,7 @@ public class GeneratorController extends BaseController {
         generatorConfig.setClassName(FebsUtil.underscoreToCamel(className));
         generatorConfig.setTableComment(remark);
         // 生成代码到临时目录
-        List<Column> columns = generatorService.getColumns(GeneratorConstant.DATABASE_TYPE, GeneratorConstant.DATABASE_NAME, name);
+        List<Column> columns = generatorService.getColumns(GeneratorConstant.DATABASE_TYPE, datasource, name);
         generatorHelper.generateEntityFile(columns, generatorConfig);
         generatorHelper.generateMapperFile(columns, generatorConfig);
         generatorHelper.generateMapperXmlFile(columns, generatorConfig);

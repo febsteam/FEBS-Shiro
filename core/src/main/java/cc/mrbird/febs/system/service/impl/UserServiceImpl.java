@@ -10,8 +10,10 @@ import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.common.utils.Md5Util;
 import cc.mrbird.febs.common.utils.SortUtil;
 import cc.mrbird.febs.system.entity.User;
+import cc.mrbird.febs.system.entity.UserDataPermission;
 import cc.mrbird.febs.system.entity.UserRole;
 import cc.mrbird.febs.system.mapper.UserMapper;
+import cc.mrbird.febs.system.service.IUserDataPermissionService;
 import cc.mrbird.febs.system.service.IUserRoleService;
 import cc.mrbird.febs.system.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -21,6 +23,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,7 @@ import static cc.mrbird.febs.common.entity.FebsConstant.I18N_SUFFIX;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     private final IUserRoleService userRoleService;
+    private final IUserDataPermissionService userDataPermissionService;
     private final ShiroRealm shiroRealm;
     @Autowired
     private RedisService redisService;
@@ -54,9 +58,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public IPage<User> findUserDetailList(User user, QueryRequest request) {
+        if (StringUtils.isNotBlank(user.getCreateTimeFrom()) &&
+                StringUtils.equals(user.getCreateTimeFrom(), user.getCreateTimeTo())) {
+            user.setCreateTimeFrom(user.getCreateTimeFrom() + " 00:00:00");
+            user.setCreateTimeTo(user.getCreateTimeTo() + " 23:59:59");
+        }
         Page<User> page = new Page<>(request.getPageNum(), request.getPageSize());
         page.setSearchCount(false);
-        page.setTotal(baseMapper.countUserDetail(user));;
+        page.setTotal(baseMapper.countUserDetail(user));
         SortUtil.handlePageSort(request, page, "userId", FebsConstant.ORDER_ASC, false);
         return this.baseMapper.findUserDetailPage(page, user);
     }
@@ -90,6 +99,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         // 保存用户角色
         String[] roles = user.getRoleId().split(StringPool.COMMA);
         setUserRoles(user, roles);
+        // 保存用户数据权限关联关系
+        String[] deptIds = StringUtils.splitByWholeSeparatorPreserveAllTokens(user.getDeptIds(), StringPool.COMMA);
+        if (ArrayUtils.isNotEmpty(deptIds)) {
+            setUserDataPermissions(user, deptIds);
+        }
     }
 
     @Override
@@ -100,6 +114,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         this.removeByIds(list);
         // 删除关联角色
         this.userRoleService.deleteUserRolesByUserId(list);
+        // 删除关联数据权限
+        this.userDataPermissionService.deleteByUserIds(userIds);
     }
 
     @Override
@@ -111,10 +127,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setUsername(null);
         user.setModifyTime(new Date());
         updateById(user);
-        // 更新关联角色
-        this.userRoleService.remove(new LambdaQueryWrapper<UserRole>().eq(UserRole::getUserId, user.getUserId()));
-        String[] roles = user.getRoleId().split(StringPool.COMMA);
+
+        String[] userId = {String.valueOf(user.getUserId())};
+        this.userRoleService.deleteUserRolesByUserId(Arrays.asList(userId));
+        String[] roles = StringUtils.splitByWholeSeparatorPreserveAllTokens(user.getRoleId(), StringPool.COMMA);
         setUserRoles(user, roles);
+
+        userDataPermissionService.deleteByUserIds(userId);
+        String[] deptIds = StringUtils.splitByWholeSeparatorPreserveAllTokens(user.getDeptIds(), StringPool.COMMA);
+        if (ArrayUtils.isNotEmpty(deptIds)) {
+            setUserDataPermissions(user, deptIds);
+        }
 
         User currentUser = FebsUtil.getCurrentUser();
         if (StringUtils.equalsIgnoreCase(currentUser.getUsername(), username)) {
@@ -206,6 +229,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             userRoles.add(userRole);
         });
         userRoleService.saveBatch(userRoles);
+    }
+
+    private void setUserDataPermissions(User user, String[] deptIds) {
+        List<UserDataPermission> userDataPermissions = new ArrayList<>();
+        Arrays.stream(deptIds).forEach(deptId -> {
+            UserDataPermission permission = new UserDataPermission();
+            permission.setDeptId(Long.valueOf(deptId));
+            permission.setUserId(user.getUserId());
+            userDataPermissions.add(permission);
+        });
+        userDataPermissionService.saveBatch(userDataPermissions);
     }
 
     private boolean isCurrentUser(Long id) {

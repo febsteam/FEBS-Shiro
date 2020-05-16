@@ -56,9 +56,7 @@ public class FebsMetricsEndpoint {
         } else {
             Map<Statistic, Double> samples = this.getSamples(meters);
             Map<String, Set<String>> availableTags = this.getAvailableTags(meters);
-            tags.forEach((t) -> {
-                Set<String> var10000 = availableTags.remove(t.getKey());
-            });
+            tags.forEach((t) -> availableTags.remove(t.getKey()));
             Meter.Id meterId = meters.iterator().next().getId();
             return new FebsMetricResponse(requiredMetricName, meterId.getDescription(), meterId.getBaseUnit(), this.asList(samples, Sample::new), this.asList(availableTags, AvailableTag::new));
         }
@@ -92,9 +90,7 @@ public class FebsMetricsEndpoint {
     }
 
     private void mergeMeasurements(Map<Statistic, Double> samples, Meter meter) {
-        meter.measure().forEach((measurement) -> {
-            Double var10000 = samples.merge(measurement.getStatistic(), measurement.getValue(), this.mergeFunction(measurement.getStatistic()));
-        });
+        meter.measure().forEach((measurement) -> samples.merge(measurement.getStatistic(), measurement.getValue(), this.mergeFunction(measurement.getStatistic())));
     }
 
     private BiFunction<Double, Double, Double> mergeFunction(Statistic statistic) {

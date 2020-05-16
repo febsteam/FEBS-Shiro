@@ -11,7 +11,7 @@
             AND u.username = #{user.username}
         </if>
         <if test="user.deptId != null and user.deptId != ''">
-            AND d.dept_id = #{user.deptId}
+            AND u.dept_id = #{user.deptId}
         </if>
         <if test="user.sex != null and user.sex != ''">
             AND u.ssex = #{user.sex}
@@ -145,5 +145,10 @@
             u.theme,
             u.is_tab,
             u.i18n
+    </select>
+
+    <select id="findUserDataPermissions" parameterType="long" resultType="userDataPermission">
+        select user_id userId, dept_id deptId from t_user_data_permission
+        where user_id = #{userId}
     </select>
 </mapper>

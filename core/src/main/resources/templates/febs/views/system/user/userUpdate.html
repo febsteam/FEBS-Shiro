@@ -6,6 +6,12 @@
     #user-update .layui-treeSelect .ztree li a, .ztree li span {
         margin: 0 0 2px 3px !important;
     }
+    #user-update #data-permission-tree-block {
+        border: 1px solid #eee;
+        border-radius: 2px;
+        padding: 3px 0;
+    }
+
 </style>
 <div class="layui-fluid" id="user-update">
     <form class="layui-form" action="" lay-filter="user-update-form">
@@ -68,6 +74,12 @@
                 <input type="radio" name="sex" value="2" title="保密">
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数据权限：</label>
+            <div class="layui-input-block" id="data-permission-tree-block">
+                <div class="data-permission-tree" lay-filter="dataPermissionTree" style="margin-left: 1rem"></div>
+            </div>
+        </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">备注：</label>
             <div class="layui-input-block">
@@ -82,23 +94,53 @@
 </div>
 
 <script data-th-inline="javascript">
-    layui.use(['febs', 'form', 'formSelects', 'validate', 'treeSelect'], function () {
+    layui.use(['febs', 'form', 'formSelects', 'validate', 'treeSelect', 'eleTree'], function () {
         var $ = layui.$,
             febs = layui.febs,
             layer = layui.layer,
             formSelects = layui.formSelects,
             treeSelect = layui.treeSelect,
             form = layui.form,
+            eleTree = layui.eleTree,
             user = [[${user}]],
             $view = $('#user-update'),
-            validate = layui.validate;
+            validate = layui.validate,
+            _deptTree;
 
         form.verify(validate);
         form.render();
 
         initUserValue();
+        renderDeptTree();
 
         formSelects.render();
+
+        function renderDeptTree() {
+            _deptTree = eleTree.render({
+                elem: $view.find('.data-permission-tree'),
+                url: ctx + 'dept/tree',
+                accordion: true,
+                highlightCurrent: true,
+                showCheckbox: true,
+                checkStrictly: true,
+                renderAfterExpand: false,
+                request: {
+                    name: 'name',
+                    key: "id",
+                    checked: "checked",
+                    data: 'data'
+                },
+                response: {
+                    statusName: "code",
+                    statusCode: 200,
+                    dataName: "data"
+                },
+                done: function (r) {
+                    _deptTree.setChecked(user.deptIds.split(","), true);
+                }
+            });
+            return _deptTree;
+        }
 
         treeSelect.render({
             elem: $view.find('#user-update-dept'),
@@ -149,6 +191,12 @@
         }
 
         form.on('submit(user-update-form-submit)', function (data) {
+            var checked = _deptTree.getChecked(false, true);
+            var deptIds = [];
+            layui.each(checked, function (key, item) {
+                deptIds.push(item.id)
+            });
+            data.field.deptIds = deptIds.join(",");
             if (febs.nativeEqual(data.field, user)) {
                 febs.alert.warn('数据未作任何修改！');
                 return false;

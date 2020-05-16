@@ -14,7 +14,7 @@ public class ShiroHelper extends ShiroRealm {
      *
      * @return AuthorizationInfo
      */
-    public AuthorizationInfo getCurrentuserAuthorizationInfo() {
+    public AuthorizationInfo getCurrentUserAuthorizationInfo() {
         return super.doGetAuthorizationInfo(null);
     }
 }

@@ -5,6 +5,7 @@ import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.monitor.service.ILogService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -20,6 +21,7 @@ import java.lang.reflect.Method;
 /**
  * @author MrBird
  */
+@Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor
@@ -51,6 +53,7 @@ public class ControllerEndpointAspect extends BaseAspectSupport {
             }
             return result;
         } catch (Throwable throwable) {
+            log.error(throwable.getMessage(), throwable);
             String exceptionMessage = annotation.exceptionMessage();
             String message = throwable.getMessage();
             String error = FebsUtil.containChinese(message) ? exceptionMessage + "，" + message : exceptionMessage;

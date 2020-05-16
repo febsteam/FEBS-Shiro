@@ -13,13 +13,22 @@
                                             <input type="text" name="tableName" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">数据库</label>
+                                        <div class="layui-input-inline">
+                                            <select name="datasource" id="datasource" lay-filter="datasource">
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
-                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain  table-action" id="query">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain  table-action"
+                                     id="query">
                                     <i class="layui-icon">&#xe848;</i>
                                 </div>
-                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain  table-action" id="reset">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain  table-action"
+                                     id="reset">
                                     <i class="layui-icon">&#xe79b;</i>
                                 </div>
                             </div>
@@ -48,6 +57,7 @@
             $query = $view.find('#query'),
             $reset = $view.find('#reset'),
             $searchForm = $view.find('form'),
+            $datasource = $view.find('#datasource'),
             tableIns;
 
         laydate.render({
@@ -56,6 +66,7 @@
         });
 
         form.render();
+        getDatasource();
         initTable();
 
         $query.on('click', function () {
@@ -66,6 +77,20 @@
             $searchForm[0].reset();
             tableIns.reload({where: getQueryParams(), page: {curr: 1}});
         });
+
+        function getDatasource() {
+            febs.get(ctx + 'generator/datasource', null, function (r) {
+                var options = '<option value="">请选择</option>';
+                for (var item of r.data) {
+                    options += '<option value="' + item + '">' + item + '</option>'
+                }
+                $datasource.append(options)
+                form.render();
+                form.on('select(datasource)', function(data){
+                    $query.click();
+                });
+            });
+        }
 
         function initTable() {
             tableIns = febs.table.init({
@@ -87,6 +112,7 @@
         function getQueryParams() {
             return {
                 tableName: $searchForm.find("input[name='tableName']").val().trim(),
+                datasource: $searchForm.find("select[name='datasource']").val(),
                 invalidate_ie_cache: new Date()
             };
         }
@@ -94,6 +120,7 @@
         table.on('tool(configureTable)', function (obj) {
             var data = obj.data,
                 layEvent = obj.event;
+            data.datasource = $searchForm.find("select[name='datasource']").val();
             if (layEvent === 'generate') {
                 febs.modal.confirm('代码生成', '确定生成数据表<strong> ' + data.name + ' </strong>对应的前后端代码？', function () {
                     febs.download(ctx + 'generator', data, data.name + '_code.zip');
