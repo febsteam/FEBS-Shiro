@@ -547,17 +547,17 @@ layui.extend({
                 if (res.code !== 200) {
                     console.error(res)
                 }
-                return {
+                return $.extend(res, {
                     "code": res.code === 200 ? 0 : res.code,
                     "count": res.data.total,
                     "data": res.data.rows
-                }
+                })
             },
-            done: function(res, curr, count){
+            done: function (res, curr, count) {
                 var noneDiv = $(".layui-table-body").find(".layui-none").first();
                 if (noneDiv.length === 1) {
                     var table = $(".layui-table").first();
-                    noneDiv.width(table.width())
+                    noneDiv.width(table.width() - 30)
                 }
             }
         };
