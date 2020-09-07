@@ -1,4 +1,4 @@
-package cc.mrbird.febs.system.controller;
+package ${basePackage}.${controllerPackage};
 
 import cc.mrbird.febs.common.annotation.ControllerEndpoint;
 import cc.mrbird.febs.common.utils.FebsUtil;

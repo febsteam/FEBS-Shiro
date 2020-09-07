@@ -135,7 +135,7 @@
             loading.show();
             $.post(ctx + 'login', data.field, function (r) {
                 if (r.code === 200) {
-                    location.href = ctx + 'index';
+                    location.href = ctx + r.data.replace('/', '');
                 } else {
                     layer.msg(r.message);
                     loading.hide();

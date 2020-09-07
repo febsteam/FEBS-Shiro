@@ -4,6 +4,7 @@ import cc.mrbird.febs.common.annotation.Limit;
 import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.exception.FebsException;
+import cc.mrbird.febs.common.properties.FebsProperties;
 import cc.mrbird.febs.common.service.ValidateCodeService;
 import cc.mrbird.febs.common.utils.Md5Util;
 import cc.mrbird.febs.monitor.entity.LoginLog;
@@ -38,6 +39,7 @@ public class LoginController extends BaseController {
     private final IUserService userService;
     private final ValidateCodeService validateCodeService;
     private final ILoginLogService loginLogService;
+    private final FebsProperties properties;
 
     @PostMapping("login")
     @Limit(key = "login", period = 60, count = 10, name = "登录接口", prefix = "limit")
@@ -56,8 +58,7 @@ public class LoginController extends BaseController {
         loginLog.setUsername(username);
         loginLog.setSystemBrowserInfo();
         this.loginLogService.saveLoginLog(loginLog);
-
-        return new FebsResponse().success();
+        return new FebsResponse().success().data(properties.getShiro().getSuccessUrl());
     }
 
     @PostMapping("regist")
