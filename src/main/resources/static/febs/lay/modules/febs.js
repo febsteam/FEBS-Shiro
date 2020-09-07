@@ -233,13 +233,15 @@ layui.extend({
     });
 
     $(window).on('hashchange', function (e) {
-        //移动端跳转链接先把导航关闭
-        if ($(window).width() < mobileWidth) {
-            self.flexible(false)
+        if (self.route.fileurl != conf.entry) {
+            //移动端跳转链接先把导航关闭
+            if ($(window).width() < mobileWidth) {
+                self.flexible(false)
+            }
+            self.route = layui.router();
+            layer.closeAll();
+            self.initView(self.route)
         }
-        self.route = layui.router();
-        layer.closeAll();
-        self.initView(self.route)
     });
 
     $(document).on('click', '[lay-href]', function (e) {
